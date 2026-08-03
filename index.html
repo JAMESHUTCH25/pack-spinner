@@ -4,255 +4,689 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dynamic Pack Draft Spinner</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #252830; 
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 24px 16px;
-    }
-    
-    .interface-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    /* Top filter bar container */
-    .filter-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: #facc15; 
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      margin-bottom: 24px;
-      border: 1px solid #d97706;
-    }
-    .filter-item-input {
-      background: transparent;
-      border: none;
-      padding: 16px;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #000000;
-      text-align: center;
-      width: 100%;
-      box-sizing: border-box;
-      text-transform: uppercase;
-      font-family: 'Segoe UI', Arial, sans-serif;
-    }
-    .filter-item-input:focus {
-      outline: 2px dashed #000000;
-      background: rgba(255, 255, 255, 0.2);
-    }
-    .filter-item-wrapper {
-      border-right: 2px solid rgba(0,0,0,0.15);
-    }
-    .filter-item-wrapper:last-child {
-      border-right: none;
-    }
-
-    /* Board split layout */
-    .game-layout {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      align-items: center;
-      gap: 30px;
-      margin-top: 10px;
-    }
-
-    /* Player Card baseline structural container mapping rules */
-    .player-card-container {
-      width: 240px;
-      height: 330px;
-      position: relative;
-    }
-    .player-card {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
-      border-top-left-radius: 40px;
-      border-top-right-radius: 40px;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-      border: 3px solid #94a3b8;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      position: relative;
-      overflow: hidden;
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      box-sizing: border-box;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    /* --- RARITY SKIN ENGINE --- */
-    .skin-bronze {
-      background: linear-gradient(135deg, #a75a28, #5c2c0e) !important;
-      border-color: #3d1b07 !important;
-      color: #ffedd5 !important;
-    }
-    .skin-bronze .card-name { background: rgba(0,0,0,0.25) !important; color: white !important; }
-
-    .skin-silver {
-      background: linear-gradient(135deg, #e2e8f0, #cbd5e1) !important; 
-      border-color: #94a3b8 !important;
-      color: #1e293b !important;
-    }
-    .skin-silver .card-name { background: rgba(255,255,255,0.4) !important; color: #1e293b !important; }
-
-    .skin-gold {
-      background: linear-gradient(135deg, #fef08a, #ca8a04) !important;
-      border-color: #facc15 !important; 
-      color: #451a03 !important;
-      box-shadow: 0 10px 30px rgba(234, 179, 8, 0.4);
-    }
-    .skin-gold .card-name { background: rgba(255,255,255,0.5) !important; color: #451a03 !important; }
-
-    .skin-tots {
-      background: linear-gradient(135deg, #1e1b4b, #2563eb, #0d9488) !important;
-      border-color: #facc15 !important;
-      color: #ffffff !important;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.6);
-    }
-    .skin-tots .card-name { background: rgba(0, 0, 0, 0.4) !important; color: #facc15 !important; }
-
-    .skin-futties {
-      background: linear-gradient(135deg, #ec4899, #be185d, #06b6d4) !important;
-      border-color: #f43f5e !important;
-      color: #ffffff !important;
-      box-shadow: 0 0 35px rgba(236, 72, 153, 0.7);
-    }
-    .skin-futties .card-name { background: rgba(255, 255, 255, 0.2) !important; color: #ffffff !important; }
-
-    .player-card.skin-futties {
-      animation: pulsateGlow 1.5s infinite alternate;
-    }
-
-    @keyframes pulsateGlow {
-      0% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.5); }
-      100% { box-shadow: 0 0 35px rgba(6, 182, 212, 0.9); }
-    }
-
-    /* Textured wave overlay internal graphic vectors */
-    .player-card::before {
-      content: "";
-      position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
-      background: 
-        radial-gradient(circle at 120% 30%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%),
-        radial-gradient(circle at 130% 40%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%),
-        radial-gradient(circle at 140% 50%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%);
-      pointer-events: none;
-    }
-    
-    .card-pos { font-size: 1.4rem; font-weight: 800; text-align: left; align-self: flex-start; }
-    .card-rating { font-size: 3.5rem; font-weight: 900; line-height: 1; text-align: center; margin-top: 15px; }
-    .card-name { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; margin-bottom: 10px; padding: 4px 8px; border-radius: 4px; }
-
-    /* --- Horizontal Spinner Tracker Box CSS UI --- */
-    .spinner-view-window {
-      position: relative;
-      width: 100%;
-      max-width: 480px;
-      height: 90px;
-      background: #1a1c23;
-      border: 3px solid #facc15;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 8px 20px rgba(0,0,0,0.4);
-    }
-    .spinner-view-window::before, .spinner-view-window::after {
-      content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 0; height: 0; z-index: 10;
-    }
-    .spinner-view-window::before { top: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 15px solid #ef4444; }
-    .spinner-view-window::after { bottom: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 15px solid #ef4444; }
-    
-    .center-indicator-line {
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 130px; height: 100%;
-      border-left: 2px dashed rgba(239, 68, 68, 0.4); border-right: 2px dashed rgba(239, 68, 68, 0.4);
-      background: rgba(255, 255, 255, 0.03); pointer-events: none; z-index: 5;
-    }
-    canvas { display: block; }
-
-    /* Action Control Box layout */
-    .control-panel { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-    .action-button {
-      background: #ca8a04; color: #cbd5e1; font-size: 1.1rem; font-weight: bold; border: none; padding: 20px 50px;
-      border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
-    }
-    .action-button.ready { background: #facc15; color: #111827; box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); }
-    .action-button:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-    .action-button:disabled { background: #4a4d56; color: #71717a; cursor: not-allowed; transform: none; }
-
-    /* --- DRAFT HISTORY BOARD STYLING --- */
-    .history-board-container {
-      margin-top: 30px;
-      background: #1a1c23;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    }
-    .history-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-    .history-title { font-size: 1.4rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-    .clear-history-btn {
-      background: #ef4444; color: white; border: none; padding: 6px 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;
-    }
-    .clear-history-btn:hover { opacity: 0.9; }
-    .history-grid-ledger {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      min-height: 80px;
-    }
-    .history-mini-card {
-      width: 100px;
-      padding: 10px 6px;
-      border-radius: 8px;
-      border: 2px solid #cbd5e1;
-      background: #cbd5e1;
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      font-size: 0.8rem;
-    }
-    .mini-card-rating { font-size: 1.4rem; font-weight: 900; line-height: 1; margin: 2px 0; }
-    .mini-card-name { text-transform: uppercase; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
-    .mini-card-pos { font-size: 0.65rem; opacity: 0.8; }
-
-    /* Configurations panel */
-    .config-box {
-      margin-top: 35px; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
-    }
-    .config-input { width: min(100%, 600px); padding: 10px; border-radius: 6px; border: none; background: #1e293b; color: white; margin-bottom: 10px; }
-    .result-banner { font-size: 1.6rem; font-weight: bold; color: #facc15; margin-top: 15px; }
-    .hint-text { font-size: 0.85rem; opacity: 0.6; margin-top: -15px; margin-bottom: 15px; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div class="interface-container">
-    <!-- Filter Tags -->
     <div class="filter-bar">
-      <div class="filter-item-wrapper"><input type="text" class="filter-item-input" id="filter-pos" value="ST" oninput="syncCardPosition()"></div>
-      <div class="filter-item-wrapper"><input type="text" class="filter-item-input" id="filter-quality" value="Dynamic" disabled style="opacity:0.6; cursor:not-allowed;"></div>
-      <div class="filter-item-wrapper"><input type="text" class="filter-item-input" id="filter-rating" value="Auto-Skin"></div>
+      <div class="filter-item-wrapper">
+        <input type="text" class="filter-item-input" id="filter-pos" value="ST" />
+      </div>
+      <div class="filter-item-wrapper">
+        <input type="text" class="filter-item-input" id="filter-quality" value="Dynamic" disabled />
+      </div>
+      <div class="filter-item-wrapper">
+        <input type="text" class="filter-item-input" id="filter-rating" value="Auto-Skin" disabled />
+      </div>
     </div>
-System Note: Rarity skins are now calculated automatically based on the player's rating!ST--SPIN TO DRAWSPINReady for Pack Selection🛡️ Packed Squad HistoryReset LineupNo players drafted yet. Press spin to build your squad!Modify Pool Roster Data:Update Draft Rosterconst canvas = document.getElementById('spinnerCanvas');const ctx = canvas.getContext('2d');const resultText = document.getElementById('result-text');const spinBtn = document.getElementById('btn-spin');const displayCard = document.getElementById('display-card');const cardName = document.getElementById('card-name');const cardRating = document.getElementById('card-rating');const cardPos = document.getElementById('card-pos');const filterPosInput = document.getElementById('filter-pos');const historyLedger = document.getElementById('history-ledger');let items = ["Ethan (84 - RB)", "Reuben (84 - LB)", "Seb (90 - CB)", "Ari (97 - LW)","James (92 - ST)", "Ben (92 - ST)", "Noah (91 - CM)", "Donny (92 - CM)", "Charlie (94 - ST)","Flynn (90 - LM)", "Mason (96 - CAM)", "Louis (92 - RW)", "Hugo (91 - ST)","Lachlan (91 - CB)", "Harry L (92 - CB)", "Martin (96 - CDM)", "Luke (92 - GK)","Jack (95 - GK)", "Archie (90 - LB)", "CJ (100 - RB)", "Harry R (97 - CAM)","George (90 - ST)", "Aidan (95 - RM)", "Fred (91 - CAM)", "Felix (93 - CDM)"];const itemWidth = 140;let scrollX = 0;let isSpinning = false;const colors = ['#ca8a04', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#4b5563'];drawSpinner();function getSkinClass(ratingStr) {const score = parseInt(ratingStr);if (isNaN(score)) return 'skin-silver';if (score === 100) return 'skin-futties';if (score >= 95) return 'skin-tots';if (score >= 90) return 'skin-gold';if (score >= 80) return 'skin-silver';return 'skin-bronze';}function applySkinEngine(rating) {displayCard.classList.remove('skin-bronze', 'skin-silver', 'skin-gold', 'skin-tots', 'skin-futties');const skinClass = getSkinClass(rating);displayCard.classList.add(skinClass);}function syncCardPosition() {if (!isSpinning) cardPos.textContent = filterPosInput.value.toUpperCase();}function updateNames() {if (isSpinning) return;const inputVal = document.getElementById('names').value;items = inputVal.split(',').map(item => item.trim()).filter(item => item.length > 0);scrollX = 0;drawSpinner();}function drawSpinner() {ctx.clearRect(0, 0, canvas.width, canvas.height);const windowWidth = canvas.width;const centerTargetX = windowWidth / 2;const totalWidth = items.length * itemWidth;let normalizedScroll = scrollX % totalWidth;if (normalizedScroll < 0) normalizedScroll += totalWidth;for (let i = -4; i < items.length + 4; i++) {let itemIndex = (i % items.length + items.length) % items.length;let xPos = centerTargetX + (i * itemWidth) - normalizedScroll;if (xPos > -itemWidth && xPos < windowWidth + itemWidth) {ctx.fillStyle = colors[itemIndex % colors.length];ctx.beginPath();ctx.roundRect(xPos + 5, 10, itemWidth - 10, 70, 8);ctx.fill();ctx.lineWidth = 2;ctx.strokeStyle = 'rgba(255,255,255,0.2)';ctx.stroke();ctx.fillStyle = 'white';ctx.font = 'bold 11px Arial';ctx.textAlign = 'center';ctx.textBaseline = 'middle';let fullText = items[itemIndex];let shortText = fullText.split(" (")[0];let statMatch = fullText.match(/\(([^)]+)\)/);let subText = statMatch ? "(" + statMatch[1] + ")" : "";ctx.fillText(shortText, xPos + itemWidth / 2, 35);ctx.font = '9px Arial';ctx.fillStyle = 'rgba(255,255,255,0.85)';ctx.fillText(subText, xPos + itemWidth / 2, 55);}}}function spin() {if (isSpinning) return;isSpinning = true;spinBtn.disabled = true;spinBtn.className = "action-button";spinBtn.textContent = "WAIT";cardName.textContent = "CHOOSING...";cardRating.textContent = "--";let velocity = Math.random() * 35 + 45;const friction = 0.982;function animateTicker() {scrollX += velocity;velocity *= friction;drawSpinner();if (velocity > 0.15) {requestAnimationFrame(animateTicker);} else {isSpinning = false;spinBtn.disabled = false;spinBtn.className = "action-button ready";spinBtn.textContent = "SPIN";calculateWinner();}}requestAnimationFrame(animateTicker);}function addPlayerToHistory(name, rating, position) {const fallback = document.getElementById('history-fallback-msg');if (fallback) {fallback.remove();}const miniCard = document.createElement('div');const skinClass = getSkinClass(rating);miniCard.className = history-mini-card ${skinClass};miniCard.innerHTML = <div class="mini-card-pos">${position}</div> <div class="mini-card-rating">${rating}</div> <div class="mini-card-name">${name}</div>;historyLedger.insertBefore(miniCard, historyLedger.firstChild);}function clearHistory() {historyLedger.innerHTML = <p style="opacity:0.4; font-style:italic; margin-top:25px;" id="history-fallback-msg">No players drafted yet. Press spin to build your squad!</p>;}function calculateWinner() {const totalWidth = items.length * itemWidth;let finalScroll = scrollX % totalWidth;if (finalScroll < 0) finalScroll += totalWidth;let winningIndex = Math.round(finalScroll / itemWidth) % items.length;const fullString = items[winningIndex];resultText.textContent = Packed: ${fullString}!;scrollX = winningIndex * itemWidth;drawSpinner();// ⚙️ THE FIXED CALCULATION ENGINEconst match = fullString.match(/^([^(]+)\s*(\d+)\s*-\s*([^)]+)/);if (match) {const name = match[1].trim();      // Fixed from match.trim()const rating = match.trim();    // Fixed from match.trim()const position = match.trim();  // Fixed from match.trim()cardName.textContent = name;cardRating.textContent = rating;cardPos.textContent = position;applySkinEngine(rating);addPlayerToHistory(name, rating, position);} else {cardName.textContent = fullString;cardRating.textContent = "??";cardPos.textContent = filterPosInput.value.toUpperCase();}}
+
+    <div class="main-grid">
+      <div class="player-card-container">
+        <div id="display-card" class="player-card skin-silver">
+          <div class="card-pos" id="card-pos">ST</div>
+          <div class="card-rating" id="card-rating">--</div>
+          <div class="card-name" id="card-name">READY</div>
+        </div>
+      </div>
+
+      <div class="control-panel">
+        <div class="spinner-view-window">
+          <div class="center-indicator-line"></div>
+          <canvas id="spinnerCanvas" width="480" height="90"></canvas>
+        </div>
+
+        <button id="btn-spin" class="action-button ready">SPIN</button>
+        <div id="result-text" class="result-banner">Ready for Pack Selection</div>
+      </div>
+    </div>
+
+    <div class="history-board-container">
+      <div class="history-header-row">
+        <h2 class="history-title">Packed Squad History</h2>
+        <button id="clear-history-btn" class="clear-history-btn">Reset Lineup</button>
+      </div>
+      <div id="history-ledger" class="history-grid-ledger">
+        <p id="history-fallback-msg" style="opacity:0.4; font-style:italic; margin-top:25px;">
+          No players drafted yet. Press spin to build your squad!
+        </p>
+      </div>
+    </div>
+
+    <div class="config-box">
+      <h3>Modify Pool Roster Data:</h3>
+      <textarea id="names" class="config-input" rows="6">Ethan (84 - RB), Reuben (84 - LB), Seb (90 - CB), Ari (97 - LW), James (92 - ST), Ben (92 - ST), Noah (91 - CM), Donny (92 - CM), Charlie (94 - ST), Flynn (90 - LM), Mason (96 - CAM), Louis (92 - RW), Hugo (91 - ST), Lachlan (91 - CB), Harry L (92 - CB), Martin (96 - CDM), Luke (92 - GK), Jack (95 - GK), Archie (90 - LB), CJ (100 - RB), Harry R (97 - CAM), George (90 - ST), Aidan (95 - RM), Fred (91 - CAM), Felix (93 - CDM)</textarea>
+      <br />
+      <button id="update-roster-btn" class="action-button ready">Update Draft Roster</button>
+      <p class="hint-text">Use comma-separated entries like: Name (Rating - Position)</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #252830;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 24px 16px;
+}
+
+.interface-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #facc15;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  margin-bottom: 24px;
+  border: 1px solid #d97706;
+}
+
+.filter-item-input {
+  background: transparent;
+  border: none;
+  padding: 16px;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #000;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.filter-item-input:focus {
+  outline: 2px dashed #000;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.filter-item-wrapper {
+  border-right: 2px solid rgba(0,0,0,0.15);
+}
+
+.filter-item-wrapper:last-child {
+  border-right: none;
+}
+
+.main-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.player-card-container {
+  width: 240px;
+  height: 330px;
+  position: relative;
+}
+
+.player-card {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 3px solid #94a3b8;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.player-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 120% 30%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%),
+    radial-gradient(circle at 130% 40%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%),
+    radial-gradient(circle at 140% 50%, transparent 50%, rgba(255,255,255,0.18) 52%, transparent 55%);
+  pointer-events: none;
+}
+
+.skin-bronze {
+  background: linear-gradient(135deg, #a75a28, #5c2c0e) !important;
+  border-color: #3d1b07 !important;
+  color: #ffedd5 !important;
+}
+
+.skin-bronze .card-name {
+  background: rgba(0,0,0,0.25) !important;
+  color: white !important;
+}
+
+.skin-silver {
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1) !important;
+  border-color: #94a3b8 !important;
+  color: #1e293b !important;
+}
+
+.skin-silver .card-name {
+  background: rgba(255,255,255,0.4) !important;
+  color: #1e293b !important;
+}
+
+.skin-gold {
+  background: linear-gradient(135deg, #fef08a, #ca8a04) !important;
+  border-color: #facc15 !important;
+  color: #451a03 !important;
+  box-shadow: 0 10px 30px rgba(234, 179, 8, 0.4);
+}
+
+.skin-gold .card-name {
+  background: rgba(255,255,255,0.5) !important;
+  color: #451a03 !important;
+}
+
+.skin-tots {
+  background: linear-gradient(135deg, #1e1b4b, #2563eb, #0d9488) !important;
+  border-color: #facc15 !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.6);
+}
+
+.skin-tots .card-name {
+  background: rgba(0, 0, 0, 0.4) !important;
+  color: #facc15 !important;
+}
+
+.skin-futties {
+  background: linear-gradient(135deg, #ec4899, #be185d, #06b6d4) !important;
+  border-color: #f43f5e !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 35px rgba(236, 72, 153, 0.7);
+  animation: pulsateGlow 1.5s infinite alternate;
+}
+
+.skin-futties .card-name {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+@keyframes pulsateGlow {
+  0% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.5); }
+  100% { box-shadow: 0 0 35px rgba(6, 182, 212, 0.9); }
+}
+
+.card-pos {
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-align: left;
+  align-self: flex-start;
+  z-index: 1;
+}
+
+.card-rating {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  margin-top: 15px;
+  z-index: 1;
+}
+
+.card-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.spinner-view-window {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 90px;
+  background: #1a1c23;
+  border: 3px solid #facc15;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.spinner-view-window::before,
+.spinner-view-window::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  z-index: 10;
+}
+
+.spinner-view-window::before {
+  top: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 15px solid #ef4444;
+}
+
+.spinner-view-window::after {
+  bottom: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 15px solid #ef4444;
+}
+
+.center-indicator-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 100%;
+  border-left: 2px dashed rgba(239, 68, 68, 0.4);
+  border-right: 2px dashed rgba(239, 68, 68, 0.4);
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  z-index: 5;
+}
+
+canvas {
+  display: block;
+}
+
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.action-button {
+  background: #ca8a04;
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  padding: 20px 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.action-button.ready {
+  background: #facc15;
+  color: #111827;
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+}
+
+.action-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.action-button:disabled {
+  background: #4a4d56;
+  color: #71717a;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.history-board-container {
+  margin-top: 30px;
+  background: #1a1c23;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.history-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.history-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #facc15;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.clear-history-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.clear-history-btn:hover {
+  opacity: 0.9;
+}
+
+.history-grid-ledger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  min-height: 80px;
+}
+
+.history-mini-card {
+  width: 100px;
+  padding: 10px 6px;
+  border-radius: 8px;
+  border: 2px solid #cbd5e1;
+  background: #cbd5e1;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  font-size: 0.8rem;
+}
+
+.mini-card-rating {
+  font-size: 1.4rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: 2px 0;
+}
+
+.mini-card-name {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.mini-card-pos {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+.config-box {
+  margin-top: 35px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.config-input {
+  width: min(100%, 600px);
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1e293b;
+  color: white;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.result-banner {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #facc15;
+  margin-top: 15px;
+}
+
+.hint-text {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 700px) {
+  .filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-item-wrapper {
+    border-right: none;
+    border-bottom: 2px solid rgba(0,0,0,0.15);
+  }
+
+  .filter-item-wrapper:last-child {
+    border-bottom: none;
+  }
+}
+const canvas = document.getElementById('spinnerCanvas');
+const ctx = canvas.getContext('2d');
+const resultText = document.getElementById('result-text');
+const spinBtn = document.getElementById('btn-spin');
+const displayCard = document.getElementById('display-card');
+const cardName = document.getElementById('card-name');
+const cardRating = document.getElementById('card-rating');
+const cardPos = document.getElementById('card-pos');
+const filterPosInput = document.getElementById('filter-pos');
+const historyLedger = document.getElementById('history-ledger');
+const namesInput = document.getElementById('names');
+const updateRosterBtn = document.getElementById('update-roster-btn');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+let items = [];
+const itemWidth = 140;
+let scrollX = 0;
+let isSpinning = false;
+const colors = ['#ca8a04', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#4b5563'];
+
+function parseRoster(text) {
+  return text
+    .split(',')
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}
+
+function getSkinClass(ratingStr) {
+  const score = parseInt(ratingStr);
+  if (isNaN(score)) return 'skin-silver';
+  if (score === 100) return 'skin-futties';
+  if (score >= 95) return 'skin-tots';
+  if (score >= 90) return 'skin-gold';
+  if (score >= 80) return 'skin-silver';
+  return 'skin-bronze';
+}
+
+function applySkinEngine(rating) {
+  displayCard.classList.remove('skin-bronze', 'skin-silver', 'skin-gold', 'skin-tots', 'skin-futties');
+  displayCard.classList.add(getSkinClass(rating));
+}
+
+function syncCardPosition() {
+  if (!isSpinning) cardPos.textContent = filterPosInput.value.toUpperCase();
+}
+
+function drawSpinner() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!items.length) return;
+
+  const windowWidth = canvas.width;
+  const centerTargetX = windowWidth / 2;
+  const totalWidth = items.length * itemWidth;
+  let normalizedScroll = scrollX % totalWidth;
+  if (normalizedScroll < 0) normalizedScroll += totalWidth;
+
+  for (let i = -4; i < items.length + 4; i++) {
+    const itemIndex = (i % items.length + items.length) % items.length;
+    const xPos = centerTargetX + (i * itemWidth) - normalizedScroll;
+
+    if (xPos > -itemWidth && xPos < windowWidth + itemWidth) {
+      ctx.fillStyle = colors[itemIndex % colors.length];
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(xPos + 5, 10, itemWidth - 10, 70, 8);
+      } else {
+        ctx.rect(xPos + 5, 10, itemWidth - 10, 70);
+      }
+      ctx.fill();
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.stroke();
+
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 11px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const fullText = items[itemIndex];
+      const nameMatch = fullText.match(/^(.+?)\s*\((\d+)\s*-\s*([^)]+)\)$/);
+
+      let shortText = fullText;
+      let subText = '';
+
+      if (nameMatch) {
+        shortText = nameMatch[1].trim();
+        subText = `(${nameMatch[2]} - ${nameMatch[3].trim()})`;
+      }
+
+      ctx.fillText(shortText, xPos + itemWidth / 2, 35);
+      ctx.font = '9px Arial';
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText(subText, xPos + itemWidth / 2, 55);
+    }
+  }
+}
+
+function addPlayerToHistory(name, rating, position) {
+  const fallback = document.getElementById('history-fallback-msg');
+  if (fallback) fallback.remove();
+
+  const miniCard = document.createElement('div');
+  miniCard.className = `history-mini-card ${getSkinClass(rating)}`;
+  miniCard.innerHTML = `
+    <div class="mini-card-pos">${position}</div>
+    <div class="mini-card-rating">${rating}</div>
+    <div class="mini-card-name">${name}</div>
+  `;
+
+  historyLedger.insertBefore(miniCard, historyLedger.firstChild);
+}
+
+function clearHistory() {
+  historyLedger.innerHTML = `
+    <p id="history-fallback-msg" style="opacity:0.4; font-style:italic; margin-top:25px;">
+      No players drafted yet. Press spin to build your squad!
+    </p>
+  `;
+}
+
+function calculateWinner() {
+  if (!items.length) return;
+
+  const totalWidth = items.length * itemWidth;
+  let finalScroll = scrollX % totalWidth;
+  if (finalScroll < 0) finalScroll += totalWidth;
+
+  const winningIndex = Math.round(finalScroll / itemWidth) % items.length;
+  const fullString = items[winningIndex];
+
+  resultText.textContent = `Packed: ${fullString}!`;
+
+  scrollX = winningIndex * itemWidth;
+  drawSpinner();
+
+  const match = fullString.match(/^([^(]+)\s*\((\d+)\s*-\s*([^)]+)\)$/);
+
+  if (match) {
+    const name = match[1].trim();
+    const rating = match[2].trim();
+    const position = match[3].trim();
+
+    cardName.textContent = name;
+    cardRating.textContent = rating;
+    cardPos.textContent = position;
+
+    applySkinEngine(rating);
+    addPlayerToHistory(name, rating, position);
+  } else {
+    cardName.textContent = fullString;
+    cardRating.textContent = "??";
+    cardPos.textContent = filterPosInput.value.toUpperCase();
+  }
+}
+
+function spin() {
+  if (isSpinning || !items.length) return;
+
+  isSpinning = true;
+  spinBtn.disabled = true;
+  spinBtn.classList.remove('ready');
+  spinBtn.textContent = "WAIT";
+
+  cardName.textContent = "CHOOSING...";
+  cardRating.textContent = "--";
+
+  let velocity = Math.random() * 35 + 45;
+  const friction = 0.982;
+
+  function animateTicker() {
+    scrollX += velocity;
+    velocity *= friction;
+    drawSpinner();
+
+    if (velocity > 0.15) {
+      requestAnimationFrame(animateTicker);
+    } else {
+      isSpinning = false;
+      spinBtn.disabled = false;
+      spinBtn.classList.add('ready');
+      spinBtn.textContent = "SPIN";
+      calculateWinner();
+    }
+  }
+
+  requestAnimationFrame(animateTicker);
+}
+
+function updateRoster() {
+  if (isSpinning) return;
+  items = parseRoster(namesInput.value);
+  scrollX = 0;
+  drawSpinner();
+}
+
+filterPosInput.addEventListener('input', syncCardPosition);
+spinBtn.addEventListener('click', spin);
+updateRosterBtn.addEventListener('click', updateRoster);
+clearHistoryBtn.addEventListener('click', clearHistory);
+
+items = parseRoster(namesInput.value);
+syncCardPosition();
+drawSpinner();
