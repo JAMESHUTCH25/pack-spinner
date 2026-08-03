@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FC-Style Pack Draft</title>
+  <title>Draft Reveal</title>
   <style>
     :root{
-      --bg:#0a0f1a;
+      --bg:#07111f;
       --panel:rgba(14,18,28,.88);
       --text:#f8fafc;
       --muted:rgba(255,255,255,.72);
@@ -16,37 +16,57 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:Segoe UI, Arial, sans-serif;
+      font-family:Segoe UI,Arial,sans-serif;
       color:var(--text);
+      min-height:100vh;
       background:
-        radial-gradient(circle at top, rgba(94,111,255,.18), transparent 30%),
+        radial-gradient(circle at top, rgba(82,118,255,.18), transparent 28%),
         radial-gradient(circle at 20% 20%, rgba(250,204,21,.08), transparent 18%),
         linear-gradient(180deg,#111827,var(--bg));
-      min-height:100vh;
     }
-    .app{width:min(1120px, calc(100% - 20px)); margin:0 auto; padding:22px 0 40px}
+    .app{
+      width:min(1140px, calc(100% - 20px));
+      margin:0 auto;
+      padding:22px 0 40px;
+    }
     .topbar{text-align:center; margin-bottom:18px}
     .tag{
-      display:inline-block; padding:6px 12px; border-radius:999px;
-      background:rgba(246,211,122,.08); border:1px solid rgba(246,211,122,.25);
-      color:var(--gold); text-transform:uppercase; letter-spacing:.08em; font-size:.8rem;
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(246,211,122,.08);
+      border:1px solid rgba(246,211,122,.25);
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.8rem;
     }
     h1{margin:12px 0 8px; font-size:clamp(2rem,4vw,3.25rem)}
     .topbar p{margin:0; color:var(--muted)}
     .controls{
-      display:grid; grid-template-columns:120px 1fr; gap:14px;
-      background:var(--panel); border:1px solid rgba(255,255,255,.08);
-      border-radius:18px; padding:16px; box-shadow:var(--shadow); margin-bottom:18px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
       backdrop-filter: blur(10px);
     }
-    .controls label{display:flex; flex-direction:column; gap:8px; color:var(--muted); font-size:.9rem}
-    .controls input{
-      width:100%; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.05);
-      color:white; border-radius:12px; padding:12px 14px; font:inherit;
+    .button-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
     }
-    .button-row{grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:10px}
     .btn{
-      border:none; border-radius:12px; padding:12px 18px; font-weight:800; cursor:pointer;
+      border:none;
+      border-radius:12px;
+      padding:12px 18px;
+      font-weight:800;
+      cursor:pointer;
       transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease;
     }
     .btn:hover{transform:translateY(-1px)}
@@ -54,85 +74,189 @@
     .btn.primary{background:linear-gradient(135deg,#f6d37a,#d0a94a); color:#1a1407}
     .btn.secondary{background:rgba(255,255,255,.08); color:white}
     .btn.danger{background:#ef4444; color:white}
-    .arena{display:grid; gap:14px; justify-items:center; margin-bottom:18px}
+    .arena{
+      display:grid;
+      gap:14px;
+      justify-items:center;
+      margin-bottom:18px;
+    }
     .slot-shell{
-      position:relative; width:100%; overflow:hidden; border-radius:18px;
+      position:relative;
+      width:100%;
+      overflow:hidden;
+      border-radius:18px;
       border:2px solid rgba(246,211,122,.2);
       background:linear-gradient(180deg, rgba(8,12,20,.96), rgba(4,6,10,.98));
       box-shadow:inset 0 0 32px rgba(0,0,0,.75), 0 16px 36px rgba(0,0,0,.35);
       padding:14px 0;
     }
     .slot-window{
-      position:relative; width:min(860px,100%); height:182px; margin:0 auto; overflow:hidden;
-      border-top:2px solid rgba(255,255,255,.06); border-bottom:2px solid rgba(255,255,255,.06);
+      position:relative;
+      width:min(860px,100%);
+      height:164px;
+      margin:0 auto;
+      overflow:hidden;
+      border-top:2px solid rgba(255,255,255,.06);
+      border-bottom:2px solid rgba(255,255,255,.06);
     }
     .slot-window::before,.slot-window::after{
-      content:""; position:absolute; top:0; bottom:0; width:80px; z-index:3; pointer-events:none;
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:80px;
+      z-index:3;
+      pointer-events:none;
     }
-    .slot-window::before{left:0; background:linear-gradient(90deg, rgba(4,6,10,1), rgba(4,6,10,0))}
-    .slot-window::after{right:0; background:linear-gradient(270deg, rgba(4,6,10,1), rgba(4,6,10,0))}
+    .slot-window::before{
+      left:0;
+      background:linear-gradient(90deg, rgba(4,6,10,1), rgba(4,6,10,0));
+    }
+    .slot-window::after{
+      right:0;
+      background:linear-gradient(270deg, rgba(4,6,10,1), rgba(4,6,10,0));
+    }
     .center-line{
-      position:absolute; left:50%; top:0; transform:translateX(-50%); width:182px; height:100%;
-      border-left:2px dashed rgba(255,100,100,.34); border-right:2px dashed rgba(255,100,100,.34);
-      background:rgba(255,255,255,.02); z-index:2; pointer-events:none;
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      width:210px;
+      height:100%;
+      border-left:2px dashed rgba(255,100,100,.34);
+      border-right:2px dashed rgba(255,100,100,.34);
+      background:rgba(255,255,255,.02);
+      z-index:2;
+      pointer-events:none;
     }
     .reel-track{
-      display:flex; align-items:center; gap:14px; padding:20px 46px;
-      transform:translateX(0); will-change:transform;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:14px 46px;
+      transform:translateX(0);
+      will-change:transform;
     }
     .reel-card{
-      width:180px; height:138px; border-radius:18px; padding:12px 12px 10px;
-      flex:0 0 auto; position:relative; overflow:hidden;
-      border:2px solid rgba(255,255,255,.14); box-shadow:0 10px 20px rgba(0,0,0,.3);
-      transform:scale(.965); transition:transform .18s ease, filter .18s ease;
+      width:180px;
+      height:122px;
+      border-radius:18px;
+      padding:12px;
+      flex:0 0 auto;
+      position:relative;
+      overflow:hidden;
+      border:2px solid rgba(255,255,255,.14);
+      box-shadow:0 10px 20px rgba(0,0,0,.3);
+      transform:scale(.965);
+      transition:transform .18s ease, filter .18s ease;
     }
     .reel-card.active{transform:scale(1.08); filter:brightness(1.12) saturate(1.08)}
-    .reel-card .rarity{
-      position:absolute; top:10px; right:10px; font-size:.66rem; font-weight:900;
-      letter-spacing:.12em; text-transform:uppercase; padding:5px 8px; border-radius:999px;
-      background:rgba(0,0,0,.24); color:white;
+    .reel-card .label{
+      position:absolute;
+      top:10px;
+      right:10px;
+      font-size:.66rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:5px 8px;
+      border-radius:999px;
+      background:rgba(0,0,0,.24);
+      color:white;
     }
-    .reel-card .rating{font-size:2.7rem; font-weight:900; line-height:1; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,.35)}
-    .reel-card .name{margin-top:8px; font-size:1rem; font-weight:900; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .reel-card .pos{margin-top:4px; font-size:.78rem; opacity:.9; letter-spacing:.04em}
+    .reel-card .title{
+      font-size:1.05rem;
+      font-weight:900;
+      line-height:1.05;
+      color:#fff;
+      text-shadow:0 2px 10px rgba(0,0,0,.35);
+      padding-right:48px;
+    }
+    .reel-card .sub{
+      margin-top:8px;
+      font-size:.82rem;
+      opacity:.9;
+      letter-spacing:.04em;
+    }
     .result{
-      width:100%; text-align:center; padding:14px 16px; border-radius:16px;
-      border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.05);
-      color:var(--gold); font-weight:800;
+      width:100%;
+      text-align:center;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      color:var(--gold);
+      font-weight:800;
+      min-height:52px;
     }
-    .card-zone{display:grid; place-items:center; margin-bottom:18px}
+    .card-zone{
+      display:grid;
+      place-items:center;
+      margin-bottom:18px;
+    }
     .player-card{
-      position:relative; width:min(360px,94vw); aspect-ratio:.72 / 1; border-radius:30px;
-      overflow:hidden; border:3px solid rgba(255,255,255,.15); padding:18px;
-      transform-style:preserve-3d; transition:transform .25s ease, box-shadow .25s ease;
+      position:relative;
+      width:min(360px,94vw);
+      aspect-ratio:.72 / 1;
+      border-radius:30px;
+      overflow:hidden;
+      border:3px solid rgba(255,255,255,.15);
+      padding:18px;
+      transform-style:preserve-3d;
+      transition:transform .25s ease, box-shadow .25s ease;
       animation:floatCard 4s ease-in-out infinite;
       clip-path: polygon(10% 0%, 90% 0%, 100% 7%, 100% 93%, 90% 100%, 10% 100%, 0% 93%, 0% 7%);
     }
     .player-card::before{
-      content:""; position:absolute; inset:0;
+      content:"";
+      position:absolute;
+      inset:0;
       background:
         radial-gradient(circle at 20% 15%, rgba(255,255,255,.2), transparent 18%),
         radial-gradient(circle at 80% 20%, rgba(255,255,255,.12), transparent 18%),
         linear-gradient(135deg, rgba(255,255,255,.06), transparent 40%);
       pointer-events:none;
     }
-    .card-top{display:flex; align-items:baseline; justify-content:space-between; z-index:1}
-    .card-rating{font-size:clamp(4rem,11vw,5.5rem); font-weight:900; line-height:.9; color:var(--gold); text-shadow:0 2px 14px rgba(0,0,0,.35)}
-    .card-pos{font-size:1.8rem; font-weight:900; letter-spacing:.06em; color:rgba(255,255,255,.95)}
+    .card-top{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      z-index:1;
+    }
+    .card-rating{
+      font-size:clamp(4rem,11vw,5.5rem);
+      font-weight:900;
+      line-height:.9;
+      color:var(--gold);
+      text-shadow:0 2px 14px rgba(0,0,0,.35);
+    }
+    .card-pos{
+      font-size:1.8rem;
+      font-weight:900;
+      letter-spacing:.06em;
+      color:rgba(255,255,255,.95);
+    }
     .card-art{
-      position:relative; height:52%; margin:12px 0 10px; border-radius:22px; overflow:hidden;
+      position:relative;
+      height:52%;
+      margin:12px 0 10px;
+      border-radius:22px;
+      overflow:hidden;
       border:1px solid rgba(255,255,255,.1);
       background:radial-gradient(circle at 50% 20%, rgba(255,255,255,.16), transparent 28%), linear-gradient(135deg, #0f1633, #101b4d 45%, #06101f 100%);
     }
     .card-art::before,.card-art::after{
-      content:""; position:absolute; inset:0;
+      content:"";
+      position:absolute;
+      inset:0;
       background:
         linear-gradient(135deg, transparent 35%, rgba(246,211,122,.25) 35%, rgba(246,211,122,.25) 38%, transparent 38%),
         linear-gradient(155deg, transparent 50%, rgba(246,211,122,.18) 50%, rgba(246,211,122,.18) 53%, transparent 53%);
       opacity:.8;
     }
     .card-glow{
-      position:absolute; inset:-10%;
+      position:absolute;
+      inset:-10%;
       background:
         radial-gradient(circle at 35% 45%, rgba(64,114,255,.7), transparent 28%),
         radial-gradient(circle at 70% 55%, rgba(255,214,102,.55), transparent 26%);
@@ -140,28 +264,95 @@
       animation:glowMove 5s ease-in-out infinite;
     }
     .card-badge{
-      position:absolute; top:12px; right:12px; padding:6px 10px; border-radius:999px;
-      background:rgba(246,211,122,.16); border:1px solid rgba(246,211,122,.35);
-      color:var(--gold); font-size:.75rem; font-weight:800; letter-spacing:.14em;
+      position:absolute;
+      top:12px;
+      right:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(246,211,122,.16);
+      border:1px solid rgba(246,211,122,.35);
+      color:var(--gold);
+      font-size:.75rem;
+      font-weight:800;
+      letter-spacing:.14em;
     }
-    .card-name{z-index:1; text-align:center; font-size:1.7rem; font-weight:900; text-transform:uppercase; letter-spacing:.06em; margin-top:4px}
-    .stats{z-index:1; display:grid; grid-template-columns:repeat(3,1fr); gap:10px 12px; margin-top:auto; padding-top:12px}
-    .stats div{display:flex; flex-direction:column; gap:4px; align-items:center}
-    .stats span{font-size:.8rem; color:rgba(255,255,255,.72); font-weight:700}
-    .stats strong{font-size:2rem; color:white; line-height:1}
+    .card-name{
+      z-index:1;
+      text-align:center;
+      font-size:1.7rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      margin-top:4px;
+    }
+    .stats{
+      z-index:1;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px 12px;
+      margin-top:auto;
+      padding-top:12px;
+    }
+    .stats div{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      align-items:center;
+    }
+    .stats span{
+      font-size:.8rem;
+      color:rgba(255,255,255,.72);
+      font-weight:700;
+    }
+    .stats strong{
+      font-size:1.8rem;
+      color:white;
+      line-height:1;
+    }
     .history{
-      margin-top:20px; padding:16px; border-radius:18px; background:var(--panel);
-      border:1px solid rgba(255,255,255,.08); backdrop-filter:blur(10px);
+      margin-top:20px;
+      padding:16px;
+      border-radius:18px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(10px);
     }
-    .history h2{margin:0 0 14px; color:var(--gold)}
-    .history-grid{display:flex; flex-wrap:wrap; gap:12px; justify-content:center}
+    .history h2{
+      margin:0 0 14px;
+      color:var(--gold);
+    }
+    .history-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+    }
     .history-mini-card{
-      width:112px; padding:10px 8px; border-radius:14px; border:2px solid rgba(255,255,255,.16);
-      color:white; font-weight:800; box-shadow:0 8px 18px rgba(0,0,0,.3); animation:popIn .25s ease-out;
+      width:112px;
+      padding:10px 8px;
+      border-radius:14px;
+      border:2px solid rgba(255,255,255,.16);
+      color:white;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(0,0,0,.3);
+      animation:popIn .25s ease-out;
     }
-    .history-mini-card .mini-card-rating{font-size:1.8rem; line-height:1; margin:4px 0}
-    .history-mini-card .mini-card-name{font-size:.72rem; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .history-mini-card .mini-card-pos{font-size:.68rem; opacity:.85}
+    .history-mini-card .mini-card-rating{
+      font-size:1.8rem;
+      line-height:1;
+      margin:4px 0;
+    }
+    .history-mini-card .mini-card-name{
+      font-size:.72rem;
+      text-transform:uppercase;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .history-mini-card .mini-card-pos{
+      font-size:.68rem;
+      opacity:.85;
+    }
     .skin-bronze{background:linear-gradient(135deg,#8b4b21,#4b240c) !important; box-shadow:0 0 28px rgba(139,75,33,.45)}
     .skin-silver{background:linear-gradient(135deg,#dbe4ef,#aeb9c8) !important; color:#18212f !important}
     .skin-gold{background:linear-gradient(135deg,#ffec8a,#c58a18) !important; box-shadow:0 0 30px rgba(246,211,122,.35)}
@@ -174,11 +365,12 @@
     @keyframes glowMove{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(6px,-8px,0) scale(1.05)}}
     @keyframes popIn{from{transform:scale(.85); opacity:0}to{transform:scale(1); opacity:1}}
     @media (max-width:760px){
+      .slot-window{height:148px}
+      .reel-card{width:150px; height:110px}
       .controls{grid-template-columns:1fr}
       .button-row{flex-direction:column}
       .btn{width:100%}
-      .slot-window{height:160px}
-      .reel-card{width:155px; height:128px}
+      .stats strong{font-size:1.55rem}
     }
   </style>
 </head>
@@ -187,15 +379,10 @@
     <header class="topbar">
       <div class="tag">Dynamic Pack Draft</div>
       <h1>Pack Spinner</h1>
-      <p>Press Spin, then Stop for each stage: overall, rarity, player.</p>
+      <p>Spin position, spin rarity, then reveal the card.</p>
     </header>
 
     <section class="controls">
-      <label>
-        Position
-        <input id="filter-pos" type="text" value="ST" maxlength="3" />
-      </label>
-
       <div class="button-row">
         <button id="btn-spin" class="btn primary">Spin</button>
         <button id="btn-stop" class="btn secondary" disabled>Stop</button>
@@ -269,7 +456,6 @@
     const cardBadge = document.getElementById("card-badge");
     const historyLedger = document.getElementById("history-ledger");
     const clearHistoryBtn = document.getElementById("clear-history-btn");
-    const filterPosInput = document.getElementById("filter-pos");
     const statPac = document.getElementById("stat-pac");
     const statSho = document.getElementById("stat-sho");
     const statPas = document.getElementById("stat-pas");
@@ -277,20 +463,18 @@
     const statDef = document.getElementById("stat-def");
     const statPhy = document.getElementById("stat-phy");
 
-    let items = [];
+    let items = [...roster];
     let currentOffset = 0;
     let isReeling = false;
     let stopRequested = false;
     let animationId = null;
     let step = 208;
     let stage = 0;
-    let stageResult = null;
-    let moving = false;
+    let stageResult = {};
 
     function parseEntry(entry) {
-      const match = entry.match(/^(.+?)\s*\((\d+)\s*-\s*([^)]+)\)$/);
-      if (!match) return { name: entry, rating: 75, position: filterPosInput.value.toUpperCase() };
-      return { name: match[1].trim(), rating: parseInt(match[2], 10), position: match[3].trim().toUpperCase() };
+      const m = entry.match(/^(.+?)\s*\((\d+)\s*-\s*([^)]+)\)$/);
+      return m ? { name:m[1].trim(), rating:parseInt(m[2],10), position:m[3].trim().toUpperCase() } : { name:entry, rating:75, position:"ST" };
     }
 
     function getRarity(rating) {
@@ -305,28 +489,22 @@
 
     function rarityToSkin(rarity) {
       return {
-        BRONZE: "skin-bronze",
-        SILVER: "skin-silver",
-        GOLD: "skin-gold",
-        TOTW: "skin-totw",
-        SPECIAL: "skin-special",
-        TOTS: "skin-tots",
-        FUTTIES: "skin-futties"
+        BRONZE:"skin-bronze", SILVER:"skin-silver", GOLD:"skin-gold",
+        TOTW:"skin-totw", SPECIAL:"skin-special", TOTS:"skin-tots", FUTTIES:"skin-futties"
       }[rarity] || "skin-silver";
     }
 
     function statsFor(rating, rarity) {
       const boost = {
-        BRONZE: [-10, -12, -10, -11, -14, -10],
-        SILVER: [-6, -7, -6, -6, -9, -6],
-        GOLD: [-2, -3, -2, -2, -5, -2],
-        TOTW: [2, 1, 0, 1, -2, 0],
-        SPECIAL: [4, 3, 2, 3, 0, 2],
-        TOTS: [6, 5, 4, 5, 2, 4],
-        FUTTIES: [8, 7, 6, 7, 4, 6]
+        BRONZE:[-10,-12,-10,-11,-14,-10],
+        SILVER:[-6,-7,-6,-6,-9,-6],
+        GOLD:[-2,-3,-2,-2,-5,-2],
+        TOTW:[2,1,0,1,-2,0],
+        SPECIAL:[4,3,2,3,0,2],
+        TOTS:[6,5,4,5,2,4],
+        FUTTIES:[8,7,6,7,4,6]
       }[rarity] || [0,0,0,0,0,0];
-
-      return boost.map((b, i) => Math.max(25, Math.min(99, rating + b)));
+      return boost.map(b => Math.max(25, Math.min(99, rating + b)));
     }
 
     function buildReel() {
@@ -339,10 +517,9 @@
         const card = document.createElement("div");
         card.className = `reel-card ${rarityToSkin(rarity)}`;
         card.innerHTML = `
-          <div class="rarity">${rarity}</div>
-          <div class="rating">${entry.rating}</div>
-          <div class="name">${entry.name}</div>
-          <div class="pos">${entry.position}</div>
+          <div class="label">${rarity}</div>
+          <div class="title">${entry.rating} ${entry.name}</div>
+          <div class="sub">${entry.position}</div>
         `;
         reelTrack.appendChild(card);
       }
@@ -355,16 +532,12 @@
       const cards = [...document.querySelectorAll(".reel-card")];
       if (!cards.length) return;
       const centerX = window.innerWidth / 2;
-      let closest = null;
-      let best = Infinity;
+      let best = Infinity, closest = null;
       cards.forEach(c => c.classList.remove("active"));
       cards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const dist = Math.abs((rect.left + rect.width / 2) - centerX);
-        if (dist < best) {
-          best = dist;
-          closest = card;
-        }
+        if (dist < best) { best = dist; closest = card; }
       });
       if (closest) closest.classList.add("active");
     }
@@ -424,7 +597,7 @@
       return items[Math.floor(Math.random() * items.length)];
     }
 
-    function startSpinning() {
+    function startSpin() {
       if (isReeling || !items.length) return;
       isReeling = true;
       stopRequested = false;
@@ -432,6 +605,7 @@
       stopBtn.disabled = false;
       spinBtn.textContent = "Spinning";
       resultText.textContent = "Rolling... press Stop";
+
       let velocity = 2.6 + Math.random() * 1.4;
       function roll() {
         if (!isReeling || stopRequested) return;
@@ -445,10 +619,11 @@
       animationId = requestAnimationFrame(roll);
     }
 
-    async function stop() {
+    async function stopSpin() {
       if (!isReeling) return;
       stopRequested = true;
       if (animationId) cancelAnimationFrame(animationId);
+
       const parsed = items.map(parseEntry);
 
       if (stage === 0) {
@@ -457,9 +632,9 @@
         const ovr = Math.max(80, Math.min(99, data.rating + Math.floor(Math.random() * 5 - 1)));
         const idx = parsed.findIndex(p => p.name === data.name && p.rating === data.rating);
         await moveToIndex(idx >= 0 ? idx : 0);
-        setDisplay("???", ovr, filterPosInput.value.toUpperCase(), getRarity(ovr));
-        resultText.textContent = `OVR locked: ${ovr}`;
-        stageResult = { ovr };
+        setDisplay("???", ovr, "??", getRarity(ovr));
+        resultText.textContent = `Position/OVR locked: ${ovr}`;
+        stageResult.ovr = ovr;
         stage = 1;
       } else if (stage === 1) {
         const rarityPool = ["BRONZE","SILVER","GOLD","TOTW","SPECIAL","TOTS","FUTTIES"];
@@ -468,12 +643,12 @@
         const chosen = pool.length ? pool[Math.floor(Math.random() * pool.length)] : randomPick();
         const idx = parsed.findIndex(p => p.name === chosen.name && p.rating === chosen.rating);
         await moveToIndex(idx >= 0 ? idx : 0);
-        setDisplay("???", stageResult?.ovr ?? chosen.rating, "??", rarity);
+        setDisplay("???", stageResult.ovr || chosen.rating, "??", rarity);
         resultText.textContent = `Rarity locked: ${rarity}`;
         stageResult.rarity = rarity;
         stage = 2;
       } else {
-        const rarity = stageResult?.rarity || "GOLD";
+        const rarity = stageResult.rarity || "GOLD";
         const pool = parsed.filter(p => getRarity(p.rating) === rarity);
         const chosen = pool.length ? pool[Math.floor(Math.random() * pool.length)] : randomPick();
         const idx = parsed.findIndex(p => p.name === chosen.name && p.rating === chosen.rating);
@@ -488,30 +663,25 @@
         isReeling = false;
         stopRequested = false;
         stage = 0;
+        stageResult = {};
         spinBtn.disabled = false;
-        spinBtn.textContent = "Spin";
         stopBtn.disabled = true;
+        spinBtn.textContent = "Spin";
       }
 
       isReeling = true;
       stopRequested = false;
       spinBtn.disabled = true;
-      spinBtn.textContent = "Spin";
       stopBtn.disabled = false;
     }
 
-    items = parseEntry ? [...roster] : [];
-    items = [...roster];
     buildReel();
     const first = parseEntry(items[0]);
-    setDisplay(first.name, first.rating, filterPosInput.value.toUpperCase(), getRarity(first.rating));
+    setDisplay(first.name, first.rating, first.position, getRarity(first.rating));
 
-    spinBtn.addEventListener("click", startSpinning);
-    stopBtn.addEventListener("click", stop);
+    spinBtn.addEventListener("click", startSpin);
+    stopBtn.addEventListener("click", stopSpin);
     clearHistoryBtn.addEventListener("click", clearHistory);
-    filterPosInput.addEventListener("input", () => {
-      if (!isReeling) cardPos.textContent = filterPosInput.value.toUpperCase();
-    });
     window.addEventListener("resize", highlightCenterCard);
   </script>
 </body>
