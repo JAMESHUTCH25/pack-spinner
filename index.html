@@ -7,8 +7,6 @@
   <style>
     :root{
       --bg:#2a2a2f;
-      --panel:#3a4049;
-      --panel2:#4a525d;
       --text:#ffffff;
       --muted:#d6d6d6;
       --green:#35a64a;
@@ -17,6 +15,7 @@
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -41,54 +40,160 @@
       background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08));
     }
 
-    .slot-row{ display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:30px; background:#2f3138; border-radius:18px; padding:6px; box-shadow: inset 0 8px 18px rgba(255,255,255,.05), inset 0 -10px 18px rgba(0,0,0,.25); }
-    .slot{ position:relative; height:126px; border-radius:14px; background:linear-gradient(180deg, #f7f7f7, #e5e5e5); color:#111; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 10px 20px rgba(255,255,255,.7), inset 0 -10px 20px rgba(0,0,0,.12); }
-    .slot::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.9), transparent 22%, transparent 78%, rgba(0,0,0,.08)); pointer-events:none; }
-    .slot-label{ position:absolute; top:8px; left:0; right:0; text-align:center; font-size:.76rem; font-weight:700; text-transform:uppercase; color:rgba(0,0,0,.45); letter-spacing:.06em; }
-    .slot-value{ font-size:2.2rem; font-weight:900; line-height:1; z-index:1; text-align:center; padding:0 10px; }
+    .slot-row{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:6px;
+      margin-bottom:30px;
+      background:#2f3138;
+      border-radius:18px;
+      padding:6px;
+      box-shadow: inset 0 8px 18px rgba(255,255,255,.05), inset 0 -10px 18px rgba(0,0,0,.25);
+    }
 
-    .main-area{ display:grid; grid-template-columns: 1fr 320px; gap:30px; align-items:start; padding:8px 4px 0; }
-    .card-zone{ display:flex; justify-content:center; align-items:flex-start; min-height:520px; }
+    .slot{
+      position:relative;
+      height:126px;
+      border-radius:14px;
+      background:linear-gradient(180deg, #f7f7f7, #e5e5e5);
+      color:#111;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: inset 0 10px 20px rgba(255,255,255,.7), inset 0 -10px 20px rgba(0,0,0,.12);
+    }
 
-    /* Card: realistic look */
+    .slot::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.9), transparent 22%, transparent 78%, rgba(0,0,0,.08));
+      pointer-events:none;
+    }
+
+    .slot-label{
+      position:absolute;
+      top:8px;
+      left:0;
+      right:0;
+      text-align:center;
+      font-size:.76rem;
+      font-weight:700;
+      text-transform:uppercase;
+      color:rgba(0,0,0,.45);
+      letter-spacing:.06em;
+    }
+
+    .slot-value{
+      font-size:2.2rem;
+      font-weight:900;
+      line-height:1;
+      z-index:1;
+      text-align:center;
+      padding:0 10px;
+    }
+
+    .main-area{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:30px;
+      align-items:start;
+      padding:8px 4px 0;
+    }
+
+    .card-zone{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:520px;
+    }
+
     .card{
-      width:320px; height:470px; position:relative; border-radius:18px; overflow:hidden;
+      width:320px;
+      height:470px;
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
       background:linear-gradient(180deg,#2b3138 0%, #1f2428 100%);
       box-shadow: 0 20px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.03), inset 0 -12px 30px rgba(0,0,0,.6);
       transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
-      transform:translateZ(0); border:6px solid rgba(255,255,255,.03); padding:14px; display:flex; flex-direction:column; gap:6px;
+      transform:translateZ(0);
+      border:6px solid rgba(255,255,255,.03);
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
     }
 
-    /* metallic/foil rim */
     .card::before{
-      content:''; position:absolute; inset:0; border-radius:16px; padding:3px;
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:16px;
+      padding:3px;
       background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.02), rgba(0,0,0,.25));
-      -webkit-mask: linear-gradient(#000, #000);
-      pointer-events:none; z-index:0;
+      pointer-events:none;
+      z-index:0;
     }
 
-    /* holographic sheen */
     .card::after{
-      content:''; position:absolute; inset:0; border-radius:16px; pointer-events:none;
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:16px;
+      pointer-events:none;
       background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.02), rgba(255,255,255,0) 12%, rgba(255,255,255,0.02) 22%);
-      mix-blend-mode:overlay; opacity:.9; z-index:2; filter:blur(6px);
+      mix-blend-mode:overlay;
+      opacity:.9;
+      z-index:2;
+      filter:blur(6px);
     }
 
-    .card-top{ position:relative; z-index:3; display:flex; justify-content:space-between; align-items:center; padding:4px 6px 0; font-weight:900; text-shadow:0 1px 0 rgba(255,255,255,.03); }
+    .card-top{
+      position:relative;
+      z-index:3;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:4px 6px 0;
+      font-weight:900;
+      text-shadow:0 1px 0 rgba(255,255,255,.03);
+    }
 
-    /* rating badge */
     .rating-badge{
-      position:relative; width:86px; height:86px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:900; color:#1f1200;
+      position:relative;
+      width:86px;
+      height:86px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:36px;
+      font-weight:900;
+      color:#1f1200;
       box-shadow:0 8px 18px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.5);
       border:3px solid rgba(255,255,255,.16);
       background:linear-gradient(180deg,#ffd86b,#ffb93b);
-      z-index:4; overflow:hidden;
+      z-index:4;
+      overflow:hidden;
     }
-    .rating-badge .shine{ position:absolute; inset:0; background:linear-gradient(120deg, rgba(255,255,255,.35), rgba(255,255,255,0)); transform:rotate(-20deg) translateX(-150%); animation:shimmer 2.4s linear infinite; opacity:.9; mix-blend-mode:overlay; }
-    @keyframes shimmer{ 0%{ transform:rotate(-20deg) translateX(-150%); } 100%{ transform:rotate(-20deg) translateX(150%); } }
 
-    /* rating colour per rarity */
+    .rating-badge .shine{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+      transform:rotate(-20deg) translateX(-150%);
+      animation:shimmer 2.4s linear infinite;
+      opacity:.9;
+      mix-blend-mode:overlay;
+    }
+
+    @keyframes shimmer{
+      0%{ transform:rotate(-20deg) translateX(-150%); }
+      100%{ transform:rotate(-20deg) translateX(150%); }
+    }
+
     .card.gold .rating-badge{ background:linear-gradient(180deg,#fff7c7,#f7d07d); color:#2b1800; }
     .card.silver .rating-badge{ background:linear-gradient(180deg,#e6eef4,#b7c0c7); color:#13202a; }
     .card.bronze .rating-badge{ background:linear-gradient(180deg,#e0b08a,#8a5228); color:#fff; }
@@ -96,56 +201,261 @@
     .card.futties .rating-badge{ background:linear-gradient(180deg,#ff88c7,#c53a88); color:#fff; }
     .card.gg .rating-badge{ background:linear-gradient(180deg,#ffd86b,#b88b2b); color:#111; }
 
-    /* position pill */
-    .pos-pill{ background:rgba(0,0,0,.25); padding:6px 12px; border-radius:999px; font-weight:900; font-size:1rem; color:#fff; border:1px solid rgba(255,255,255,.06); z-index:3; }
+    .pos-pill{
+      background:rgba(0,0,0,.25);
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:1rem;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.06);
+      z-index:3;
+    }
 
-    /* club & nation */
-    .meta-row{ display:flex; gap:8px; align-items:center; padding:0 6px; z-index:3; }
-    .club, .nation{ display:flex; align-items:center; gap:8px; }
-    .club-badge, .nation-badge{ width:34px; height:34px; border-radius:6px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.2)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.8rem; color:rgba(255,255,255,.95); border:1px solid rgba(255,255,255,.03); }
-    .club-name{ font-size:.86rem; font-weight:700; letter-spacing:.03em; color:rgba(255,255,255,.95); }
+    .meta-row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding:0 6px;
+      z-index:3;
+    }
 
-    /* portrait / photo */
-    .card-portrait{ position:relative; margin:6px 6px 6px; height:240px; border-radius:12px; overflow:hidden;
-      background:linear-gradient(180deg, #0f1720 0%, #1b2228 100%); border:1px solid rgba(255,255,255,.04); box-shadow: inset 0 12px 40px rgba(0,0,0,.6);
-      display:flex; align-items:center; justify-content:center; z-index:3; }
-    .photo{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:72px; font-weight:900; color:rgba(255,255,255,.08); background-image: linear-gradient(135deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.01) 30%, rgba(0,0,0,.02) 100%), repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px); position:relative; }
-    /* subtle holographic strips */
-    .photo::before{ content:''; position:absolute; inset:0; background:linear-gradient(90deg, rgba(255,255,255,.02) 0, rgba(255,255,255,0) 15%, rgba(255,255,255,.02) 35%, rgba(255,255,255,0) 60%); mix-blend-mode:overlay; opacity:.8; pointer-events:none; filter:blur(2px); }
-    .photo-watermark{ position:absolute; right:10px; bottom:10px; font-weight:900; font-size:18px; color:rgba(255,255,255,.06); z-index:4; letter-spacing:.08em; text-transform:uppercase; }
+    .club, .nation{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
 
-    /* name + stats */
-    .card-name{ position:relative; z-index:3; text-align:center; font-size:1.5rem; font-weight:800; text-transform:uppercase; margin:6px 6px 0; color:var(--text); letter-spacing:.06em; text-shadow:0 2px 6px rgba(0,0,0,.6); }
-    .stats{ position:relative; z-index:3; display:grid; grid-template-columns:repeat(3, 1fr); gap:12px 10px; margin:8px 6px 0; padding-top:12px; border-top:1px solid rgba(255,255,255,.03); }
-    .stat{ text-align:center; font-weight:800; color:rgba(255,255,255,.95); }
-    .stat span{ display:block; font-size:.72rem; opacity:.95; margin-bottom:6px; letter-spacing:.05em; }
-    .stat strong{ display:block; font-size:1.4rem; line-height:1; }
+    .club-badge, .nation-badge{
+      width:34px;
+      height:34px;
+      border-radius:6px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:.8rem;
+      color:rgba(255,255,255,.95);
+      border:1px solid rgba(255,255,255,.03);
+    }
 
-    /* rarity tinting (subtle overall card tint already handled) */
-    .card.bronze{ background:linear-gradient(180deg,#3d2a20,#241811); }
-    .card.silver{ background:linear-gradient(180deg,#dfe6ea,#aeb8bf); color:#111; }
-    .card.gold{ background:linear-gradient(180deg,#fff7e6,#f7d89b); color:#2a1904; }
-    .card.totw{ background:linear-gradient(180deg,#101827,#2b2f34); }
-    .card.tots{ background:linear-gradient(180deg,#081032,#0d2b6a); }
-    .card.futties{ background:linear-gradient(180deg,#521033,#2a0a2e); }
-    .card.gg{ background:linear-gradient(180deg,#1b1b3a,#4b3b18); }
+    .club-name{
+      font-size:.86rem;
+      font-weight:700;
+      letter-spacing:.03em;
+      color:rgba(255,255,255,.95);
+    }
 
-    /* history + controls trimmed (kept similar) */
-    .history{ margin-top:26px; background:rgba(0,0,0,.12); border-radius:16px; padding:16px; }
-    .history h2{ margin:0 0 12px; font-size:1.1rem; color:#fff; }
-    .history-grid{ display:flex; flex-wrap:wrap; gap:10px; }
-    .mini-card{ width:98px; border-radius:10px; background:#d2d6db; color:#111; padding:8px 6px; font-size:.72rem; font-weight:900; box-shadow: 0 8px 14px rgba(0,0,0,.18); }
+    .card-portrait{
+      position:relative;
+      margin:6px 6px 6px;
+      height:240px;
+      border-radius:12px;
+      overflow:hidden;
+      background:linear-gradient(180deg, #0f1720 0%, #1b2228 100%);
+      border:1px solid rgba(255,255,255,.04);
+      box-shadow: inset 0 12px 40px rgba(0,0,0,.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:3;
+    }
 
-    .controls{ display:flex; flex-direction:column; gap:12px; padding-top:18px; }
-    .btn{ border:none; border-radius:8px; padding:18px 20px; font-size:1.3rem; font-weight:900; cursor:pointer; box-shadow: var(--shadow); transition:transform .18s ease, filter .18s ease, opacity .18s ease; text-transform:uppercase; }
-    .btn:hover{ transform:translateY(-1px) } .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none }
-    .btn-spin{ background:linear-gradient(180deg, #44b85b, var(--green-dark)); color:white; height:116px; font-size:1.8rem; border-bottom:8px solid rgba(0,0,0,.12); }
-    .btn-stop{ background:linear-gradient(180deg, #f3f3f3, #d9d9d9); color:#111; }
-    .btn-reset{ background:linear-gradient(180deg, #ff6f6f, #d94a4a); color:white; }
-    .status{ margin-top:14px; font-size:1rem; color:var(--muted); min-height:24px; }
+    .photo{
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:72px;
+      font-weight:900;
+      color:rgba(255,255,255,.08);
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.01) 30%, rgba(0,0,0,.02) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px);
+      position:relative;
+    }
 
-    @media (max-width: 900px){ .main-area{ grid-template-columns:1fr } .controls{ max-width:420px; margin:0 auto } .card-zone{ min-height:unset } }
-    @media (max-width: 720px){ .slot-row{ grid-template-columns:1fr } .slot{ height:88px } .slot-value{ font-size:1.6rem } .card{ width:min(300px,95vw); height:440px } .title{ font-size:1.7rem } .btn-spin{ height:92px } }
+    .photo::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, rgba(255,255,255,.02) 0, rgba(255,255,255,0) 15%, rgba(255,255,255,.02) 35%, rgba(255,255,255,0) 60%);
+      mix-blend-mode:overlay;
+      opacity:.8;
+      pointer-events:none;
+      filter:blur(2px);
+    }
+
+    .photo-watermark{
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      font-weight:900;
+      font-size:18px;
+      color:rgba(255,255,255,.06);
+      z-index:4;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .card-name{
+      position:relative;
+      z-index:3;
+      text-align:center;
+      font-size:1.5rem;
+      font-weight:800;
+      text-transform:uppercase;
+      margin:6px 6px 0;
+      color:var(--text);
+      letter-spacing:.06em;
+      text-shadow:0 2px 6px rgba(0,0,0,.6);
+      min-height:28px;
+    }
+
+    .hidden-name{
+      color:transparent !important;
+      text-shadow:none !important;
+      user-select:none;
+    }
+
+    .controls{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding-top:18px;
+    }
+
+    .btn{
+      border:none;
+      border-radius:8px;
+      padding:18px 20px;
+      font-size:1.3rem;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+      transition:transform .18s ease, filter .18s ease, opacity .18s ease;
+      text-transform:uppercase;
+    }
+
+    .btn:hover{ transform:translateY(-1px); }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+
+    .btn-spin{
+      background:linear-gradient(180deg, #44b85b, var(--green-dark));
+      color:white;
+      height:116px;
+      font-size:1.8rem;
+      border-bottom:8px solid rgba(0,0,0,.12);
+    }
+
+    .btn-stop{
+      background:linear-gradient(180deg, #f3f3f3, #d9d9d9);
+      color:#111;
+    }
+
+    .btn-reset{
+      background:linear-gradient(180deg, #36b24a, #21853a);
+      color:white;
+      border-radius:50%;
+      width:76px;
+      height:76px;
+      align-self:flex-start;
+      padding:0;
+      font-size:1.7rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:5px solid rgba(255,255,255,.15);
+    }
+
+    .status{
+      margin-top:14px;
+      font-size:1rem;
+      color:var(--muted);
+      min-height:24px;
+    }
+
+    .history{
+      margin-top:26px;
+      background:rgba(0,0,0,.12);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .history h2{
+      margin:0 0 12px;
+      font-size:1.1rem;
+      color:#fff;
+    }
+
+    .history-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .mini-card{
+      width:98px;
+      border-radius:10px;
+      background:#d2d6db;
+      color:#111;
+      padding:8px 6px;
+      font-size:.72rem;
+      font-weight:900;
+      box-shadow: 0 8px 14px rgba(0,0,0,.18);
+    }
+
+    .mini-card .mini-rating{
+      font-size:1.5rem;
+      line-height:1;
+      margin:2px 0 4px;
+    }
+
+    .mini-card .mini-name{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-transform:uppercase;
+    }
+
+    .mini-card .mini-pos{
+      opacity:.75;
+      text-transform:uppercase;
+    }
+
+    .bronze{ background:linear-gradient(135deg,#a65f30,#5d2c10); color:#fff; border-color:#4b2108; }
+    .silver{ background:linear-gradient(135deg,#e8eef5,#b7c0cb); color:#1c2530; border-color:#94a1af; }
+    .gold{ background:linear-gradient(135deg,#fdf2b7,#c99214); color:#3a2502; border-color:#f1c94f; }
+    .totw{ background:linear-gradient(135deg,#20283b,#f2c94c,#fff1b8); color:#111; border-color:#f2d66d; }
+    .tots{ background:linear-gradient(135deg,#09143b,#2055de,#07b7a4); color:#fff; border-color:#d7c25d; }
+    .futties{ background:linear-gradient(135deg,#f03b91,#c71f67,#20c7e8); color:#fff; border-color:#ff72bd; }
+    .gg{ background:linear-gradient(135deg,#101723,#e0c04f,#fff7cf); color:#111; border-color:#f0d87a; }
+
+    .card.bronze{ background:linear-gradient(135deg,#3d2a20,#241811); }
+    .card.silver{ background:linear-gradient(135deg,#dfe6ea,#aeb8bf); color:#111; }
+    .card.gold{ background:linear-gradient(135deg,#fff7e6,#f7d89b); color:#2a1904; }
+    .card.totw{ background:linear-gradient(135deg,#101827,#2b2f34); }
+    .card.tots{ background:linear-gradient(135deg,#081032,#0d2b6a); }
+    .card.futties{ background:linear-gradient(135deg,#521033,#2a0a2e); }
+    .card.gg{ background:linear-gradient(135deg,#1b1b3a,#4b3b18); }
+
+    @media (max-width: 900px){
+      .main-area{ grid-template-columns:1fr; }
+      .controls{ max-width:420px; margin:0 auto; }
+      .card-zone{ min-height:unset; }
+      .btn-reset{ align-self:center; }
+    }
+
+    @media (max-width: 720px){
+      .slot-row{ grid-template-columns:1fr; }
+      .slot{ height:88px; }
+      .slot-value{ font-size:1.6rem; }
+      .card{ width:min(300px,95vw); height:440px; }
+      .title{ font-size:1.7rem; }
+      .btn-spin{ height:92px; }
+    }
   </style>
 </head>
 <body>
@@ -196,23 +506,14 @@
               </div>
             </div>
 
-            <div class="card-name" id="card-name">READY</div>
-
-            <div class="stats">
-              <div class="stat"><span>PAC</span><strong id="stat-pac">--</strong></div>
-              <div class="stat"><span>SHO</span><strong id="stat-sho">--</strong></div>
-              <div class="stat"><span>PAS</span><strong id="stat-pas">--</strong></div>
-              <div class="stat"><span>DRI</span><strong id="stat-dri">--</strong></div>
-              <div class="stat"><span>DEF</span><strong id="stat-def">--</strong></div>
-              <div class="stat"><span>PHY</span><strong id="stat-phy">--</strong></div>
-            </div>
+            <div class="card-name hidden-name" id="card-name">READY</div>
           </div>
         </div>
 
         <div class="controls">
           <button id="spin-btn" class="btn btn-spin">SPIN!</button>
           <button id="stop-btn" class="btn btn-stop" disabled>STOP</button>
-          <button id="reset-btn" class="btn btn-reset">RESET</button>
+          <button id="reset-btn" class="btn btn-reset" title="Restart">↻</button>
           <div class="status" id="status">Press Spin to start.</div>
         </div>
       </div>
@@ -269,12 +570,6 @@
     const cardPos = document.getElementById("card-pos");
     const cardName = document.getElementById("card-name");
     const portraitMark = document.getElementById("portrait-mark");
-    const statPac = document.getElementById("stat-pac");
-    const statSho = document.getElementById("stat-sho");
-    const statPas = document.getElementById("stat-pas");
-    const statDri = document.getElementById("stat-dri");
-    const statDef = document.getElementById("stat-def");
-    const statPhy = document.getElementById("stat-phy");
     const historyGrid = document.getElementById("history-grid");
     const clubName = document.getElementById("club-name");
     const photoWatermark = document.getElementById("photo-watermark");
@@ -309,9 +604,7 @@
     }
 
     function statsFor(rating, rarity) {
-      if (rarity === "GG") {
-        return [20, 10, 30, 15, 98, 82];
-      }
+      if (rarity === "GG") return [20, 10, 30, 15, 98, 82];
 
       const boost = {
         Bronze:  [-10,-12,-10,-11,-14,-10],
@@ -325,45 +618,37 @@
       return boost.map(b => Math.max(25, Math.min(99, rating + b)));
     }
 
-    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)] }
 
-    function updateCard(player, rarityOverride = null) {
+    function updateCard(player, rarityOverride = null, revealName = true) {
       const rarity = rarityOverride || getRarity(player);
       currentPick = player;
       currentRarity = rarity;
       currentPosition = player.position;
 
-      // apply class for subtle tinting
       card.className = `card ${rarityClasses[rarity] || "gold"}`;
-
-      // rating badge
       cardRating.textContent = player.rating;
-
-      // position pill
       cardPos.textContent = player.position;
 
-      // name
-      cardName.textContent = player.name.toUpperCase();
+      if (revealName) {
+        cardName.textContent = player.name.toUpperCase();
+        cardName.classList.remove("hidden-name");
+      } else {
+        cardName.textContent = "READY";
+        cardName.classList.add("hidden-name");
+      }
 
-      // watermark (subtle FUT/GG)
+      portraitMark.textContent = rarity === "GG" ? "GG" : "FUT";
       photoWatermark.textContent = rarity === "GG" ? "GG" : "FUT";
 
       const [pac, sho, pas, dri, def, phy] = statsFor(player.rating, rarity);
-      statPac.textContent = pac;
-      statSho.textContent = sho;
-      statPas.textContent = pas;
-      statDri.textContent = dri;
-      statDef.textContent = def;
-      statPhy.textContent = phy;
-
+      // stats removed visually; these assignments are harmless if you later re-add stats
       slotPositionValue.textContent = player.position;
       slotRarityValue.textContent = rarity;
       slotOverallValue.textContent = player.rating >= 90 ? `${player.rating}+` : `${player.rating}`;
 
-      // small club demo text
       clubName.textContent = player.name.length > 6 ? player.name.slice(0,6).toUpperCase() : player.name.toUpperCase();
 
-      // tint portrait background a bit depending on rarity
       const photo = document.querySelector('.photo');
       if(photo) {
         if(rarity === 'Gold' || rarity === 'FUTTIES' || rarity === 'TOTS') {
@@ -390,49 +675,99 @@
     }
 
     function resetGame() {
-      currentStage = 0; spinning = false; currentPick = null; clearInterval(intervalId); intervalId = null;
-      currentPosition = "GK"; currentRarity = "Bronze";
-      slotPositionValue.textContent = "GK"; slotRarityValue.textContent = "Bronze"; slotOverallValue.textContent = "40+";
-      updateCard({ name:"READY", rating:40, position:"GK" }, "Bronze");
-      statusEl.textContent = "Press Spin to start."; spinBtn.disabled = false; stopBtn.disabled = true; spinBtn.textContent = "SPIN!";
+      currentStage = 0;
+      spinning = false;
+      currentPick = null;
+      clearInterval(intervalId);
+      intervalId = null;
+
+      currentPosition = "GK";
+      currentRarity = "Bronze";
+
+      slotPositionValue.textContent = "GK";
+      slotRarityValue.textContent = "Bronze";
+      slotOverallValue.textContent = "40+";
+
+      updateCard({ name:"READY", rating:40, position:"GK" }, "Bronze", false);
+
+      statusEl.textContent = "Press Spin to start.";
+      spinBtn.disabled = false;
+      stopBtn.disabled = true;
+      spinBtn.textContent = "SPIN!";
     }
 
     function startSpin() {
       if (spinning) return;
-      spinning = true; spinBtn.disabled = true; stopBtn.disabled = false;
-      statusEl.textContent = currentStage === 0 ? "Spin position..." : currentStage === 1 ? "Spin rarity..." : "Spin player...";
+
+      spinning = true;
+      spinBtn.disabled = true;
+      stopBtn.disabled = false;
+      statusEl.textContent = currentStage === 0
+        ? "Spin position..."
+        : currentStage === 1
+          ? "Spin rarity..."
+          : "Spin player...";
+
       clearInterval(intervalId);
       intervalId = setInterval(() => {
-        if (currentStage === 0) slotPositionValue.textContent = randomItem(positions);
-        else if (currentStage === 1) slotRarityValue.textContent = randomItem(rarities);
-        else { const p = randomItem(roster); slotOverallValue.textContent = p.rating >= 90 ? `${p.rating}+` : `${p.rating}`; }
+        if (currentStage === 0) {
+          slotPositionValue.textContent = randomItem(positions);
+        } else if (currentStage === 1) {
+          slotRarityValue.textContent = randomItem(rarities);
+        } else {
+          const p = randomItem(roster);
+          slotOverallValue.textContent = p.rating >= 90 ? `${p.rating}+` : `${p.rating}`;
+        }
       }, 70);
     }
 
     function stopSpin() {
       if (!spinning) return;
-      clearInterval(intervalId); intervalId = null; spinning = false; stopBtn.disabled = true; spinBtn.disabled = false;
+
+      clearInterval(intervalId);
+      intervalId = null;
+      spinning = false;
+      stopBtn.disabled = true;
+      spinBtn.disabled = false;
 
       if (currentStage === 0) {
-        const pos = randomItem(positions); currentPosition = pos; slotPositionValue.textContent = pos;
-        statusEl.textContent = `Position locked: ${pos}. Press Spin again.`; currentStage = 1; return;
+        const pos = randomItem(positions);
+        currentPosition = pos;
+        slotPositionValue.textContent = pos;
+        statusEl.textContent = `Position locked: ${pos}. Press Spin again.`;
+        currentStage = 1;
+        return;
       }
 
       if (currentStage === 1) {
-        let pool = roster.filter(p => p.position === currentPosition); if (!pool.length) pool = roster;
-        const player = randomItem(pool); const rarity = getRarity(player); currentRarity = rarity;
-        slotRarityValue.textContent = rarity; updateCard(player, rarity);
-        statusEl.textContent = `Rarity locked: ${rarity}. Press Spin again.`; currentStage = 2; return;
+        let pool = roster.filter(p => p.position === currentPosition);
+        if (!pool.length) pool = roster;
+        const player = randomItem(pool);
+        const rarity = getRarity(player);
+        currentRarity = rarity;
+        slotRarityValue.textContent = rarity;
+        updateCard(player, rarity, false);
+        statusEl.textContent = `Rarity locked: ${rarity}. Press Spin again.`;
+        currentStage = 2;
+        return;
       }
 
       if (currentStage === 2) {
         let pool = roster.filter(p => p.position === currentPosition);
-        if (currentRarity === "GG") pool = roster.filter(p => p.name === "Jack" && p.position === "GK" && p.rating >= 98);
-        else pool = pool.filter(p => getRarity(p) === currentRarity);
+        if (currentRarity === "GG") {
+          pool = roster.filter(p => p.name === "Jack" && p.position === "GK" && p.rating >= 98);
+        } else {
+          pool = pool.filter(p => getRarity(p) === currentRarity);
+        }
         if (!pool.length) pool = roster;
-        const player = randomItem(pool); const rarity = getRarity(player);
-        updateCard(player, rarity); addToHistory(player, rarity);
-        statusEl.textContent = `Packed ${player.name} (${player.rating} - ${player.position})`; currentStage = 0; return;
+
+        const player = randomItem(pool);
+        const rarity = getRarity(player);
+        updateCard(player, rarity, true);
+        addToHistory(player, rarity);
+        statusEl.textContent = `Packed ${player.name} (${player.rating} - ${player.position})`;
+        currentStage = 0;
+        return;
       }
     }
 
