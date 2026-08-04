@@ -3,641 +3,713 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pack Draft Reveal</title>
+  <title>FUT Spins Style Draft</title>
   <style>
     :root{
-      --bg:#0b1020;
-      --panel:rgba(17,24,39,.88);
-      --text:#f8fafc;
-      --muted:rgba(255,255,255,.72);
-      --gold:#f7d77a;
-      --shadow:0 18px 40px rgba(0,0,0,.35);
+      --bg:#2a2a2f;
+      --panel:#3a4049;
+      --panel2:#4a525d;
+      --text:#ffffff;
+      --muted:#d6d6d6;
+      --green:#35a64a;
+      --green-dark:#2a8540;
+      --shadow:0 12px 24px rgba(0,0,0,.28);
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
-      font-family:Segoe UI,Arial,sans-serif;
+      font-family:Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.14)),
+        radial-gradient(circle at 25% 20%, rgba(255,255,255,.06), transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.04), transparent 24%),
+        var(--bg);
       color:var(--text);
       min-height:100vh;
-      background:
-        radial-gradient(circle at top, rgba(82,118,255,.18), transparent 28%),
-        radial-gradient(circle at 20% 20%, rgba(250,204,21,.08), transparent 18%),
-        linear-gradient(180deg,#111827,#0b1020);
     }
-    .app{width:min(1140px, calc(100% - 20px)); margin:0 auto; padding:22px 0 40px}
-    .topbar{text-align:center; margin-bottom:18px}
-    .tag{
-      display:inline-block; padding:6px 12px; border-radius:999px;
-      background:rgba(246,211,122,.08); border:1px solid rgba(246,211,122,.25);
-      color:var(--gold); text-transform:uppercase; letter-spacing:.08em; font-size:.8rem;
-    }
-    h1{margin:12px 0 8px; font-size:clamp(2rem,4vw,3.25rem)}
-    .topbar p{margin:0; color:var(--muted)}
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:14px;
-      background:var(--panel);
-      border:1px solid rgba(255,255,255,.08);
+    .app{
+      width:min(1280px, calc(100% - 24px));
+      margin:0 auto;
+      padding:14px 0 32px;
+    }
+
+    .title{
+      font-size:2.1rem;
+      margin:0 0 14px;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+
+    .machine{
+      position:relative;
       border-radius:18px;
-      padding:16px;
-      box-shadow:var(--shadow);
-      margin-bottom:18px;
-      backdrop-filter: blur(10px);
-      align-items:center;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08));
     }
 
-    .slot-3{
+    .slot-row{
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:8px;
-      width:100%;
+      grid-template-columns:repeat(3, 1fr);
+      gap:6px;
+      margin-bottom:30px;
+      background:#2f3138;
+      border-radius:18px;
+      padding:6px;
+      box-shadow: inset 0 8px 18px rgba(255,255,255,.05), inset 0 -10px 18px rgba(0,0,0,.25);
     }
 
-    .slot-box{
-      background:linear-gradient(180deg, #f7f7f7, #e6e6e6);
+    .slot{
+      position:relative;
+      height:126px;
+      border-radius:14px;
+      background:linear-gradient(180deg, #f7f7f7, #e5e5e5);
       color:#111;
-      border-radius:18px;
-      border:1px solid rgba(0,0,0,.12);
-      height:110px;
+      overflow:hidden;
       display:flex;
-      flex-direction:column;
       align-items:center;
       justify-content:center;
-      box-shadow: inset 0 10px 18px rgba(255,255,255,.75), inset 0 -10px 18px rgba(0,0,0,.12);
-      position:relative;
-      overflow:hidden;
+      box-shadow: inset 0 10px 20px rgba(255,255,255,.7), inset 0 -10px 20px rgba(0,0,0,.12);
     }
-    .slot-box .slot-label{
+
+    .slot::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.9), transparent 22%, transparent 78%, rgba(0,0,0,.08));
+      pointer-events:none;
+    }
+
+    .slot-label{
       position:absolute;
       top:8px;
       left:0;
       right:0;
       text-align:center;
-      font-size:.75rem;
-      font-weight:900;
-      letter-spacing:.08em;
+      font-size:.76rem;
+      font-weight:700;
       text-transform:uppercase;
-      opacity:.7;
-    }
-    .slot-box .slot-value{
-      font-size:2rem;
-      font-weight:900;
-      line-height:1;
-      margin-top:10px;
-    }
-    .slot-box.spin-flash{
-      animation: flash .12s linear infinite alternate;
-    }
-    @keyframes flash{
-      from{filter:brightness(1)}
-      to{filter:brightness(1.18)}
+      color:rgba(0,0,0,.45);
+      letter-spacing:.06em;
     }
 
-    .button-row{
+    .slot-value{
+      font-size:2.2rem;
+      font-weight:900;
+      line-height:1;
+      z-index:1;
+      text-align:center;
+      padding:0 10px;
+    }
+
+    .main-area{
+      display:grid;
+      grid-template-columns: 1fr 280px;
+      gap:30px;
+      align-items:start;
+      padding:8px 4px 0;
+    }
+
+    .card-zone{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:520px;
+    }
+
+    .card{
+      width:300px;
+      height:460px;
+      position:relative;
+      clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 90%, 50% 100%, 0 90%, 0 8%);
+      border:6px solid rgba(116, 126, 136, .95);
+      background:linear-gradient(180deg, #4a5561 0%, #3e4752 100%);
+      box-shadow: 0 18px 30px rgba(0,0,0,.35);
+      overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+      transform:translateZ(0);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background:
+        radial-gradient(circle at 25% 22%, rgba(255,255,255,.18), transparent 16%),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.08), transparent 14%),
+        radial-gradient(circle at 60% 70%, rgba(255,255,255,.05), transparent 26%);
+      pointer-events:none;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 35%, transparent 65%, rgba(255,255,255,.06));
+      pointer-events:none;
+    }
+
+    .card-top{
+      position:relative;
+      z-index:1;
+      display:flex;
+      justify-content:space-between;
+      padding:16px 14px 0;
+      font-weight:900;
+      text-shadow:0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .card-rating{
+      font-size:4.6rem;
+      line-height:.9;
+      letter-spacing:-.03em;
+    }
+
+    .card-pos{
+      font-size:1.95rem;
+      align-self:flex-start;
+      margin-top:6px;
+    }
+
+    .card-portrait{
+      position:relative;
+      margin:10px 16px 12px;
+      height:220px;
+      border-radius:16px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255,255,255,.24), transparent 20%),
+        linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.5)),
+        linear-gradient(135deg, #65707b, #2d3440);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 0 30px rgba(0,0,0,.25);
+    }
+
+    .portrait-mark{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:4rem;
+      font-weight:900;
+      opacity:.18;
+      letter-spacing:.08em;
+    }
+
+    .card-name{
+      position:relative;
+      z-index:1;
+      text-align:center;
+      font-size:2rem;
+      font-weight:900;
+      text-transform:uppercase;
+      margin:6px 12px 0;
+      letter-spacing:.04em;
+    }
+
+    .stats{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px 10px;
+      margin:18px 14px 0;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+
+    .stat{
+      text-align:center;
+      font-weight:900;
+    }
+
+    .stat span{
+      display:block;
+      font-size:.76rem;
+      opacity:.85;
+      margin-bottom:6px;
+      letter-spacing:.05em;
+    }
+
+    .stat strong{
+      display:block;
+      font-size:1.65rem;
+      line-height:1;
+    }
+
+    .controls{
       display:flex;
       flex-direction:column;
-      gap:10px;
-      min-width:170px;
+      gap:12px;
+      padding-top:18px;
     }
 
     .btn{
       border:none;
-      border-radius:12px;
-      padding:16px 18px;
+      border-radius:8px;
+      padding:18px 20px;
+      font-size:1.3rem;
       font-weight:900;
       cursor:pointer;
-      transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease;
-      width:100%;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn:disabled{cursor:not-allowed; opacity:.55; transform:none}
-    .btn.primary{background:linear-gradient(135deg,#2ecc71,#1f9d55); color:white}
-    .btn.secondary{background:rgba(255,255,255,.08); color:white}
-    .btn.danger{background:#ef4444; color:white}
-
-    .arena{
-      display:grid;
-      gap:14px;
-      justify-items:center;
-      margin-bottom:18px;
-    }
-
-    .result{
-      width:100%;
-      text-align:center;
-      padding:14px 16px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.05);
-      color:var(--gold);
-      font-weight:800;
-      min-height:52px;
-    }
-
-    .card-zone{
-      display:grid;
-      place-items:center;
-      margin-bottom:18px;
-    }
-
-    .player-card{
-      position:relative;
-      width:min(360px,94vw);
-      aspect-ratio:.72 / 1;
-      border-radius:30px;
-      overflow:hidden;
-      border:3px solid rgba(255,255,255,.15);
-      padding:18px;
-      transform-style:preserve-3d;
-      transition:transform .25s ease, box-shadow .25s ease;
-      animation:floatCard 4s ease-in-out infinite;
-      clip-path: polygon(10% 0%, 90% 0%, 100% 7%, 100% 93%, 90% 100%, 10% 100%, 0% 93%, 0% 7%);
-    }
-
-    .player-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 20% 15%, rgba(255,255,255,.2), transparent 18%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,.12), transparent 18%),
-        linear-gradient(135deg, rgba(255,255,255,.06), transparent 40%);
-      pointer-events:none;
-    }
-
-    .card-top{display:flex; align-items:baseline; justify-content:space-between; z-index:1}
-    .card-rating{
-      font-size:clamp(4rem,11vw,5.5rem);
-      font-weight:900;
-      line-height:.9;
-      color:var(--gold);
-      text-shadow:0 2px 14px rgba(0,0,0,.35);
-    }
-    .card-pos{
-      font-size:1.8rem;
-      font-weight:900;
-      letter-spacing:.06em;
-      color:rgba(255,255,255,.95);
-    }
-
-    .card-art{
-      position:relative;
-      height:52%;
-      margin:12px 0 10px;
-      border-radius:22px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.1);
-      background:radial-gradient(circle at 50% 20%, rgba(255,255,255,.16), transparent 28%), linear-gradient(135deg, #0f1633, #101b4d 45%, #06101f 100%);
-    }
-    .card-art::before,.card-art::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(135deg, transparent 35%, rgba(246,211,122,.25) 35%, rgba(246,211,122,.25) 38%, transparent 38%),
-        linear-gradient(155deg, transparent 50%, rgba(246,211,122,.18) 50%, rgba(246,211,122,.18) 53%, transparent 53%);
-      opacity:.8;
-    }
-    .card-glow{
-      position:absolute;
-      inset:-10%;
-      background:
-        radial-gradient(circle at 35% 45%, rgba(64,114,255,.7), transparent 28%),
-        radial-gradient(circle at 70% 55%, rgba(255,214,102,.55), transparent 26%);
-      filter:blur(12px);
-      animation:glowMove 5s ease-in-out infinite;
-    }
-    .card-badge{
-      position:absolute;
-      top:12px;
-      right:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(246,211,122,.16);
-      border:1px solid rgba(246,211,122,.35);
-      color:var(--gold);
-      font-size:.75rem;
-      font-weight:800;
-      letter-spacing:.14em;
-    }
-    .card-name{
-      z-index:1;
-      text-align:center;
-      font-size:1.7rem;
-      font-weight:900;
+      box-shadow: var(--shadow);
+      transition:transform .18s ease, filter .18s ease, opacity .18s ease;
       text-transform:uppercase;
-      letter-spacing:.06em;
-      margin-top:4px;
     }
-    .stats{
-      z-index:1;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px 12px;
-      margin-top:auto;
-      padding-top:12px;
-    }
-    .stats div{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      align-items:center;
-    }
-    .stats span{
-      font-size:.8rem;
-      color:rgba(255,255,255,.72);
-      font-weight:700;
-    }
-    .stats strong{
-      font-size:1.8rem;
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn:disabled{opacity:.6; cursor:not-allowed; transform:none}
+
+    .btn-spin{
+      background:linear-gradient(180deg, #44b85b, var(--green-dark));
       color:white;
-      line-height:1;
+      height:116px;
+      font-size:1.8rem;
+      border-bottom:8px solid rgba(0,0,0,.12);
+    }
+
+    .btn-stop{
+      background:linear-gradient(180deg, #f3f3f3, #d9d9d9);
+      color:#111;
+    }
+
+    .btn-reset{
+      background:linear-gradient(180deg, #ff6f6f, #d94a4a);
+      color:white;
+    }
+
+    .status{
+      margin-top:14px;
+      font-size:1rem;
+      color:var(--muted);
+      min-height:24px;
     }
 
     .history{
-      margin-top:20px;
+      margin-top:26px;
+      background:rgba(0,0,0,.12);
+      border-radius:16px;
       padding:16px;
-      border-radius:18px;
-      background:var(--panel);
-      border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(10px);
     }
-    .history h2{margin:0 0 14px; color:var(--gold)}
+
+    .history h2{
+      margin:0 0 12px;
+      font-size:1.1rem;
+      color:#fff;
+    }
+
     .history-grid{
       display:flex;
       flex-wrap:wrap;
-      gap:12px;
-      justify-content:center;
+      gap:10px;
     }
-    .history-mini-card{
-      width:112px;
-      padding:10px 8px;
-      border-radius:14px;
-      border:2px solid rgba(255,255,255,.16);
-      color:white;
-      font-weight:800;
-      box-shadow:0 8px 18px rgba(0,0,0,.3);
-      animation:popIn .25s ease-out;
-    }
-    .history-mini-card .mini-card-rating{
-      font-size:1.8rem;
-      line-height:1;
-      margin:4px 0;
-    }
-    .history-mini-card .mini-card-name{
+
+    .mini-card{
+      width:98px;
+      border-radius:10px;
+      background:#d2d6db;
+      color:#111;
+      padding:8px 6px;
       font-size:.72rem;
-      text-transform:uppercase;
+      font-weight:900;
+      box-shadow: 0 8px 14px rgba(0,0,0,.18);
+    }
+
+    .mini-card .mini-rating{
+      font-size:1.5rem;
+      line-height:1;
+      margin:2px 0 4px;
+    }
+
+    .mini-card .mini-name{
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-    }
-    .history-mini-card .mini-card-pos{
-      font-size:.68rem;
-      opacity:.85;
+      text-transform:uppercase;
     }
 
-    .skin-bronze{background:linear-gradient(135deg,#8b4b21,#4b240c) !important; box-shadow:0 0 28px rgba(139,75,33,.45)}
-    .skin-silver{background:linear-gradient(135deg,#dbe4ef,#aeb9c8) !important; color:#18212f !important}
-    .skin-gold{background:linear-gradient(135deg,#ffec8a,#c58a18) !important; box-shadow:0 0 30px rgba(246,211,122,.35)}
-    .skin-totw{background:linear-gradient(135deg,#111827,#fbbf24,#fde68a) !important; box-shadow:0 0 28px rgba(251,191,36,.45)}
-    .skin-special{background:linear-gradient(135deg,#4c1d95,#7c3aed,#22d3ee) !important; box-shadow:0 0 30px rgba(124,58,237,.45)}
-    .skin-tots{background:linear-gradient(135deg,#10163c,#1e4fd8,#0d8e83) !important; box-shadow:0 0 32px rgba(53,99,255,.55); animation:cardPulse 1.7s ease-in-out infinite, floatCard 4s ease-in-out infinite}
-    .skin-futties{background:linear-gradient(135deg,#f43f8c,#c51f6b,#16b7d4) !important; box-shadow:0 0 38px rgba(244,63,140,.65); animation:cardPulse 1.2s ease-in-out infinite, floatCard 4s ease-in-out infinite}
-    @keyframes floatCard{0%,100%{translate:0 0}50%{translate:0 -6px}}
-    @keyframes cardPulse{0%,100%{filter:brightness(1); transform:scale(1)}50%{filter:brightness(1.08); transform:scale(1.01)}}
-    @keyframes glowMove{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(6px,-8px,0) scale(1.05)}}
-    @keyframes popIn{from{transform:scale(.85); opacity:0}to{transform:scale(1); opacity:1}}
+    .mini-card .mini-pos{
+      opacity:.75;
+      text-transform:uppercase;
+    }
 
-    @media (max-width:760px){
-      .controls{grid-template-columns:1fr; justify-items:stretch}
-      .slot-3{grid-template-columns:1fr}
-      .button-row{flex-direction:column; min-width:unset}
-      .btn{width:100%}
-      .stats strong{font-size:1.55rem}
+    .bronze{background:linear-gradient(135deg,#a65f30,#5d2c10); color:#fff; border-color:#4b2108}
+    .silver{background:linear-gradient(135deg,#e8eef5,#b7c0cb); color:#1c2530; border-color:#94a1af}
+    .gold{background:linear-gradient(135deg,#fdf2b7,#c99214); color:#3a2502; border-color:#f1c94f}
+    .totw{background:linear-gradient(135deg,#20283b,#f2c94c,#fff1b8); color:#111; border-color:#f2d66d}
+    .tots{background:linear-gradient(135deg,#09143b,#2055de,#07b7a4); color:#fff; border-color:#d7c25d}
+    .futties{background:linear-gradient(135deg,#f03b91,#c71f67,#20c7e8); color:#fff; border-color:#ff72bd}
+    .gg{background:linear-gradient(135deg,#101723,#e0c04f,#fff7cf); color:#111; border-color:#f0d87a}
+
+    .card.bronze{background:linear-gradient(135deg,#a65f30,#5d2c10); border-color:#4b2108}
+    .card.silver{background:linear-gradient(135deg,#e8eef5,#b7c0cb); color:#1c2530; border-color:#94a1af}
+    .card.gold{background:linear-gradient(135deg,#fdf2b7,#c99214); color:#3a2502; border-color:#f1c94f}
+    .card.totw{background:linear-gradient(135deg,#20283b,#f2c94c,#fff1b8); color:#111; border-color:#f2d66d}
+    .card.tots{background:linear-gradient(135deg,#09143b,#2055de,#07b7a4); color:#fff; border-color:#d7c25d}
+    .card.futties{background:linear-gradient(135deg,#f03b91,#c71f67,#20c7e8); color:#fff; border-color:#ff72bd}
+    .card.gg{background:linear-gradient(135deg,#101723,#e0c04f,#fff7cf); color:#111; border-color:#f0d87a}
+
+    .card.bronze .card-rating,
+    .card.bronze .card-pos,
+    .card.bronze .card-name,
+    .card.silver .card-rating,
+    .card.silver .card-pos,
+    .card.silver .card-name,
+    .card.gold .card-rating,
+    .card.gold .card-pos,
+    .card.gold .card-name{
+      color:inherit;
+    }
+
+    .card.gg .portrait-mark{opacity:.12}
+
+    @media (max-width: 900px){
+      .main-area{
+        grid-template-columns:1fr;
+      }
+      .controls{
+        max-width:420px;
+        margin:0 auto;
+      }
+      .card-zone{
+        min-height:unset;
+      }
+    }
+
+    @media (max-width: 720px){
+      .slot-row{
+        grid-template-columns:1fr;
+      }
+      .slot{
+        height:88px;
+      }
+      .slot-value{
+        font-size:1.6rem;
+      }
+      .card{
+        width:min(300px, 95vw);
+        height:440px;
+      }
+      .title{
+        font-size:1.7rem;
+      }
+      .btn-spin{
+        height:92px;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div class="tag">Dynamic Pack Draft</div>
-      <h1>Pack Spinner</h1>
-      <p>Stop each panel, then reveal the card. Player rating stays true to the player.</p>
-    </header>
+  <div class="app">
+    <h1 class="title">FUT Spins 26</h1>
 
-    <section class="controls">
-      <div class="slot-3">
-        <div class="slot-box" id="slot-position">
+    <div class="machine">
+      <div class="slot-row">
+        <div class="slot" id="slot-position">
           <div class="slot-label">Position</div>
-          <div class="slot-value" id="slot-position-value">ST</div>
+          <div class="slot-value" id="slot-position-value">GK</div>
         </div>
-        <div class="slot-box" id="slot-rarity">
+        <div class="slot" id="slot-rarity">
           <div class="slot-label">Rarity</div>
           <div class="slot-value" id="slot-rarity-value">Bronze</div>
         </div>
-        <div class="slot-box" id="slot-rating">
+        <div class="slot" id="slot-overall">
           <div class="slot-label">Overall</div>
-          <div class="slot-value" id="slot-rating-value">40+</div>
+          <div class="slot-value" id="slot-overall-value">40+</div>
         </div>
       </div>
 
-      <div class="button-row">
-        <button id="btn-spin" class="btn primary">Spin</button>
-        <button id="btn-stop" class="btn secondary" disabled>Stop</button>
-        <button id="clear-history-btn" class="btn danger">Reset History</button>
+      <div class="main-area">
+        <div class="card-zone">
+          <div id="card" class="card bronze">
+            <div class="card-top">
+              <div class="card-rating" id="card-rating">40</div>
+              <div class="card-pos" id="card-pos">GK</div>
+            </div>
+
+            <div class="card-portrait">
+              <div class="portrait-mark" id="portrait-mark">FUT</div>
+            </div>
+
+            <div class="card-name" id="card-name">READY</div>
+
+            <div class="stats">
+              <div class="stat"><span>PAC</span><strong id="stat-pac">--</strong></div>
+              <div class="stat"><span>SHO</span><strong id="stat-sho">--</strong></div>
+              <div class="stat"><span>PAS</span><strong id="stat-pas">--</strong></div>
+              <div class="stat"><span>DRI</span><strong id="stat-dri">--</strong></div>
+              <div class="stat"><span>DEF</span><strong id="stat-def">--</strong></div>
+              <div class="stat"><span>PHY</span><strong id="stat-phy">--</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="spin-btn" class="btn btn-spin">SPIN!</button>
+          <button id="stop-btn" class="btn btn-stop" disabled>STOP</button>
+          <button id="reset-btn" class="btn btn-reset">RESET</button>
+          <div class="status" id="status">Press Spin to start.</div>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <section class="card-zone">
-      <article id="display-card" class="player-card skin-silver">
-        <div class="card-top">
-          <div class="card-rating" id="card-rating">--</div>
-          <div class="card-pos" id="card-pos">ST</div>
-        </div>
-
-        <div class="card-art">
-          <div class="card-glow"></div>
-          <div class="card-badge" id="card-badge">DRAFT</div>
-        </div>
-
-        <div class="card-name" id="card-name">READY</div>
-
-        <div class="stats">
-          <div><span>PAC</span><strong id="stat-pac">--</strong></div>
-          <div><span>SHO</span><strong id="stat-sho">--</strong></div>
-          <div><span>PAS</span><strong id="stat-pas">--</strong></div>
-          <div><span>DRI</span><strong id="stat-dri">--</strong></div>
-          <div><span>DEF</span><strong id="stat-def">--</strong></div>
-          <div><span>PHY</span><strong id="stat-phy">--</strong></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="history">
+    <div class="history">
       <h2>Packed Squad History</h2>
-      <div id="history-ledger" class="history-grid">
-        <p id="history-fallback-msg">No players drafted yet. Press spin to build your squad!</p>
-      </div>
-    </section>
-  </main>
+      <div id="history-grid" class="history-grid"></div>
+    </div>
+  </div>
 
   <script>
     const roster = [
-      "Ethan (84 - RB)","Reuben (84 - LB)","Seb (90 - CB)","Ari (97 - LW)","James (92 - ST)",
-      "Ben (92 - ST)","Noah (91 - CM)","Donny (92 - CM)","Charlie (94 - ST)","Flynn (90 - LM)",
-      "Mason (96 - CAM)","Louis (92 - RW)","Hugo (91 - ST)","Lachlan (91 - CB)","Harry L (92 - CB)",
-      "Martin (96 - CDM)","Luke (92 - GK)","Jack (95 - GK)","Archie (90 - LB)","CJ (100 - RB)",
-      "Harry R (97 - CAM)","George (90 - ST)","Aidan (95 - RM)","Fred (91 - CAM)","Felix (93 - CDM)"
+      { name:"Ethan", rating:84, position:"RB" },
+      { name:"Reuben", rating:84, position:"LB" },
+      { name:"Seb", rating:90, position:"CB" },
+      { name:"Ari", rating:97, position:"LW" },
+      { name:"James", rating:92, position:"ST" },
+      { name:"Ben", rating:92, position:"ST" },
+      { name:"Noah", rating:91, position:"CM" },
+      { name:"Donny", rating:92, position:"CM" },
+      { name:"Charlie", rating:94, position:"ST" },
+      { name:"Flynn", rating:90, position:"LM" },
+      { name:"Mason", rating:96, position:"CAM" },
+      { name:"Louis", rating:92, position:"RW" },
+      { name:"Hugo", rating:91, position:"ST" },
+      { name:"Lachlan", rating:91, position:"CB" },
+      { name:"Harry L", rating:92, position:"CB" },
+      { name:"Martin", rating:96, position:"CDM" },
+      { name:"Luke", rating:92, position:"GK" },
+      { name:"Jack", rating:95, position:"GK" },
+      { name:"Archie", rating:90, position:"LB" },
+      { name:"CJ", rating:100, position:"RB" },
+      { name:"Harry R", rating:97, position:"CAM" },
+      { name:"George", rating:90, position:"ST" },
+      { name:"Aidan", rating:95, position:"RM" },
+      { name:"Fred", rating:91, position:"CAM" },
+      { name:"Felix", rating:93, position:"CDM" },
+      { name:"Gus", rating:90, position:"LB" }
     ];
 
-    const slotPosition = document.getElementById("slot-position");
-    const slotRarity = document.getElementById("slot-rarity");
-    const slotRating = document.getElementById("slot-rating");
+    const spinBtn = document.getElementById("spin-btn");
+    const stopBtn = document.getElementById("stop-btn");
+    const resetBtn = document.getElementById("reset-btn");
+    const statusEl = document.getElementById("status");
+
     const slotPositionValue = document.getElementById("slot-position-value");
     const slotRarityValue = document.getElementById("slot-rarity-value");
-    const slotRatingValue = document.getElementById("slot-rating-value");
+    const slotOverallValue = document.getElementById("slot-overall-value");
 
-    const spinBtn = document.getElementById("btn-spin");
-    const stopBtn = document.getElementById("btn-stop");
-    const clearHistoryBtn = document.getElementById("clear-history-btn");
-
-    const displayCard = document.getElementById("display-card");
-    const cardName = document.getElementById("card-name");
+    const card = document.getElementById("card");
     const cardRating = document.getElementById("card-rating");
     const cardPos = document.getElementById("card-pos");
-    const cardBadge = document.getElementById("card-badge");
-    const historyLedger = document.getElementById("history-ledger");
-
+    const cardName = document.getElementById("card-name");
+    const portraitMark = document.getElementById("portrait-mark");
     const statPac = document.getElementById("stat-pac");
     const statSho = document.getElementById("stat-sho");
     const statPas = document.getElementById("stat-pas");
     const statDri = document.getElementById("stat-dri");
     const statDef = document.getElementById("stat-def");
     const statPhy = document.getElementById("stat-phy");
+    const historyGrid = document.getElementById("history-grid");
 
-    let items = [...roster];
-    let stage = 0;
+    const positions = ["GK","CB","LB","RB","CM","CDM","CAM","LM","RM","LW","RW","ST"];
+    const rarities = ["Bronze","Silver","Gold","TOTW","TOTS","FUTTIES","GG"];
+    const rarityClasses = {
+      Bronze: "bronze",
+      Silver: "silver",
+      Gold: "gold",
+      TOTW: "totw",
+      TOTS: "tots",
+      FUTTIES: "futties",
+      GG: "gg"
+    };
+
+    let currentStage = 0;
     let spinning = false;
-    let stopRequested = false;
-    let currentChoice = null;
-    let currentTheme = "GOLD";
     let intervalId = null;
-    let lastIndex = 0;
+    let currentPick = null;
+    let currentPosition = "GK";
+    let currentRarity = "Bronze";
+    let currentRating = 40;
 
-    const positions = ["GK", "CB", "LB", "RB", "CM", "CDM", "CAM", "LM", "RM", "LW", "RW", "ST"];
-    const rarities = ["Bronze", "Silver", "Gold", "TOTW", "Special", "TOTS", "FUTTIES"];
-
-    function parseEntry(entry) {
-      const m = entry.match(/^(.+?)\s*\((\d+)\s*-\s*([^)]+)\)$/);
-      return m ? { name:m[1].trim(), rating:parseInt(m[2],10), position:m[3].trim().toUpperCase() } : { name:entry, rating:75, position:"ST" };
-    }
-
-    function getRarity(rating) {
+    function getRarity(rating, name, position) {
+      if (name === "Jack" && position === "GK") return "GG";
       if (rating >= 99) return "FUTTIES";
       if (rating >= 96) return "TOTS";
-      if (rating >= 93) return "Special";
-      if (rating >= 90) return "TOTW";
+      if (rating >= 93) return "TOTW";
       if (rating >= 85) return "Gold";
       if (rating >= 80) return "Silver";
       return "Bronze";
     }
 
-    function raritySkin(rarity) {
-      return {
-        Bronze:"skin-bronze",
-        Silver:"skin-silver",
-        Gold:"skin-gold",
-        TOTW:"skin-totw",
-        Special:"skin-special",
-        TOTS:"skin-tots",
-        FUTTIES:"skin-futties"
-      }[rarity] || "skin-silver";
-    }
+    function statsFor(rating, rarity, position) {
+      if (rarity === "GG" || (nameIsJack(position, rating))) {
+        return [20, 10, 30, 15, 95, 80];
+      }
 
-    function statsFor(rating, rarity) {
+      const base = rating;
       const boost = {
-        Bronze:[-10,-12,-10,-11,-14,-10],
-        Silver:[-6,-7,-6,-6,-9,-6],
-        Gold:[-2,-3,-2,-2,-5,-2],
-        TOTW:[2,1,0,1,-2,0],
-        Special:[4,3,2,3,0,2],
-        TOTS:[6,5,4,5,2,4],
-        FUTTIES:[8,7,6,7,4,6]
+        Bronze:  [-10,-12,-10,-11,-14,-10],
+        Silver:  [-6,-7,-6,-6,-9,-6],
+        Gold:    [-2,-3,-2,-2,-5,-2],
+        TOTW:    [2,1,0,1,-2,0],
+        TOTS:    [6,5,4,5,2,4],
+        FUTTIES: [8,7,6,7,4,6]
       }[rarity] || [0,0,0,0,0,0];
-      return boost.map(b => Math.max(25, Math.min(99, rating + b)));
+
+      return boost.map(b => Math.max(25, Math.min(99, base + b)));
     }
 
-    function updateSlotText(stageIndex, value) {
-      if (stageIndex === 1) {
-        slotPositionValue.textContent = value;
-        slotPosition.classList.add("spin-flash");
-        setTimeout(() => slotPosition.classList.remove("spin-flash"), 700);
-      }
-      if (stageIndex === 2) {
-        slotRarityValue.textContent = value;
-        slotRarity.classList.add("spin-flash");
-        setTimeout(() => slotRarity.classList.remove("spin-flash"), 700);
-      }
-      if (stageIndex === 3) {
-        slotRatingValue.textContent = value;
-        slotRating.classList.add("spin-flash");
-        setTimeout(() => slotRating.classList.remove("spin-flash"), 700);
-      }
+    function nameIsJack(position, rating) {
+      return false;
     }
 
-    function randomChoice(arr) {
+    function randomItem(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function pickPlayerForPosition(pos) {
-      const pool = items.map(parseEntry).filter(p => p.position === pos);
-      return pool.length ? randomChoice(pool) : parseEntry(randomChoice(items));
-    }
+    function updateCard(player, rarityOverride = null) {
+      const rarity = rarityOverride || getRarity(player.rating, player.name, player.position);
+      currentPick = player;
+      currentRarity = rarity;
+      currentRating = player.rating;
+      currentPosition = player.position;
 
-    function pickPlayerForRarity(rarity) {
-      const pool = items.map(parseEntry).filter(p => getRarity(p.rating) === rarity);
-      return pool.length ? randomChoice(pool) : parseEntry(randomChoice(items));
-    }
+      card.className = `card ${rarityClasses[rarity] || "gold"}`;
+      cardRating.textContent = player.rating;
+      cardPos.textContent = player.position;
+      cardName.textContent = player.name.toUpperCase();
+      portraitMark.textContent = rarity === "GG" ? "GG" : "FUT";
 
-    function applyCard(data) {
-      const rarity = getRarity(data.rating);
-      displayCard.className = `player-card ${raritySkin(rarity)}`;
-      cardName.textContent = data.name;
-      cardRating.textContent = data.rating;
-      cardPos.textContent = data.position;
-      cardBadge.textContent = rarity.toUpperCase();
-      const [pac, sho, pas, dri, def, phy] = statsFor(data.rating, rarity);
+      const [pac, sho, pas, dri, def, phy] = statsFor(player.rating, rarity, player.position);
       statPac.textContent = pac;
       statSho.textContent = sho;
       statPas.textContent = pas;
       statDri.textContent = dri;
       statDef.textContent = def;
       statPhy.textContent = phy;
+
+      slotPositionValue.textContent = player.position;
+      slotRarityValue.textContent = rarity;
+      slotOverallValue.textContent = `${player.rating}`;
     }
 
-    function addHistory(data) {
-      const rarity = getRarity(data.rating);
-      const fallback = document.getElementById("history-fallback-msg");
-      if (fallback) fallback.remove();
-      const mini = document.createElement("div");
-      mini.className = `history-mini-card ${raritySkin(rarity)}`;
-      mini.innerHTML = `
-        <div class="mini-card-pos">${data.position}</div>
-        <div class="mini-card-rating">${data.rating}</div>
-        <div class="mini-card-name">${data.name}</div>
+    function addToHistory(player, rarity) {
+      const item = document.createElement("div");
+      item.className = `mini-card ${rarityClasses[rarity] || "gold"}`;
+      item.innerHTML = `
+        <div class="mini-pos">${player.position}</div>
+        <div class="mini-rating">${player.rating}</div>
+        <div class="mini-name">${player.name}</div>
       `;
-      historyLedger.insertBefore(mini, historyLedger.firstChild);
+      historyGrid.prepend(item);
     }
 
-    function clearHistory() {
-      historyLedger.innerHTML = `<p id="history-fallback-msg">No players drafted yet. Press spin to build your squad!</p>`;
-    }
-
-    function stopSpinLoop() {
-      if (intervalId) clearInterval(intervalId);
-      intervalId = null;
+    function resetGame() {
+      currentStage = 0;
       spinning = false;
-      stopBtn.disabled = true;
+      currentPick = null;
+      clearInterval(intervalId);
+      intervalId = null;
+
+      currentPosition = "GK";
+      currentRarity = "Bronze";
+      currentRating = 40;
+
+      slotPositionValue.textContent = "GK";
+      slotRarityValue.textContent = "Bronze";
+      slotOverallValue.textContent = "40+";
+
+      updateCard({ name:"READY", rating:40, position:"GK" }, "Bronze");
+      statusEl.textContent = "Press Spin to start.";
       spinBtn.disabled = false;
-      spinBtn.textContent = "Spin";
-    }
-
-    function beginSpinLoop() {
-      stopSpinLoop();
-      spinning = true;
-      spinBtn.disabled = true;
-      stopBtn.disabled = false;
-      spinBtn.textContent = "Spinning";
-
-      let i = lastIndex;
-      intervalId = setInterval(() => {
-        const data = parseEntry(items[i % items.length]);
-        if (stage === 1) {
-          slotPositionValue.textContent = data.position;
-        } else if (stage === 2) {
-          slotRarityValue.textContent = getRarity(data.rating).toUpperCase();
-        } else if (stage === 3) {
-          slotRatingValue.textContent = data.rating;
-        }
-        i++;
-        lastIndex = i;
-      }, 85);
-    }
-
-    function getStageTarget(stageNumber) {
-      const parsed = items.map(parseEntry);
-      if (stageNumber === 1) return randomChoice(positions);
-      if (stageNumber === 2) return randomChoice(rarities);
-      if (stageNumber === 3) return randomChoice(parsed);
-      return null;
+      stopBtn.disabled = true;
+      spinBtn.textContent = "SPIN!";
     }
 
     function startSpin() {
       if (spinning) return;
-      if (stage === 0) {
-        currentChoice = null;
-        currentTheme = "GOLD";
-      }
-      stage = Math.min(stage + 1, 3);
-      beginSpinLoop();
-      resultText.textContent = stage === 1 ? "Spinning position..." : stage === 2 ? "Spinning rarity..." : "Spinning player...";
-      if (stage === 1) updateSlotText(1, "...");
-      if (stage === 2) updateSlotText(2, "...");
-      if (stage === 3) updateSlotText(3, "...");
+
+      spinning = true;
+      spinBtn.disabled = true;
+      stopBtn.disabled = false;
+      spinBtn.textContent = "SPIN!";
+      statusEl.textContent = currentStage === 0
+        ? "Spin position..."
+        : currentStage === 1
+          ? "Spin rarity..."
+          : "Spin player...";
+
+      let i = 0;
+      clearInterval(intervalId);
+      intervalId = setInterval(() => {
+        if (currentStage === 0) {
+          slotPositionValue.textContent = randomItem(positions);
+        } else if (currentStage === 1) {
+          slotRarityValue.textContent = randomItem(rarities);
+        } else {
+          const p = randomItem(roster);
+          slotOverallValue.textContent = p.rating + (p.rating >= 90 ? "+" : "");
+        }
+        i++;
+      }, 70);
     }
 
     function stopSpin() {
       if (!spinning) return;
 
-      if (stage === 1) {
-        const pos = getStageTarget(1);
-        const chosen = pickPlayerForPosition(pos);
-        currentChoice = chosen;
-        updateSlotText(1, pos);
-        currentTheme = getRarity(chosen.rating);
-        applyCard({ ...chosen });
-        resultText.textContent = `Position locked: ${pos}`;
-        stopSpinLoop();
+      clearInterval(intervalId);
+      intervalId = null;
+      spinning = false;
+      stopBtn.disabled = true;
+      spinBtn.disabled = false;
+
+      if (currentStage === 0) {
+        const pos = randomItem(positions);
+        currentPosition = pos;
+        slotPositionValue.textContent = pos;
+        statusEl.textContent = `Position locked: ${pos}. Press Spin again.`;
+        currentStage = 1;
         return;
       }
 
-      if (stage === 2) {
-        const rarity = getStageTarget(2);
-        const chosen = pickPlayerForRarity(rarity);
-        currentChoice = chosen;
-        currentTheme = rarity;
-        updateSlotText(2, rarity.toUpperCase());
-        applyCard({ ...chosen });
-        resultText.textContent = `Rarity locked: ${rarity.toUpperCase()}`;
-        stopSpinLoop();
+      if (currentStage === 1) {
+        const pool = roster.filter(p => p.position === currentPosition);
+        const player = pool.length ? randomItem(pool) : randomItem(roster);
+        const rarity = player.name === "Jack" && player.position === "GK" ? "GG" : getRarity(player.rating, player.name, player.position);
+        currentRarity = rarity;
+        slotRarityValue.textContent = rarity;
+        updateCard(player, rarity);
+        statusEl.textContent = `Rarity locked: ${rarity}. Press Spin again.`;
+        currentStage = 2;
         return;
       }
 
-      if (stage === 3) {
-        const chosen = currentChoice || getStageTarget(3);
-        updateSlotText(3, String(chosen.rating));
-        applyCard(chosen);
-        resultText.textContent = `Packed: ${chosen.name} (${chosen.rating} - ${chosen.position})`;
-        addHistory(chosen);
-        stopSpinLoop();
-        stage = 0;
-        currentChoice = null;
+      if (currentStage === 2) {
+        let pool = roster.filter(p => p.position === currentPosition);
+        if (currentRarity === "GG") {
+          pool = roster.filter(p => p.name === "Jack" && p.position === "GK");
+        } else {
+          pool = pool.filter(p => getRarity(p.rating, p.name, p.position) === currentRarity);
+        }
+
+        const player = pool.length ? randomItem(pool) : randomItem(roster);
+        const rarity = player.name === "Jack" && player.position === "GK" ? "GG" : getRarity(player.rating, player.name, player.position);
+
+        updateCard(player, rarity);
+        addToHistory(player, rarity);
+        statusEl.textContent = `Packed ${player.name} (${player.rating} - ${player.position})`;
+        currentStage = 0;
         return;
       }
     }
 
-    items = [...roster];
-    const first = parseEntry(items[0]);
-    applyCard(first);
-    slotPositionValue.textContent = "ST";
-    slotRarityValue.textContent = "Bronze";
-    slotRatingValue.textContent = "40+";
-
     spinBtn.addEventListener("click", startSpin);
     stopBtn.addEventListener("click", stopSpin);
-    clearHistoryBtn.addEventListener("click", clearHistory);
+    resetBtn.addEventListener("click", resetGame);
+
+    resetGame();
   </script>
 </body>
 </html>
