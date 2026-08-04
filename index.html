@@ -7,8 +7,6 @@
   <style>
     :root{
       --bg:#2a2a2f;
-      --panel:#3a4049;
-      --panel2:#4a525d;
       --text:#ffffff;
       --muted:#d6d6d6;
       --green:#35a64a;
@@ -208,36 +206,7 @@
       text-transform:uppercase;
       margin:6px 12px 0;
       letter-spacing:.04em;
-    }
-
-    .stats{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:12px 10px;
-      margin:18px 14px 0;
-      padding-top:12px;
-      border-top:1px solid rgba(255,255,255,.12);
-    }
-
-    .stat{
-      text-align:center;
-      font-weight:900;
-    }
-
-    .stat span{
-      display:block;
-      font-size:.76rem;
-      opacity:.85;
-      margin-bottom:6px;
-      letter-spacing:.05em;
-    }
-
-    .stat strong{
-      display:block;
-      font-size:1.65rem;
-      line-height:1;
+      min-height:40px;
     }
 
     .controls{
@@ -276,8 +245,18 @@
     }
 
     .btn-reset{
-      background:linear-gradient(180deg, #ff6f6f, #d94a4a);
+      background:linear-gradient(180deg, #36b24a, #21853a);
       color:white;
+      border-radius:50%;
+      width:76px;
+      height:76px;
+      align-self:flex-start;
+      padding:0;
+      font-size:1.7rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:5px solid rgba(255,255,255,.15);
     }
 
     .status{
@@ -351,53 +330,20 @@
     .card.futties{background:linear-gradient(135deg,#f03b91,#c71f67,#20c7e8); color:#fff; border-color:#ff72bd}
     .card.gg{background:linear-gradient(135deg,#101723,#e0c04f,#fff7cf); color:#111; border-color:#f0d87a}
 
-    .card.bronze .card-rating,
-    .card.bronze .card-pos,
-    .card.bronze .card-name,
-    .card.silver .card-rating,
-    .card.silver .card-pos,
-    .card.silver .card-name,
-    .card.gold .card-rating,
-    .card.gold .card-pos,
-    .card.gold .card-name{
-      color:inherit;
-    }
-
-    .card.gg .portrait-mark{opacity:.12}
-
     @media (max-width: 900px){
-      .main-area{
-        grid-template-columns:1fr;
-      }
-      .controls{
-        max-width:420px;
-        margin:0 auto;
-      }
-      .card-zone{
-        min-height:unset;
-      }
+      .main-area{grid-template-columns:1fr}
+      .controls{max-width:420px; margin:0 auto}
+      .card-zone{min-height:unset}
+      .btn-reset{align-self:center}
     }
 
     @media (max-width: 720px){
-      .slot-row{
-        grid-template-columns:1fr;
-      }
-      .slot{
-        height:88px;
-      }
-      .slot-value{
-        font-size:1.6rem;
-      }
-      .card{
-        width:min(300px, 95vw);
-        height:440px;
-      }
-      .title{
-        font-size:1.7rem;
-      }
-      .btn-spin{
-        height:92px;
-      }
+      .slot-row{grid-template-columns:1fr}
+      .slot{height:88px}
+      .slot-value{font-size:1.6rem}
+      .card{width:min(300px, 95vw); height:440px}
+      .title{font-size:1.7rem}
+      .btn-spin{height:92px}
     }
   </style>
 </head>
@@ -434,22 +380,13 @@
             </div>
 
             <div class="card-name" id="card-name">READY</div>
-
-            <div class="stats">
-              <div class="stat"><span>PAC</span><strong id="stat-pac">--</strong></div>
-              <div class="stat"><span>SHO</span><strong id="stat-sho">--</strong></div>
-              <div class="stat"><span>PAS</span><strong id="stat-pas">--</strong></div>
-              <div class="stat"><span>DRI</span><strong id="stat-dri">--</strong></div>
-              <div class="stat"><span>DEF</span><strong id="stat-def">--</strong></div>
-              <div class="stat"><span>PHY</span><strong id="stat-phy">--</strong></div>
-            </div>
           </div>
         </div>
 
         <div class="controls">
           <button id="spin-btn" class="btn btn-spin">SPIN!</button>
           <button id="stop-btn" class="btn btn-stop" disabled>STOP</button>
-          <button id="reset-btn" class="btn btn-reset">RESET</button>
+          <button id="reset-btn" class="btn btn-reset" title="Restart">↻</button>
           <div class="status" id="status">Press Spin to start.</div>
         </div>
       </div>
@@ -463,32 +400,33 @@
 
   <script>
     const roster = [
-      { name:"Ethan", rating:84, position:"RB" },
-      { name:"Reuben", rating:84, position:"LB" },
-      { name:"Seb", rating:90, position:"CB" },
-      { name:"Ari", rating:97, position:"LW" },
-      { name:"James", rating:92, position:"ST" },
-      { name:"Ben", rating:92, position:"ST" },
-      { name:"Noah", rating:91, position:"CM" },
-      { name:"Donny", rating:92, position:"CM" },
-      { name:"Charlie", rating:94, position:"ST" },
-      { name:"Flynn", rating:90, position:"LM" },
-      { name:"Mason", rating:96, position:"CAM" },
-      { name:"Louis", rating:92, position:"RW" },
-      { name:"Hugo", rating:91, position:"ST" },
-      { name:"Lachlan", rating:91, position:"CB" },
-      { name:"Harry L", rating:92, position:"CB" },
-      { name:"Martin", rating:96, position:"CDM" },
-      { name:"Luke", rating:92, position:"GK" },
-      { name:"Jack", rating:95, position:"GK" },
-      { name:"Archie", rating:90, position:"LB" },
-      { name:"CJ", rating:100, position:"RB" },
-      { name:"Harry R", rating:97, position:"CAM" },
-      { name:"George", rating:90, position:"ST" },
-      { name:"Aidan", rating:95, position:"RM" },
-      { name:"Fred", rating:91, position:"CAM" },
-      { name:"Felix", rating:93, position:"CDM" },
-      { name:"Gus", rating:90, position:"LB" }
+      { name:"Ethan", rating:80, position:"RB" },
+      { name:"Reuben", rating:80, position:"LB" },
+      { name:"Seb", rating:80, position:"CB" },
+      { name:"Ari", rating:87, position:"LW" },
+      { name:"James", rating:83, position:"ST" },
+      { name:"Ben", rating:83, position:"ST" },
+      { name:"Noah", rating:81, position:"CM" },
+      { name:"Donny", rating:82, position:"CM" },
+      { name:"Charlie", rating:84, position:"ST" },
+      { name:"Flynn", rating:80, position:"LM" },
+      { name:"Mason", rating:86, position:"CAM" },
+      { name:"Louis", rating:82, position:"RW" },
+      { name:"Hugo", rating:81, position:"ST" },
+      { name:"Lachlan", rating:81, position:"CB" },
+      { name:"Harry L", rating:82, position:"CB" },
+      { name:"Martin", rating:86, position:"CDM" },
+      { name:"Luke", rating:82, position:"GK" },
+      { name:"Jack", rating:85, position:"GK" },
+      { name:"Archie", rating:80, position:"LB" },
+      { name:"CJ", rating:90, position:"RB" },
+      { name:"Harry R", rating:87, position:"CAM" },
+      { name:"George", rating:80, position:"ST" },
+      { name:"Aidan", rating:85, position:"RM" },
+      { name:"Fred", rating:81, position:"CAM" },
+      { name:"Felix", rating:83, position:"CDM" },
+      { name:"Gus", rating:80, position:"LB" },
+      { name:"Jack", rating:98, position:"GK" }
     ];
 
     const spinBtn = document.getElementById("spin-btn");
@@ -505,12 +443,6 @@
     const cardPos = document.getElementById("card-pos");
     const cardName = document.getElementById("card-name");
     const portraitMark = document.getElementById("portrait-mark");
-    const statPac = document.getElementById("stat-pac");
-    const statSho = document.getElementById("stat-sho");
-    const statPas = document.getElementById("stat-pas");
-    const statDri = document.getElementById("stat-dri");
-    const statDef = document.getElementById("stat-def");
-    const statPhy = document.getElementById("stat-phy");
     const historyGrid = document.getElementById("history-grid");
 
     const positions = ["GK","CB","LB","RB","CM","CDM","CAM","LM","RM","LW","RW","ST"];
@@ -531,38 +463,15 @@
     let currentPick = null;
     let currentPosition = "GK";
     let currentRarity = "Bronze";
-    let currentRating = 40;
 
-    function getRarity(rating, name, position) {
-      if (name === "Jack" && position === "GK") return "GG";
-      if (rating >= 99) return "FUTTIES";
-      if (rating >= 96) return "TOTS";
-      if (rating >= 93) return "TOTW";
-      if (rating >= 85) return "Gold";
-      if (rating >= 80) return "Silver";
+    function getRarity(player) {
+      if (player.name === "Jack" && player.position === "GK" && player.rating >= 98) return "GG";
+      if (player.rating >= 99) return "FUTTIES";
+      if (player.rating >= 96) return "TOTS";
+      if (player.rating >= 93) return "TOTW";
+      if (player.rating >= 85) return "Gold";
+      if (player.rating >= 80) return "Silver";
       return "Bronze";
-    }
-
-    function statsFor(rating, rarity, position) {
-      if (rarity === "GG" || (nameIsJack(position, rating))) {
-        return [20, 10, 30, 15, 95, 80];
-      }
-
-      const base = rating;
-      const boost = {
-        Bronze:  [-10,-12,-10,-11,-14,-10],
-        Silver:  [-6,-7,-6,-6,-9,-6],
-        Gold:    [-2,-3,-2,-2,-5,-2],
-        TOTW:    [2,1,0,1,-2,0],
-        TOTS:    [6,5,4,5,2,4],
-        FUTTIES: [8,7,6,7,4,6]
-      }[rarity] || [0,0,0,0,0,0];
-
-      return boost.map(b => Math.max(25, Math.min(99, base + b)));
-    }
-
-    function nameIsJack(position, rating) {
-      return false;
     }
 
     function randomItem(arr) {
@@ -570,10 +479,9 @@
     }
 
     function updateCard(player, rarityOverride = null) {
-      const rarity = rarityOverride || getRarity(player.rating, player.name, player.position);
+      const rarity = rarityOverride || getRarity(player);
       currentPick = player;
       currentRarity = rarity;
-      currentRating = player.rating;
       currentPosition = player.position;
 
       card.className = `card ${rarityClasses[rarity] || "gold"}`;
@@ -582,17 +490,9 @@
       cardName.textContent = player.name.toUpperCase();
       portraitMark.textContent = rarity === "GG" ? "GG" : "FUT";
 
-      const [pac, sho, pas, dri, def, phy] = statsFor(player.rating, rarity, player.position);
-      statPac.textContent = pac;
-      statSho.textContent = sho;
-      statPas.textContent = pas;
-      statDri.textContent = dri;
-      statDef.textContent = def;
-      statPhy.textContent = phy;
-
       slotPositionValue.textContent = player.position;
       slotRarityValue.textContent = rarity;
-      slotOverallValue.textContent = `${player.rating}`;
+      slotOverallValue.textContent = player.rating >= 90 ? `${player.rating}+` : `${player.rating}`;
     }
 
     function addToHistory(player, rarity) {
@@ -615,13 +515,13 @@
 
       currentPosition = "GK";
       currentRarity = "Bronze";
-      currentRating = 40;
 
       slotPositionValue.textContent = "GK";
       slotRarityValue.textContent = "Bronze";
       slotOverallValue.textContent = "40+";
 
       updateCard({ name:"READY", rating:40, position:"GK" }, "Bronze");
+      cardName.textContent = "READY";
       statusEl.textContent = "Press Spin to start.";
       spinBtn.disabled = false;
       stopBtn.disabled = true;
@@ -634,14 +534,12 @@
       spinning = true;
       spinBtn.disabled = true;
       stopBtn.disabled = false;
-      spinBtn.textContent = "SPIN!";
       statusEl.textContent = currentStage === 0
         ? "Spin position..."
         : currentStage === 1
           ? "Spin rarity..."
           : "Spin player...";
 
-      let i = 0;
       clearInterval(intervalId);
       intervalId = setInterval(() => {
         if (currentStage === 0) {
@@ -650,9 +548,8 @@
           slotRarityValue.textContent = randomItem(rarities);
         } else {
           const p = randomItem(roster);
-          slotOverallValue.textContent = p.rating + (p.rating >= 90 ? "+" : "");
+          slotOverallValue.textContent = p.rating >= 90 ? `${p.rating}+` : `${p.rating}`;
         }
-        i++;
       }, 70);
     }
 
@@ -675,9 +572,10 @@
       }
 
       if (currentStage === 1) {
-        const pool = roster.filter(p => p.position === currentPosition);
-        const player = pool.length ? randomItem(pool) : randomItem(roster);
-        const rarity = player.name === "Jack" && player.position === "GK" ? "GG" : getRarity(player.rating, player.name, player.position);
+        let pool = roster.filter(p => p.position === currentPosition);
+        if (!pool.length) pool = roster;
+        const player = randomItem(pool);
+        const rarity = getRarity(player);
         currentRarity = rarity;
         slotRarityValue.textContent = rarity;
         updateCard(player, rarity);
@@ -689,27 +587,15 @@
       if (currentStage === 2) {
         let pool = roster.filter(p => p.position === currentPosition);
         if (currentRarity === "GG") {
-          pool = roster.filter(p => p.name === "Jack" && p.position === "GK");
+          pool = roster.filter(p => p.name === "Jack" && p.position === "GK" && p.rating >= 98);
         } else {
-          pool = pool.filter(p => getRarity(p.rating, p.name, p.position) === currentRarity);
+          pool = pool.filter(p => getRarity(p) === currentRarity);
         }
+        if (!pool.length) pool = roster;
 
-        const player = pool.length ? randomItem(pool) : randomItem(roster);
-        const rarity = player.name === "Jack" && player.position === "GK" ? "GG" : getRarity(player.rating, player.name, player.position);
-
+        const player = randomItem(pool);
+        const rarity = getRarity(player);
         updateCard(player, rarity);
         addToHistory(player, rarity);
-        statusEl.textContent = `Packed ${player.name} (${player.rating} - ${player.position})`;
-        currentStage = 0;
-        return;
-      }
-    }
-
-    spinBtn.addEventListener("click", startSpin);
-    stopBtn.addEventListener("click", stopSpin);
-    resetBtn.addEventListener("click", resetGame);
-
-    resetGame();
-  </script>
-</body>
-</html>
+        cardName.textContent = player.name.toUpperCase();
+        statusEl.textContent
