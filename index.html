@@ -6,28 +6,34 @@
   <title>JTC FIFA SPINS</title>
   <style>
     :root{
-      --bg1:#fff2e9;
-      --bg2:#ffd8bf;
-      --panel:#fff8f3;
-      --text:#5c3a2e;
-      --muted:#8a6a5c;
+      --bg1:#fff3ea;
+      --bg2:#ffd5bb;
+      --panel:#fffaf5;
+      --text:#6b4234;
+      --muted:#9a7464;
       --peach:#ffb38a;
-      --peach-dark:#f38d5f;
-      --gold:#d6a04b;
-      --silver:#b8c2cc;
+      --peach-dark:#f08b5d;
+      --shadow:0 14px 30px rgba(140, 89, 59, .16);
       --bronze:#b67b4d;
-      --shadow:0 14px 30px rgba(140, 89, 59, .18);
+      --silver:#b8c2cc;
+      --gold:#d6a04b;
+      --totw:#31456c;
+      --tots:#127d86;
+      --futties:#d83b84;
+      --icon:#c0a05a;
+      --jb:#39aee8;
+      --gg:#bb962f;
     }
 
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      min-height:100vh;
+      color:var(--text);
       background:
         radial-gradient(circle at top, rgba(255,255,255,.55), transparent 30%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
-      color:var(--text);
-      min-height:100vh;
       overflow-x:hidden;
     }
 
@@ -83,16 +89,17 @@
       text-transform:uppercase;
     }
 
-    .catalog-grid{
+    .catalog-grid,
+    .collection-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap:12px;
     }
 
     .mini-card{
       border-radius:18px;
       padding:12px;
-      min-height:160px;
+      min-height:150px;
       color:white;
       position:relative;
       overflow:hidden;
@@ -121,7 +128,7 @@
     }
 
     .mini-card .name{
-      font-size:1.5rem;
+      font-size:1.35rem;
       font-weight:900;
       line-height:1;
       margin-top:6px;
@@ -184,8 +191,6 @@
 
     .pack-area{
       margin-bottom:16px;
-      position:relative;
-      overflow:hidden;
     }
 
     .pack-stage{
@@ -221,16 +226,6 @@
       animation: revealPop 700ms ease-out forwards;
     }
 
-    .pack-card.flash-bronze{background:linear-gradient(180deg, #b06a3f, #7d4422)}
-    .pack-card.flash-silver{background:linear-gradient(180deg, #e0e7ef, #a6b3c0)}
-    .pack-card.flash-gold{background:linear-gradient(180deg, #ffd978, #d79a20)}
-    .pack-card.flash-totw{background:linear-gradient(180deg, #2d3b57, #0f1728)}
-    .pack-card.flash-tots{background:linear-gradient(180deg, #183c8a, #0d9f9a)}
-    .pack-card.flash-futties{background:linear-gradient(180deg, #ef4c93, #c41f67, #3bc9df)}
-    .pack-card.flash-icon{background:linear-gradient(180deg, #fff0c5, #c9a256, #7e5d23)}
-    .pack-card.flash-jb{background:linear-gradient(180deg, #ffe76d, #38bdf8)}
-    .pack-card.flash-gg{background:linear-gradient(180deg, #fff2c7, #c89f43, #7a5d16)}
-
     @keyframes revealPop{
       0%{ transform:scale(.78); opacity:0; filter:blur(2px) brightness(1.1); }
       35%{ transform:scale(1.02); opacity:1; }
@@ -249,6 +244,16 @@
       pointer-events:none;
       opacity:.95;
     }
+
+    .pack-card.flash-bronze{background:linear-gradient(180deg, #b06a3f, #7d4422)}
+    .pack-card.flash-silver{background:linear-gradient(180deg, #e0e7ef, #a6b3c0)}
+    .pack-card.flash-gold{background:linear-gradient(180deg, #ffd978, #d79a20)}
+    .pack-card.flash-totw{background:linear-gradient(180deg, #2d3b57, #0f1728)}
+    .pack-card.flash-tots{background:linear-gradient(180deg, #183c8a, #0d9f9a)}
+    .pack-card.flash-futties{background:linear-gradient(180deg, #ef4c93, #c41f67, #3bc9df)}
+    .pack-card.flash-icon{background:linear-gradient(180deg, #fff0c5, #c9a256, #7e5d23)}
+    .pack-card.flash-jb{background:linear-gradient(180deg, #ffe76d, #38bdf8)}
+    .pack-card.flash-gg{background:linear-gradient(180deg, #fff2c7, #c89f43, #7a5d16)}
 
     .pack-card .top{
       display:flex;
@@ -308,6 +313,7 @@
       color:white;
       text-transform:uppercase;
       letter-spacing:.05em;
+      min-height:30px;
     }
 
     .small-meta{
@@ -382,85 +388,26 @@
 
     .collection{
       margin-top:16px;
+      padding:16px;
     }
-
-    .collection-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
-      gap:12px;
-    }
-
-    .collection-item{
-      background:rgba(255,255,255,.7);
-      border-radius:18px;
-      padding:12px;
-      border:1px solid rgba(122,70,54,.1);
-      box-shadow:var(--shadow);
-    }
-
-    .collection-item .head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-
-    .collection-item .title{
-      font-weight:900;
-      color:#7a4636;
-    }
-
-    .completion{
-      font-weight:900;
-      padding:4px 8px;
-      border-radius:999px;
-      font-size:.78rem;
-    }
-
-    .done{ background:#dff5df; color:#2d7a2d; }
-    .missing{ background:#fff0f0; color:#b14a4a; }
-
-    .collection-item ul{
-      margin:10px 0 0;
-      padding-left:18px;
-      color:#7d5e53;
-      font-weight:600;
-      font-size:.9rem;
-    }
-
-    .flash-overlay{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:0;
-      z-index:9998;
-      transition:opacity .18s ease;
-    }
-
-    .flash-overlay.on{ opacity:1; }
-
-    .flash-bronze{ background:rgba(182,123,77,.32); }
-    .flash-silver{ background:rgba(184,194,204,.34); }
-    .flash-gold{ background:rgba(214,160,75,.36); }
-    .flash-totw{ background:rgba(45,59,87,.42); }
-    .flash-tots{ background:rgba(13,159,154,.4); }
-    .flash-futties{ background:rgba(239,76,147,.42); }
-    .flash-icon{ background:rgba(255,240,197,.44); }
-    .flash-jb{ background:rgba(255,231,109,.42); }
-    .flash-gg{ background:rgba(200,159,67,.4); }
 
     .hidden{ display:none !important; }
 
     @media (max-width: 920px){
-      .top-grid, .pack-stage{ grid-template-columns:1fr; }
-      .pack-card-wrap{ min-height:unset; }
-      .pack-card{ width:min(100%, 290px); height:400px; }
+      .top-grid, .pack-stage{
+        grid-template-columns:1fr;
+      }
+      .pack-card-wrap{
+        min-height:unset;
+      }
+      .pack-card{
+        width:min(100%, 290px);
+        height:400px;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="flash" class="flash-overlay"></div>
-
   <div class="app">
     <div class="hero">
       <h1>JTC FIFA SPINS</h1>
@@ -489,7 +436,7 @@
               <div class="position-pill" id="packPos">??</div>
             </div>
             <div class="art" id="packArt"></div>
-            <div class="card-name" id="packName">READY</div>
+            <div class="card-name hidden" id="packName">READY</div>
             <div class="small-meta">
               <span id="packRarity">Hidden</span>
               <span id="packClub">Club</span>
@@ -558,7 +505,6 @@
     const trackerGrid = document.getElementById("trackerGrid");
     const collectionGrid = document.getElementById("collectionGrid");
     const statusEl = document.getElementById("status");
-    const flash = document.getElementById("flash");
 
     const packCard = document.getElementById("packCard");
     const packRating = document.getElementById("packRating");
@@ -566,7 +512,6 @@
     const packName = document.getElementById("packName");
     const packRarity = document.getElementById("packRarity");
     const packClub = document.getElementById("packClub");
-    const packArt = document.getElementById("packArt");
     const statEls = [
       document.getElementById("s1"),
       document.getElementById("s2"),
@@ -579,16 +524,11 @@
     const openPackBtn = document.getElementById("openPackBtn");
     const nextRevealBtn = document.getElementById("nextRevealBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const flash = document.getElementById("flash");
 
-    let collection = new Set(JSON.parse(localStorage.getItem("jtc_collection") || "[]"));
+    let collection = new Set();
     let pendingCard = null;
-    let revealPhase = 0;
     let revealTimer = null;
-    let flashing = false;
-
-    function saveCollection() {
-      localStorage.setItem("jtc_collection", JSON.stringify([...collection]));
-    }
 
     function getRarityClass(rarity) {
       return {
@@ -603,7 +543,7 @@
       }[rarity] || "gold-card";
     }
 
-    function getPackClass(rarity) {
+    function getFlashClass(rarity) {
       return {
         Bronze:"flash-bronze",
         Silver:"flash-silver",
@@ -614,10 +554,6 @@
         FUTTIES:"flash-futties",
         GG:"flash-gg"
       }[rarity] || "flash-gold";
-    }
-
-    function rarityColorText(rarity) {
-      return rarity;
     }
 
     function renderCatalog() {
@@ -689,15 +625,14 @@
       packRating.textContent = "--";
       packPos.textContent = "??";
       packName.textContent = "READY";
-      packName.style.color = "white";
+      packName.classList.add("hidden");
       packRarity.textContent = "Hidden";
       packClub.textContent = "Club";
       statEls.forEach(el => el.textContent = "--");
-      packCard.classList.remove("reveal");
     }
 
     function flashScreen(rarity) {
-      flash.className = `flash-overlay ${getPackClass(rarity)} on`;
+      flash.className = `flash-overlay ${getFlashClass(rarity)} on`;
       setTimeout(() => flash.classList.remove("on"), 220);
     }
 
@@ -726,3 +661,68 @@
     }
 
     function openPack() {
+      if (revealTimer) return;
+      pendingCard = choosePackCard();
+      openPackBtn.disabled = true;
+      nextRevealBtn.disabled = false;
+      statusEl.textContent = "Pack opening...";
+      setHiddenPack();
+
+      flashScreen(pendingCard.rarity);
+      packCard.className = `pack-card ${getFlashClass(pendingCard.rarity)}`;
+
+      revealTimer = setTimeout(() => {
+        statusEl.textContent = "Press Reveal to open the card.";
+        revealTimer = null;
+      }, 900);
+    }
+
+    function revealCard() {
+      if (!pendingCard) return;
+
+      const c = pendingCard;
+      const rarity = c.rarity;
+
+      packCard.className = `pack-card ${getFlashClass(rarity)} reveal`;
+      packRating.textContent = c.rating;
+      packPos.textContent = c.position;
+      packName.textContent = c.name.toUpperCase();
+      packName.classList.remove("hidden");
+      packRarity.textContent = rarity;
+      packClub.textContent = c.club;
+      statEls.forEach((el, i) => el.textContent = c.stats[i]);
+
+      flashScreen(rarity);
+      showConfetti();
+
+      const key = `${c.name}|${c.position}|${c.rating}|${c.rarity}`;
+      collection.add(key);
+
+      renderTracker();
+      renderCollection();
+
+      statusEl.textContent = `Collected: ${c.name} (${c.rarity}).`;
+      pendingCard = null;
+      openPackBtn.disabled = false;
+      nextRevealBtn.disabled = true;
+    }
+
+    function resetCollection() {
+      collection = new Set();
+      renderTracker();
+      renderCollection();
+      setHiddenPack();
+      statusEl.textContent = "Collection reset.";
+    }
+
+    openPackBtn.addEventListener("click", openPack);
+    nextRevealBtn.addEventListener("click", revealCard);
+    resetBtn.addEventListener("click", resetCollection);
+
+    renderCatalog();
+    renderTracker();
+    renderCollection();
+    setHiddenPack();
+  </script>
+</body>
+</html>
