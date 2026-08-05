@@ -3,854 +3,726 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FUT Spins 26</title>
+  <title>JTC FIFA SPINS</title>
   <style>
     :root{
-      --bg:#2a2a2f;
-      --text:#ffffff;
-      --muted:#d6d6d6;
-      --green:#35a64a;
-      --green-dark:#2a8540;
-      --shadow:0 12px 24px rgba(0,0,0,.28);
+      --bg1:#fff2e9;
+      --bg2:#ffd8bf;
+      --panel:#fff8f3;
+      --text:#5c3a2e;
+      --muted:#8a6a5c;
+      --peach:#ffb38a;
+      --peach-dark:#f38d5f;
+      --gold:#d6a04b;
+      --silver:#b8c2cc;
+      --bronze:#b67b4d;
+      --shadow:0 14px 30px rgba(140, 89, 59, .18);
     }
 
     *{box-sizing:border-box}
-
     body{
       margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.14)),
-        radial-gradient(circle at 25% 20%, rgba(255,255,255,.06), transparent 20%),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,.04), transparent 24%),
-        var(--bg);
+        radial-gradient(circle at top, rgba(255,255,255,.55), transparent 30%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
       color:var(--text);
       min-height:100vh;
       overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
 
     .app{
-      width:min(1280px, calc(100% - 24px));
+      width:min(1180px, calc(100% - 20px));
       margin:0 auto;
-      padding:14px 0 32px;
-      position:relative;
+      padding:18px 0 36px;
     }
 
-    .title{
-      font-size:2.1rem;
-      margin:0 0 14px;
-      font-weight:800;
-      letter-spacing:.02em;
-    }
-
-    .machine{
-      position:relative;
-      border-radius:18px;
-      padding:14px;
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08));
-    }
-
-    .slot-row{
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:6px;
-      margin-bottom:30px;
-      background:#2f3138;
-      border-radius:18px;
-      padding:6px;
-      box-shadow: inset 0 8px 18px rgba(255,255,255,.05), inset 0 -10px 18px rgba(0,0,0,.25);
-    }
-
-    .slot{
-      position:relative;
-      height:126px;
-      border-radius:14px;
-      background:linear-gradient(180deg, #f7f7f7, #e5e5e5);
-      color:#111;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: inset 0 10px 20px rgba(255,255,255,.7), inset 0 -10px 20px rgba(0,0,0,.12);
-    }
-
-    .slot::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(255,255,255,.9), transparent 22%, transparent 78%, rgba(0,0,0,.08));
-      pointer-events:none;
-    }
-
-    .slot-label{
-      position:absolute;
-      top:8px;
-      left:0;
-      right:0;
+    .hero{
       text-align:center;
-      font-size:.76rem;
-      font-weight:700;
-      text-transform:uppercase;
-      color:rgba(0,0,0,.45);
+      margin-bottom:18px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(2.1rem, 4vw, 3.6rem);
       letter-spacing:.06em;
+      color:#7a4636;
+      text-shadow:0 2px 0 rgba(255,255,255,.45);
     }
 
-    .slot-value{
-      font-size:2.2rem;
-      font-weight:900;
-      line-height:1;
-      z-index:1;
-      text-align:center;
-      padding:0 10px;
-    }
-
-    .main-area{
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap:30px;
-      align-items:start;
-      padding:8px 4px 0;
-    }
-
-    .card-zone{
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      min-height:520px;
-      position:relative;
-    }
-
-    .card{
-      width:320px;
-      height:470px;
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      background:linear-gradient(180deg,#2b3138 0%, #1f2428 100%);
-      box-shadow: 0 20px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.03), inset 0 -12px 30px rgba(0,0,0,.6);
-      transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
-      transform:translateZ(0);
-      border:6px solid rgba(255,255,255,.03);
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      overflow:visible;
-    }
-
-    .card::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      border-radius:16px;
-      padding:3px;
-      background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.02), rgba(0,0,0,.25));
-      pointer-events:none;
-      z-index:0;
-    }
-
-    .card::after{
-      content:'';
-      position:absolute;
-      inset:0;
-      border-radius:16px;
-      pointer-events:none;
-      background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.02), rgba(255,255,255,0) 12%, rgba(255,255,255,0.02) 22%);
-      mix-blend-mode:overlay;
-      opacity:.9;
-      z-index:2;
-      filter:blur(6px);
-    }
-
-    .card-top{
-      position:relative;
-      z-index:3;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:4px 6px 0;
-      font-weight:900;
-      text-shadow:0 1px 0 rgba(255,255,255,.03);
-    }
-
-    .rating-badge{
-      position:relative;
-      width:86px;
-      height:86px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:36px;
-      font-weight:900;
-      color:#1f1200;
-      box-shadow:0 8px 18px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.5);
-      border:3px solid rgba(255,255,255,.16);
-      background:linear-gradient(180deg,#ffd86b,#ffb93b);
-      z-index:4;
-      overflow:hidden;
-    }
-
-    .rating-badge .shine{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(120deg, rgba(255,255,255,.35), rgba(255,255,255,0));
-      transform:rotate(-20deg) translateX(-150%);
-      animation:shimmer 2.4s linear infinite;
-      opacity:.9;
-      mix-blend-mode:overlay;
-    }
-
-    @keyframes shimmer{
-      0%{ transform:rotate(-20deg) translateX(-150%); }
-      100%{ transform:rotate(-20deg) translateX(150%); }
-    }
-
-    .card.gold .rating-badge{ background:linear-gradient(180deg,#fff7c7,#f7d07d); color:#2b1800; }
-    .card.silver .rating-badge{ background:linear-gradient(180deg,#e6eef4,#b7c0c7); color:#13202a; }
-    .card.bronze .rating-badge{ background:linear-gradient(180deg,#e0b08a,#8a5228); color:#fff; }
-    .card.totw .rating-badge{ background:linear-gradient(180deg,#8ab1ff,#1f49d8); color:#fff; }
-    .card.tots .rating-badge{ background:linear-gradient(180deg,#8ab1ff,#1f49d8); color:#fff; }
-    .card.futties .rating-badge{ background:linear-gradient(180deg,#ff88c7,#c53a88); color:#fff; }
-    .card.gg .rating-badge{ background:linear-gradient(180deg,#ffd86b,#b88b2b); color:#111; }
-    .card.jb .rating-badge{ background:linear-gradient(180deg,#fff16a,#31b4ff); color:#111; }
-    .card.icon .rating-badge{ background:linear-gradient(180deg,#fff8d2,#b08f43); color:#111; }
-
-    .pos-pill{
-      background:rgba(0,0,0,.25);
-      padding:6px 12px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:1rem;
-      color:#fff;
-      border:1px solid rgba(255,255,255,.06);
-      z-index:3;
-    }
-
-    .meta-row{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      padding:0 6px;
-      z-index:3;
-    }
-
-    .club, .nation{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .club-badge, .nation-badge{
-      width:34px;
-      height:34px;
-      border-radius:6px;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      font-size:.8rem;
-      color:rgba(255,255,255,.95);
-      border:1px solid rgba(255,255,255,.03);
-    }
-
-    .club-name{
-      font-size:.86rem;
-      font-weight:700;
-      letter-spacing:.03em;
-      color:rgba(255,255,255,.95);
-    }
-
-    .card-portrait{
-      position:relative;
-      margin:6px 6px 6px;
-      height:240px;
-      border-radius:12px;
-      overflow:hidden;
-      background:linear-gradient(180deg, #0f1720 0%, #1b2228 100%);
-      border:1px solid rgba(255,255,255,.04);
-      box-shadow: inset 0 12px 40px rgba(0,0,0,.6);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:3;
-    }
-
-    .photo{
-      width:100%;
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:72px;
-      font-weight:900;
-      color:rgba(255,255,255,.08);
-      background-image:
-        linear-gradient(135deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.01) 30%, rgba(0,0,0,.02) 100%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px);
-      position:relative;
-    }
-
-    .photo::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, rgba(255,255,255,.02) 0, rgba(255,255,255,0) 15%, rgba(255,255,255,.02) 35%, rgba(255,255,255,0) 60%);
-      mix-blend-mode:overlay;
-      opacity:.8;
-      pointer-events:none;
-      filter:blur(2px);
-    }
-
-    .photo-watermark{
-      position:absolute;
-      right:10px;
-      bottom:10px;
-      font-weight:900;
-      font-size:18px;
-      color:rgba(255,255,255,.06);
-      z-index:4;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .card-name{
-      position:relative;
-      z-index:3;
-      text-align:center;
-      font-size:1.5rem;
-      font-weight:800;
-      text-transform:uppercase;
-      margin:6px 6px 0;
-      color:var(--text);
-      letter-spacing:.06em;
-      text-shadow:0 2px 6px rgba(0,0,0,.6);
-      min-height:28px;
-    }
-
-    .hidden-name{
-      color:transparent !important;
-      text-shadow:none !important;
-      user-select:none;
-    }
-
-    .controls{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      padding-top:18px;
-    }
-
-    .btn{
-      border:none;
-      border-radius:8px;
-      padding:18px 20px;
-      font-size:1.3rem;
-      font-weight:900;
-      cursor:pointer;
-      box-shadow: var(--shadow);
-      transition:transform .18s ease, filter .18s ease, opacity .18s ease;
-      text-transform:uppercase;
-    }
-
-    .btn:hover{ transform:translateY(-1px); }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
-
-    .btn-spin{
-      background:linear-gradient(180deg, #44b85b, var(--green-dark));
-      color:white;
-      height:116px;
-      font-size:1.8rem;
-      border-bottom:8px solid rgba(0,0,0,.12);
-    }
-
-    .btn-stop{
-      background:linear-gradient(180deg, #f3f3f3, #d9d9d9);
-      color:#111;
-    }
-
-    .btn-reset{
-      background:linear-gradient(180deg, #36b24a, #21853a);
-      color:white;
-      border-radius:50%;
-      width:76px;
-      height:76px;
-      align-self:flex-start;
-      padding:0;
-      font-size:1.7rem;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:5px solid rgba(255,255,255,.15);
-    }
-
-    .status{
-      margin-top:14px;
-      font-size:1rem;
+    .hero p{
+      margin:8px 0 0;
       color:var(--muted);
-      min-height:24px;
+      font-weight:600;
     }
 
-    .history{
-      margin-top:26px;
-      background:rgba(0,0,0,.12);
-      border-radius:16px;
+    .panel{
+      background:rgba(255,248,243,.72);
+      border:1px solid rgba(255,255,255,.55);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .top-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .catalog, .tracker, .pack-area, .collection{
       padding:16px;
     }
 
-    .history h2{
-      margin:0 0 12px;
+    .section-title{
+      margin:0 0 14px;
       font-size:1.1rem;
-      color:#fff;
+      color:#7a4636;
+      letter-spacing:.04em;
+      text-transform:uppercase;
     }
 
-    .history-grid{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
+    .catalog-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap:12px;
     }
 
     .mini-card{
-      width:98px;
-      border-radius:10px;
-      background:#d2d6db;
-      color:#111;
-      padding:8px 6px;
-      font-size:.72rem;
-      font-weight:900;
-      box-shadow: 0 8px 14px rgba(0,0,0,.18);
-    }
-
-    .mini-card .mini-rating{
-      font-size:1.5rem;
-      line-height:1;
-      margin:2px 0 4px;
-    }
-
-    .mini-card .mini-name{
-      white-space:nowrap;
+      border-radius:18px;
+      padding:12px;
+      min-height:160px;
+      color:white;
+      position:relative;
       overflow:hidden;
-      text-overflow:ellipsis;
-      text-transform:uppercase;
+      box-shadow:0 10px 20px rgba(0,0,0,.12);
+      border:1px solid rgba(255,255,255,.28);
     }
 
-    .mini-card .mini-pos{
-      opacity:.75;
-      text-transform:uppercase;
-    }
-
-    .bronze{ background:linear-gradient(135deg,#a65f30,#5d2c10); color:#fff; border-color:#4b2108; }
-    .silver{ background:linear-gradient(135deg,#e8eef5,#b7c0cb); color:#1c2530; border-color:#94a1af; }
-    .gold{ background:linear-gradient(135deg,#fdf2b7,#c99214); color:#3a2502; border-color:#f1c94f; }
-    .totw{ background:linear-gradient(135deg,#20283b,#f2c94c,#fff1b8); color:#111; border-color:#f2d66d; }
-    .tots{ background:linear-gradient(135deg,#09143b,#2055de,#07b7a4); color:#fff; border-color:#d7c25d; }
-    .futties{ background:linear-gradient(135deg,#f03b91,#c71f67,#20c7e8); color:#fff; border-color:#ff72bd; }
-    .gg{ background:linear-gradient(135deg,#101723,#e0c04f,#fff7cf); color:#111; border-color:#f0d87a; }
-    .jb{ background:linear-gradient(135deg,#fff16a,#31b4ff); color:#111; border-color:#7ad7ff; }
-    .icon{ background:linear-gradient(135deg,#fff8d2,#b08f43); color:#111; border-color:#e4cf87; }
-
-    .card.bronze{ background:linear-gradient(135deg,#3d2a20,#241811); }
-    .card.silver{ background:linear-gradient(135deg,#dfe6ea,#aeb8bf); color:#111; }
-    .card.gold{ background:linear-gradient(135deg,#fff7e6,#f7d89b); color:#2a1904; }
-    .card.totw{ background:linear-gradient(135deg,#101827,#2b2f34); }
-    .card.tots{ background:linear-gradient(135deg,#081032,#0d2b6a); }
-    .card.futties{ background:linear-gradient(135deg,#521033,#2a0a2e); }
-    .card.gg{ background:linear-gradient(135deg,#1b1b3a,#4b3b18); }
-    .card.jb{ background:linear-gradient(135deg,#161d2d,#0b6aa8); }
-    .card.icon{ background:linear-gradient(135deg,#23212b,#7a6232); }
-
-    .confetti{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100vw;
-      height:100vh;
-      pointer-events:none;
-      overflow:hidden;
-      z-index:9999;
-    }
-
-    .confetti-piece{
+    .mini-card::after{
+      content:"";
       position:absolute;
-      width:10px;
-      height:16px;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.28), transparent 34%, transparent 66%, rgba(255,255,255,.18));
+      pointer-events:none;
+    }
+
+    .mini-card .rarity{
+      display:inline-block;
+      font-size:.7rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      padding:5px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      margin-bottom:10px;
+    }
+
+    .mini-card .name{
+      font-size:1.5rem;
+      font-weight:900;
+      line-height:1;
+      margin-top:6px;
+    }
+
+    .mini-card .pos{
+      margin-top:8px;
+      font-size:.9rem;
+      opacity:.9;
+      font-weight:700;
+    }
+
+    .mini-card .rating{
+      margin-top:14px;
+      font-size:2rem;
+      font-weight:900;
+    }
+
+    .bronze-card{background:linear-gradient(135deg, #b06a3f, #7d4422)}
+    .silver-card{background:linear-gradient(135deg, #e0e7ef, #a6b3c0); color:#283241}
+    .gold-card{background:linear-gradient(135deg, #ffd978, #d79a20); color:#4b3205}
+    .totw-card{background:linear-gradient(135deg, #2d3b57, #0f1728)}
+    .tots-card{background:linear-gradient(135deg, #183c8a, #0d9f9a)}
+    .futties-card{background:linear-gradient(135deg, #ef4c93, #c41f67, #3bc9df)}
+    .icon-card{background:linear-gradient(135deg, #fff0c5, #c9a256, #7e5d23); color:#3b2500}
+    .jb-card{background:linear-gradient(135deg, #ffe76d, #38bdf8); color:#172033}
+    .gg-card{background:linear-gradient(135deg, #fff2c7, #c89f43, #7a5d16); color:#2f2002}
+
+    .tracker-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:12px;
+    }
+
+    .set-box{
+      background:rgba(255,255,255,.6);
+      border-radius:18px;
+      padding:14px;
+      border:1px solid rgba(122,70,54,.12);
+    }
+
+    .set-box h3{
+      margin:0 0 8px;
+      font-size:1rem;
+      color:#7a4636;
+    }
+
+    .set-box .count{
+      font-size:1.8rem;
+      font-weight:900;
+      color:#9b5a44;
+    }
+
+    .set-box .sub{
+      margin-top:4px;
+      font-size:.88rem;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .pack-area{
+      margin-bottom:16px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pack-stage{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      align-items:center;
+    }
+
+    .pack-card-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:360px;
+      position:relative;
+    }
+
+    .pack-card{
+      width:290px;
+      height:410px;
+      border-radius:22px;
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, #f4b48e, #e98359);
+      box-shadow:0 16px 36px rgba(140,89,59,.25), inset 0 0 0 2px rgba(255,255,255,.2);
+      border:4px solid rgba(255,255,255,.3);
+      transform:scale(.96);
+      opacity:.75;
+      transition:transform .35s ease, opacity .35s ease, filter .35s ease;
+    }
+
+    .pack-card.reveal{
+      animation: revealPop 700ms ease-out forwards;
+    }
+
+    .pack-card.flash-bronze{background:linear-gradient(180deg, #b06a3f, #7d4422)}
+    .pack-card.flash-silver{background:linear-gradient(180deg, #e0e7ef, #a6b3c0)}
+    .pack-card.flash-gold{background:linear-gradient(180deg, #ffd978, #d79a20)}
+    .pack-card.flash-totw{background:linear-gradient(180deg, #2d3b57, #0f1728)}
+    .pack-card.flash-tots{background:linear-gradient(180deg, #183c8a, #0d9f9a)}
+    .pack-card.flash-futties{background:linear-gradient(180deg, #ef4c93, #c41f67, #3bc9df)}
+    .pack-card.flash-icon{background:linear-gradient(180deg, #fff0c5, #c9a256, #7e5d23)}
+    .pack-card.flash-jb{background:linear-gradient(180deg, #ffe76d, #38bdf8)}
+    .pack-card.flash-gg{background:linear-gradient(180deg, #fff2c7, #c89f43, #7a5d16)}
+
+    @keyframes revealPop{
+      0%{ transform:scale(.78); opacity:0; filter:blur(2px) brightness(1.1); }
+      35%{ transform:scale(1.02); opacity:1; }
+      70%{ transform:scale(.99); }
+      100%{ transform:scale(1); opacity:1; }
+    }
+
+    .pack-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(255,255,255,.35), transparent 20%),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.18), transparent 16%),
+        linear-gradient(135deg, rgba(255,255,255,.18), transparent 28%, transparent 72%, rgba(255,255,255,.12));
+      pointer-events:none;
       opacity:.95;
-      animation:confettiFall 1300ms linear forwards;
-      border-radius:2px;
     }
 
-    @keyframes confettiFall{
-      0%{ transform:translateY(-20px) rotate(0deg); opacity:1; }
-      100%{ transform:translateY(110vh) rotate(720deg); opacity:0; }
+    .pack-card .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 14px 0;
+      color:white;
+      position:relative;
+      z-index:2;
+      font-weight:900;
     }
 
-    @media (max-width: 900px){
-      .main-area{ grid-template-columns:1fr; }
-      .controls{ max-width:420px; margin:0 auto; }
-      .card-zone{ min-height:unset; }
-      .btn-reset{ align-self:center; }
+    .rating-bubble{
+      width:76px;
+      height:76px;
+      border-radius:50%;
+      background:rgba(255,255,255,.18);
+      border:2px solid rgba(255,255,255,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.1rem;
+      box-shadow:0 8px 18px rgba(0,0,0,.16);
     }
 
-    @media (max-width: 720px){
-      .slot-row{ grid-template-columns:1fr; }
-      .slot{ height:88px; }
-      .slot-value{ font-size:1.6rem; }
-      .card{ width:min(300px,95vw); height:440px; }
-      .title{ font-size:1.7rem; }
-      .btn-spin{ height:92px; }
+    .position-pill{
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.3);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:1rem;
+    }
+
+    .art{
+      position:relative;
+      margin:10px 14px;
+      height:210px;
+      border-radius:16px;
+      overflow:hidden;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.2);
+    }
+
+    .art::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.18), transparent 40%, rgba(255,255,255,.08));
+      mix-blend-mode:overlay;
+    }
+
+    .card-name{
+      margin:6px 12px 0;
+      font-size:1.6rem;
+      font-weight:900;
+      text-align:center;
+      color:white;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .small-meta{
+      margin:8px 12px 0;
+      display:flex;
+      justify-content:space-between;
+      color:rgba(255,255,255,.92);
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    .stats-grid{
+      margin:16px 12px 0;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+    }
+
+    .stat-cell{
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.24);
+      border-radius:12px;
+      padding:8px 6px;
+      text-align:center;
+      color:white;
+    }
+
+    .stat-cell .label{
+      font-size:.68rem;
+      opacity:.92;
+      font-weight:800;
+      letter-spacing:.06em;
+    }
+
+    .stat-cell .val{
+      font-size:1.25rem;
+      font-weight:900;
+      margin-top:4px;
+    }
+
+    .pack-controls{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:stretch;
+    }
+
+    .action-btn{
+      border:none;
+      border-radius:14px;
+      padding:16px 18px;
+      font-weight:900;
+      font-size:1.1rem;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      transition:transform .18s ease, opacity .18s ease;
+      text-transform:uppercase;
+    }
+    .action-btn:hover{ transform:translateY(-1px); }
+    .action-btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+
+    .spin-btn{ background:linear-gradient(180deg, #ffb58f, #f28d60); color:white; }
+    .open-btn{ background:linear-gradient(180deg, #ffffff, #f0d9c9); color:#7a4636; }
+    .reset-btn{ background:linear-gradient(180deg, #f5c7b0, #eba07e); color:#7a4636; }
+
+    .status{
+      margin-top:8px;
+      color:#9a6e5d;
+      font-weight:700;
+      min-height:24px;
+    }
+
+    .collection{
+      margin-top:16px;
+    }
+
+    .collection-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:12px;
+    }
+
+    .collection-item{
+      background:rgba(255,255,255,.7);
+      border-radius:18px;
+      padding:12px;
+      border:1px solid rgba(122,70,54,.1);
+      box-shadow:var(--shadow);
+    }
+
+    .collection-item .head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .collection-item .title{
+      font-weight:900;
+      color:#7a4636;
+    }
+
+    .completion{
+      font-weight:900;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:.78rem;
+    }
+
+    .done{ background:#dff5df; color:#2d7a2d; }
+    .missing{ background:#fff0f0; color:#b14a4a; }
+
+    .collection-item ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color:#7d5e53;
+      font-weight:600;
+      font-size:.9rem;
+    }
+
+    .flash-overlay{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      z-index:9998;
+      transition:opacity .18s ease;
+    }
+
+    .flash-overlay.on{ opacity:1; }
+
+    .flash-bronze{ background:rgba(182,123,77,.32); }
+    .flash-silver{ background:rgba(184,194,204,.34); }
+    .flash-gold{ background:rgba(214,160,75,.36); }
+    .flash-totw{ background:rgba(45,59,87,.42); }
+    .flash-tots{ background:rgba(13,159,154,.4); }
+    .flash-futties{ background:rgba(239,76,147,.42); }
+    .flash-icon{ background:rgba(255,240,197,.44); }
+    .flash-jb{ background:rgba(255,231,109,.42); }
+    .flash-gg{ background:rgba(200,159,67,.4); }
+
+    .hidden{ display:none !important; }
+
+    @media (max-width: 920px){
+      .top-grid, .pack-stage{ grid-template-columns:1fr; }
+      .pack-card-wrap{ min-height:unset; }
+      .pack-card{ width:min(100%, 290px); height:400px; }
     }
   </style>
 </head>
 <body>
-  <div class="confetti" id="confetti"></div>
+  <div id="flash" class="flash-overlay"></div>
 
   <div class="app">
-    <h1 class="title">FUT Spins 26</h1>
+    <div class="hero">
+      <h1>JTC FIFA SPINS</h1>
+      <p>Open packs, collect cards, and complete every rarity set.</p>
+    </div>
 
-    <div class="machine">
-      <div class="slot-row">
-        <div class="slot" id="slot-position">
-          <div class="slot-label">Position</div>
-          <div class="slot-value" id="slot-position-value">GK</div>
-        </div>
-        <div class="slot" id="slot-rarity">
-          <div class="slot-label">Rarity</div>
-          <div class="slot-value" id="slot-rarity-value">Bronze</div>
-        </div>
-        <div class="slot" id="slot-overall">
-          <div class="slot-label">Overall</div>
-          <div class="slot-value" id="slot-overall-value">40+</div>
-        </div>
+    <div class="top-grid">
+      <div class="panel catalog">
+        <h2 class="section-title">Card Catalogue</h2>
+        <div id="catalogGrid" class="catalog-grid"></div>
       </div>
 
-      <div class="main-area">
-        <div class="card-zone">
-          <div id="card" class="card bronze">
-            <div class="card-top">
-              <div class="rating-badge" id="card-rating">
-                40
-                <div class="shine"></div>
-              </div>
-              <div class="pos-pill" id="card-pos">GK</div>
-            </div>
+      <div class="panel tracker">
+        <h2 class="section-title">Completion Tracker</h2>
+        <div id="trackerGrid" class="tracker-grid"></div>
+      </div>
+    </div>
 
-            <div class="meta-row">
-              <div class="club">
-                <div class="club-badge">FC</div>
-                <div class="club-name" id="club-name">CLUB</div>
-              </div>
-              <div style="flex:1"></div>
-              <div class="nation">
-                <div class="nation-badge">GB</div>
-              </div>
+    <div class="panel pack-area">
+      <h2 class="section-title">Pack Opening</h2>
+      <div class="pack-stage">
+        <div class="pack-card-wrap">
+          <div id="packCard" class="pack-card">
+            <div class="top">
+              <div class="rating-bubble" id="packRating">--</div>
+              <div class="position-pill" id="packPos">??</div>
             </div>
-
-            <div class="card-portrait">
-              <div class="photo" id="portrait-mark">FUT
-                <div class="photo-watermark" id="photo-watermark">FUT</div>
-              </div>
+            <div class="art" id="packArt"></div>
+            <div class="card-name" id="packName">READY</div>
+            <div class="small-meta">
+              <span id="packRarity">Hidden</span>
+              <span id="packClub">Club</span>
             </div>
-
-            <div class="card-name hidden-name" id="card-name">READY</div>
+            <div class="stats-grid">
+              <div class="stat-cell"><div class="label">PAC</div><div class="val" id="s1">--</div></div>
+              <div class="stat-cell"><div class="label">SHO</div><div class="val" id="s2">--</div></div>
+              <div class="stat-cell"><div class="label">PAS</div><div class="val" id="s3">--</div></div>
+              <div class="stat-cell"><div class="label">DRI</div><div class="val" id="s4">--</div></div>
+              <div class="stat-cell"><div class="label">DEF</div><div class="val" id="s5">--</div></div>
+              <div class="stat-cell"><div class="label">PHY</div><div class="val" id="s6">--</div></div>
+            </div>
           </div>
         </div>
 
-        <div class="controls">
-          <button id="spin-btn" class="btn btn-spin">SPIN!</button>
-          <button id="stop-btn" class="btn btn-stop" disabled>STOP</button>
-          <button id="reset-btn" class="btn btn-reset" title="Restart">↻</button>
-          <div class="status" id="status">Press Spin to start.</div>
+        <div class="pack-controls">
+          <button id="openPackBtn" class="action-btn spin-btn">Open Pack</button>
+          <button id="nextRevealBtn" class="action-btn open-btn" disabled>Reveal</button>
+          <button id="resetBtn" class="action-btn reset-btn">Reset Collection</button>
+          <div id="status" class="status">Pick a card type and open a pack.</div>
         </div>
       </div>
     </div>
 
-    <div class="history">
-      <h2>Packed Squad History</h2>
-      <div id="history-grid" class="history-grid"></div>
+    <div class="panel collection">
+      <h2 class="section-title">Your Collection</h2>
+      <div id="collectionGrid" class="collection-grid"></div>
     </div>
   </div>
 
   <script>
-    const roster = [
-      { name:"Ethan", rating:80, position:"RB" },
-      { name:"Reuben", rating:80, position:"LB" },
-      { name:"Seb", rating:80, position:"CB" },
-      { name:"Ari", rating:98, position:"LW", rarity:"FUTTIES" },
-      { name:"James", rating:83, position:"ST" },
-      { name:"Ben", rating:83, position:"ST" },
-      { name:"Noah", rating:96, position:"CM", rarity:"JOGA BONITO" },
-      { name:"Donny", rating:82, position:"CM" },
-      { name:"Charlie", rating:84, position:"ST" },
-      { name:"Flynn", rating:80, position:"LM" },
-      { name:"Mason", rating:98, position:"CAM", rarity:"FUTTIES" },
-      { name:"Louis", rating:82, position:"RW" },
-      { name:"Hugo", rating:81, position:"ST" },
-      { name:"Lachlan", rating:81, position:"CB" },
-      { name:"Harry L", rating:93, position:"CB", rarity:"TOTW" },
-      { name:"Martin", rating:98, position:"CDM", rarity:"FUTTIES" },
-      { name:"Luke", rating:96, position:"GK", rarity:"ICON GK" },
-      { name:"Jack", rating:85, position:"GK" },
-      { name:"Archie", rating:82, position:"LB" },
-      { name:"CJ", rating:82, position:"RB" },
-      { name:"Harry R", rating:87, position:"CAM" },
-      { name:"George", rating:80, position:"ST" },
-      { name:"Aidan", rating:85, position:"RM" },
-      { name:"Fred", rating:81, position:"CAM" },
-      { name:"Felix", rating:83, position:"CDM" },
-      { name:"Gus", rating:80, position:"LB" },
-      { name:"Jack", rating:98, position:"GK", rarity:"GG" },
-      { name:"Gio", rating:84, position:"CB" }
+    const cards = [
+      { name:"Ethan", rating:80, position:"RB", rarity:"Bronze", club:"Pine", stats:[82,30,62,78,55,70] },
+      { name:"Reuben", rating:80, position:"LB", rarity:"Bronze", club:"Pine", stats:[81,28,60,77,57,68] },
+      { name:"Seb", rating:80, position:"CB", rarity:"Bronze", club:"Pine", stats:[62,20,50,58,84,76] },
+      { name:"Ari", rating:98, position:"LW", rarity:"FUTTIES", club:"JTC", stats:[99,96,94,99,38,71] },
+      { name:"James", rating:83, position:"ST", rarity:"Gold", club:"JTC", stats:[84,82,63,79,28,74] },
+      { name:"Ben", rating:83, position:"ST", rarity:"Gold", club:"JTC", stats:[83,81,61,78,30,73] },
+      { name:"Noah", rating:96, position:"CM", rarity:"JOGA BONITO", club:"JTC", stats:[97,85,96,98,44,75] },
+      { name:"Donny", rating:82, position:"CM", rarity:"Silver", club:"JTC", stats:[79,68,80,80,52,68] },
+      { name:"Charlie", rating:84, position:"ST", rarity:"Gold", club:"JTC", stats:[83,84,66,79,31,73] },
+      { name:"Flynn", rating:80, position:"LM", rarity:"Bronze", club:"Pine", stats:[80,31,64,77,44,66] },
+      { name:"Mason", rating:98, position:"CAM", rarity:"FUTTIES", club:"JTC", stats:[95,91,99,98,46,72] },
+      { name:"Louis", rating:82, position:"RW", rarity:"Silver", club:"JTC", stats:[83,70,78,81,35,66] },
+      { name:"Hugo", rating:81, position:"ST", rarity:"Silver", club:"JTC", stats:[82,77,65,77,26,68] },
+      { name:"Lachlan", rating:81, position:"CB", rarity:"Silver", club:"Pine", stats:[60,18,49,56,82,73] },
+      { name:"Harry L", rating:93, position:"CB", rarity:"TOTW", club:"JTC", stats:[65,34,64,68,92,88] },
+      { name:"Martin", rating:98, position:"CDM", rarity:"FUTTIES", club:"JTC", stats:[89,84,90,92,97,96] },
+      { name:"Luke", rating:96, position:"GK", rarity:"ICON GK", club:"JTC", stats:[18,12,28,24,96,88] },
+      { name:"Jack", rating:85, position:"GK", rarity:"Gold", club:"JTC", stats:[24,14,35,27,85,78] },
+      { name:"Archie", rating:82, position:"LB", rarity:"Silver", club:"Pine", stats:[81,29,67,79,53,69] },
+      { name:"CJ", rating:82, position:"RB", rarity:"Silver", club:"Pine", stats:[83,32,66,80,54,70] },
+      { name:"Harry R", rating:87, position:"CAM", rarity:"Gold", club:"JTC", stats:[84,78,88,87,42,72] },
+      { name:"George", rating:80, position:"ST", rarity:"Bronze", club:"Pine", stats:[79,74,61,72,22,65] },
+      { name:"Aidan", rating:85, position:"RM", rarity:"Gold", club:"JTC", stats:[86,78,82,83,40,70] },
+      { name:"Fred", rating:81, position:"CAM", rarity:"Silver", club:"JTC", stats:[79,66,75,78,33,66] },
+      { name:"Felix", rating:83, position:"CDM", rarity:"Gold", club:"JTC", stats:[72,58,78,76,80,77] },
+      { name:"Gus", rating:80, position:"LB", rarity:"Bronze", club:"Pine", stats:[80,25,63,75,44,66] },
+      { name:"Jack", rating:98, position:"GK", rarity:"GG", club:"JTC", stats:[25,18,30,24,98,86] },
+      { name:"Gio", rating:84, position:"CB", rarity:"Gold", club:"JTC", stats:[64,24,59,61,83,77] }
     ];
 
-    const spinBtn = document.getElementById("spin-btn");
-    const stopBtn = document.getElementById("stop-btn");
-    const resetBtn = document.getElementById("reset-btn");
+    const rarityOrder = ["Bronze","Silver","Gold","TOTW","JOGA BONITO","ICON GK","FUTTIES","GG"];
+
+    const catalogGrid = document.getElementById("catalogGrid");
+    const trackerGrid = document.getElementById("trackerGrid");
+    const collectionGrid = document.getElementById("collectionGrid");
     const statusEl = document.getElementById("status");
-    const confettiEl = document.getElementById("confetti");
+    const flash = document.getElementById("flash");
 
-    const slotPositionValue = document.getElementById("slot-position-value");
-    const slotRarityValue = document.getElementById("slot-rarity-value");
-    const slotOverallValue = document.getElementById("slot-overall-value");
+    const packCard = document.getElementById("packCard");
+    const packRating = document.getElementById("packRating");
+    const packPos = document.getElementById("packPos");
+    const packName = document.getElementById("packName");
+    const packRarity = document.getElementById("packRarity");
+    const packClub = document.getElementById("packClub");
+    const packArt = document.getElementById("packArt");
+    const statEls = [
+      document.getElementById("s1"),
+      document.getElementById("s2"),
+      document.getElementById("s3"),
+      document.getElementById("s4"),
+      document.getElementById("s5"),
+      document.getElementById("s6"),
+    ];
 
-    const card = document.getElementById("card");
-    const cardRating = document.getElementById("card-rating");
-    const cardPos = document.getElementById("card-pos");
-    const cardName = document.getElementById("card-name");
-    const portraitMark = document.getElementById("portrait-mark");
-    const historyGrid = document.getElementById("history-grid");
-    const clubName = document.getElementById("club-name");
-    const photoWatermark = document.getElementById("photo-watermark");
+    const openPackBtn = document.getElementById("openPackBtn");
+    const nextRevealBtn = document.getElementById("nextRevealBtn");
+    const resetBtn = document.getElementById("resetBtn");
 
-    const positions = ["GK","CB","LB","RB","CM","CDM","CAM","LM","RM","LW","RW","ST"];
-    const rarities = ["Bronze","Silver","Gold","TOTW","TOTS","FUTTIES","GG","JOGA BONITO","ICON GK"];
-    const rarityClasses = {
-      Bronze: "bronze",
-      Silver: "silver",
-      Gold: "gold",
-      TOTW: "totw",
-      TOTS: "tots",
-      FUTTIES: "futties",
-      GG: "gg",
-      "JOGA BONITO": "jb",
-      "ICON GK": "icon"
-    };
+    let collection = new Set(JSON.parse(localStorage.getItem("jtc_collection") || "[]"));
+    let pendingCard = null;
+    let revealPhase = 0;
+    let revealTimer = null;
+    let flashing = false;
 
-    let currentStage = 0;
-    let spinning = false;
-    let intervalId = null;
-    let currentPick = null;
-    let currentPosition = "GK";
-    let currentRarity = "Bronze";
-
-    function getRarity(player) {
-      if (player.rarity) return player.rarity;
-      if (player.name === "Jack" && player.position === "GK" && player.rating >= 98) return "GG";
-      if (player.rating >= 99) return "FUTTIES";
-      if (player.rating >= 96) return "TOTS";
-      if (player.rating >= 93) return "TOTW";
-      if (player.rating >= 85) return "Gold";
-      if (player.rating >= 80) return "Silver";
-      return "Bronze";
+    function saveCollection() {
+      localStorage.setItem("jtc_collection", JSON.stringify([...collection]));
     }
 
-    function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function getRarityClass(rarity) {
+      return {
+        Bronze:"bronze-card",
+        Silver:"silver-card",
+        Gold:"gold-card",
+        TOTW:"totw-card",
+        "JOGA BONITO":"jb-card",
+        "ICON GK":"icon-card",
+        FUTTIES:"futties-card",
+        GG:"gg-card"
+      }[rarity] || "gold-card";
+    }
+
+    function getPackClass(rarity) {
+      return {
+        Bronze:"flash-bronze",
+        Silver:"flash-silver",
+        Gold:"flash-gold",
+        TOTW:"flash-totw",
+        "JOGA BONITO":"flash-jb",
+        "ICON GK":"flash-icon",
+        FUTTIES:"flash-futties",
+        GG:"flash-gg"
+      }[rarity] || "flash-gold";
+    }
+
+    function rarityColorText(rarity) {
+      return rarity;
+    }
+
+    function renderCatalog() {
+      catalogGrid.innerHTML = "";
+      cards.forEach(card => {
+        const el = document.createElement("div");
+        el.className = `mini-card ${getRarityClass(card.rarity)}`;
+        el.innerHTML = `
+          <div class="rarity">${card.rarity}</div>
+          <div class="name">${card.name}</div>
+          <div class="pos">${card.position}</div>
+          <div class="rating">${card.rating}</div>
+        `;
+        catalogGrid.appendChild(el);
+      });
+    }
+
+    function renderTracker() {
+      const groups = {};
+      rarityOrder.forEach(r => groups[r] = cards.filter(c => c.rarity === r));
+
+      trackerGrid.innerHTML = "";
+      rarityOrder.forEach(rarity => {
+        const total = groups[rarity].length;
+        const have = groups[rarity].filter(c => collection.has(`${c.name}|${c.position}|${c.rating}|${c.rarity}`)).length;
+        const done = total > 0 && have === total;
+
+        const box = document.createElement("div");
+        box.className = "set-box";
+        box.innerHTML = `
+          <h3>${rarity}</h3>
+          <div class="count">${have}/${total}</div>
+          <div class="sub">${done ? "Completed" : "Still missing cards"}</div>
+        `;
+        trackerGrid.appendChild(box);
+      });
+    }
+
+    function renderCollection() {
+      collectionGrid.innerHTML = "";
+      const byRarity = {};
+      rarityOrder.forEach(r => byRarity[r] = cards.filter(c => c.rarity === r));
+
+      rarityOrder.forEach(rarity => {
+        const items = byRarity[rarity];
+        if (!items.length) return;
+
+        const total = items.length;
+        const have = items.filter(c => collection.has(`${c.name}|${c.position}|${c.rating}|${c.rarity}`)).length;
+        const done = have === total;
+
+        const el = document.createElement("div");
+        el.className = "collection-item";
+        el.innerHTML = `
+          <div class="head">
+            <div class="title">${rarity}</div>
+            <div class="completion ${done ? "done" : "missing"}">${have}/${total}</div>
+          </div>
+          <ul>
+            ${items.map(c => `<li>${collection.has(`${c.name}|${c.position}|${c.rating}|${c.rarity}`) ? "✓" : "✕"} ${c.name} (${c.rating})</li>`).join("")}
+          </ul>
+        `;
+        collectionGrid.appendChild(el);
+      });
+    }
+
+    function setHiddenPack() {
+      packCard.className = "pack-card flash-gold";
+      packRating.textContent = "--";
+      packPos.textContent = "??";
+      packName.textContent = "READY";
+      packName.style.color = "white";
+      packRarity.textContent = "Hidden";
+      packClub.textContent = "Club";
+      statEls.forEach(el => el.textContent = "--");
+      packCard.classList.remove("reveal");
+    }
+
+    function flashScreen(rarity) {
+      flash.className = `flash-overlay ${getPackClass(rarity)} on`;
+      setTimeout(() => flash.classList.remove("on"), 220);
+    }
 
     function showConfetti() {
-      const colors = ["#ff4d6d","#ffd166","#06d6a0","#4cc9f0","#b5179e","#ffffff"];
-      const count = 70;
-      for (let i = 0; i < count; i++) {
+      const colors = ["#ff9f68","#ffd166","#ef4c93","#7bdff2","#ffffff"];
+      for (let i = 0; i < 60; i++) {
         const piece = document.createElement("div");
-        piece.className = "confetti-piece";
-        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.position = "fixed";
+        piece.style.left = (Math.random() * 100) + "vw";
         piece.style.top = "-20px";
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
-        piece.style.animationDuration = (900 + Math.random() * 900) + "ms";
         piece.style.width = (6 + Math.random() * 8) + "px";
         piece.style.height = (10 + Math.random() * 14) + "px";
-        confettiEl.appendChild(piece);
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.borderRadius = "2px";
+        piece.style.zIndex = 9999;
+        piece.style.pointerEvents = "none";
+        piece.style.animation = `confettiFall ${(1000 + Math.random() * 900)}ms linear forwards`;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(piece);
         setTimeout(() => piece.remove(), 2200);
       }
     }
 
-    function setSpecialCardEffects(rarity) {
-      card.classList.remove("gold","silver","bronze","totw","tots","futties","gg","jb","icon");
-      card.classList.add(rarityClasses[rarity] || "gold");
+    function choosePackCard() {
+      return cards[Math.floor(Math.random() * cards.length)];
     }
 
-    function updateCard(player, rarityOverride = null, revealName = true) {
-      const rarity = rarityOverride || getRarity(player);
-      currentPick = player;
-      currentRarity = rarity;
-      currentPosition = player.position;
-
-      setSpecialCardEffects(rarity);
-
-      cardRating.textContent = player.rating;
-      cardPos.textContent = player.position;
-
-      if (revealName) {
-        cardName.textContent = player.name.toUpperCase();
-        cardName.classList.remove("hidden-name");
-      } else {
-        cardName.textContent = "READY";
-        cardName.classList.add("hidden-name");
-      }
-
-      let markText = "FUT";
-      if (rarity === "GG") markText = "GG";
-      if (rarity === "ICON GK") markText = "ICON";
-      if (rarity === "JOGA BONITO") markText = "JB";
-      portraitMark.textContent = markText;
-      photoWatermark.textContent = markText;
-
-      slotPositionValue.textContent = player.position;
-      slotRarityValue.textContent = rarity;
-      slotOverallValue.textContent = player.rating >= 90 ? `${player.rating}+` : `${player.rating}`;
-
-      clubName.textContent = player.name.length > 6 ? player.name.slice(0,6).toUpperCase() : player.name.toUpperCase();
-
-      const photo = document.querySelector('.photo');
-      if(photo) {
-        if(rarity === 'Gold' || rarity === 'FUTTIES' || rarity === 'TOTS') {
-          photo.style.backgroundImage = 'linear-gradient(135deg, rgba(255,255,255,.02), rgba(0,0,0,.06)), repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px)';
-        } else if(rarity === 'Silver') {
-          photo.style.backgroundImage = 'linear-gradient(135deg, rgba(255,255,255,.03), rgba(0,0,0,.04))';
-        } else if(rarity === 'GG' || rarity === 'ICON GK') {
-          photo.style.backgroundImage = 'linear-gradient(135deg, rgba(255,255,255,.01), rgba(0,0,0,.16))';
-        } else {
-          photo.style.backgroundImage = 'linear-gradient(135deg, rgba(255,255,255,.01), rgba(0,0,0,.06))';
-        }
-      }
-    }
-
-    function addToHistory(player, rarity) {
-      const item = document.createElement("div");
-      item.className = `mini-card ${rarityClasses[rarity] || "gold"}`;
-      item.innerHTML = `
-        <div class="mini-pos">${player.position}</div>
-        <div class="mini-rating">${player.rating}</div>
-        <div class="mini-name">${player.name}</div>
-      `;
-      historyGrid.prepend(item);
-    }
-
-    function resetGame() {
-      currentStage = 0;
-      spinning = false;
-      currentPick = null;
-      clearInterval(intervalId);
-      intervalId = null;
-
-      currentPosition = "GK";
-      currentRarity = "Bronze";
-
-      slotPositionValue.textContent = "GK";
-      slotRarityValue.textContent = "Bronze";
-      slotOverallValue.textContent = "40+";
-
-      updateCard({ name:"READY", rating:40, position:"GK" }, "Bronze", false);
-
-      statusEl.textContent = "Press Spin to start.";
-      spinBtn.disabled = false;
-      stopBtn.disabled = true;
-      spinBtn.textContent = "SPIN!";
-    }
-
-    function startSpin() {
-      if (spinning) return;
-
-      spinning = true;
-      spinBtn.disabled = true;
-      stopBtn.disabled = false;
-      statusEl.textContent = currentStage === 0
-        ? "Spin position..."
-        : currentStage === 1
-          ? "Spin rarity..."
-          : "Spin player...";
-
-      clearInterval(intervalId);
-      intervalId = setInterval(() => {
-        if (currentStage === 0) {
-          slotPositionValue.textContent = randomItem(positions);
-        } else if (currentStage === 1) {
-          slotRarityValue.textContent = randomItem(rarities);
-        } else {
-          const p = randomItem(roster);
-          slotOverallValue.textContent = p.rating >= 90 ? `${p.rating}+` : `${p.rating}`;
-        }
-      }, 70);
-    }
-
-    function stopSpin() {
-      if (!spinning) return;
-
-      clearInterval(intervalId);
-      intervalId = null;
-      spinning = false;
-      stopBtn.disabled = true;
-      spinBtn.disabled = false;
-
-      if (currentStage === 0) {
-        const pos = randomItem(positions);
-        currentPosition = pos;
-        slotPositionValue.textContent = pos;
-        statusEl.textContent = `Position locked: ${pos}. Press Spin again.`;
-        currentStage = 1;
-        return;
-      }
-
-      if (currentStage === 1) {
-        let pool = roster.filter(p => p.position === currentPosition);
-        if (!pool.length) pool = roster;
-
-        const chosen = randomItem(pool);
-        const rarity = getRarity(chosen);
-        currentRarity = rarity;
-        slotRarityValue.textContent = rarity;
-
-        cardName.classList.add("hidden-name");
-        statusEl.textContent = `Rarity locked: ${rarity}. Press Spin again.`;
-        currentStage = 2;
-        return;
-      }
-
-      if (currentStage === 2) {
-        let pool = roster.filter(p => p.position === currentPosition);
-
-        if (currentRarity === "GG") {
-          pool = roster.filter(p => p.name === "Jack" && p.position === "GK" && p.rating >= 98);
-        } else if (currentRarity === "ICON GK") {
-          pool = roster.filter(p => p.name === "Luke" && p.position === "GK" && p.rating >= 96);
-        } else if (currentRarity === "JOGA BONITO") {
-          pool = roster.filter(p => p.name === "Noah" && p.position === "CM" && p.rating >= 96);
-        } else {
-          pool = pool.filter(p => getRarity(p) === currentRarity);
-        }
-
-        if (!pool.length) pool = roster;
-
-        const player = randomItem(pool);
-        const rarity = getRarity(player);
-
-        updateCard(player, rarity, true);
-        addToHistory(player, rarity);
-        showConfetti();
-
-        statusEl.textContent = `Packed ${player.name} (${player.rating} - ${player.position})`;
-        currentStage = 0;
-        return;
-      }
-    }
-
-    spinBtn.addEventListener("click", startSpin);
-    stopBtn.addEventListener("click", stopSpin);
-    resetBtn.addEventListener("click", resetGame);
-
-    resetGame();
-  </script>
-</body>
-</html>
+    function openPack() {
