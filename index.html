@@ -2,464 +2,636 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JTC FIFA SPINS</title>
+  <title>FIFA Pack Spins – Pro Editor</title>
   <style>
-    :root{
-      --bg1:#fff3ea;
-      --bg2:#ffd9c0;
-      --panel:#fffaf5;
-      --text:#6b4234;
-      --muted:#9a7464;
-      --peach:#ffb38a;
-      --peach-dark:#f08b5d;
-      --shadow:0 14px 30px rgba(140, 89, 59, .16);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial, sans-serif;
-      min-height:100vh;
-      color:var(--text);
-      background:linear-gradient(180deg,var(--bg1),var(--bg2));
-    }
-    .app{
-      width:min(1120px, calc(100% - 20px));
-      margin:0 auto;
-      padding:18px 0 36px;
-    }
-    h1,h2,h3,p{margin:0}
-    .hero{text-align:center;margin-bottom:16px}
-    .hero h1{font-size:clamp(2rem,4vw,3.4rem);letter-spacing:.06em}
-    .hero p{margin-top:8px;color:var(--muted);font-weight:700}
+    :root {
+      --bg: #05070b;
+      --panel: rgba(18, 24, 36, 0.85);
+      --panel-strong: rgba(18, 24, 36, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #eaf2ff;
+      --muted: #9fb3c8;
+      --accent: #00e5ff;
+      --accent-2: #7b61ff;
+      --accent-gradient: linear-gradient(135deg, #00e5ff, #7b61ff);
+      --glow: 0 0 30px rgba(0, 229, 255, 0.15);
 
-    .panel{
-      background:rgba(255,248,243,.9);
-      border:1px solid rgba(255,255,255,.65);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      padding:14px;
-      margin-bottom:14px;
+      --rare-common: #a0a0a0;
+      --rare-rare: #4da6ff;
+      --rare-epic: #b366ff;
+      --rare-legendary: #ffcc00;
+      --rare-icon: #ff66cc;
     }
 
-    .section-title{
-      font-size:1rem;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-      margin-bottom:12px;
-      color:#7a4636;
+    * {
+      box-sizing: border-box;
     }
 
-    .top-grid{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:14px;
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 50% -10%, #0f1a2a 0%, #05070b 60%),
+        radial-gradient(800px 400px at 10% 10%, rgba(123, 97, 255, 0.08), transparent 60%),
+        radial-gradient(800px 400px at 90% 20%, rgba(0, 229, 255, 0.08), transparent 60%);
+      color: var(--text);
+      min-height: 100vh;
     }
 
-    .grid{
-      display:grid;
-      gap:10px;
-      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
     }
 
-    .mini-card, .set-box, .collection-item{
-      border-radius:16px;
-      padding:12px;
-      background:#fff;
-      border:1px solid rgba(122,70,54,.12);
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
     }
 
-    .mini-card{
-      color:#fff;
-      min-height:142px;
-      box-shadow:0 8px 18px rgba(0,0,0,.08);
-    }
-    .mini-card .rarity{
-      display:inline-block;
-      font-size:.68rem;
-      font-weight:800;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      padding:5px 8px;
-      border-radius:999px;
-      background:rgba(255,255,255,.18);
-      margin-bottom:10px;
-    }
-    .mini-card .name{font-size:1.25rem;font-weight:900;line-height:1.05}
-    .mini-card .pos{margin-top:8px;font-size:.9rem;font-weight:700}
-    .mini-card .rating{margin-top:14px;font-size:2rem;font-weight:900}
-
-    .bronze-card{background:linear-gradient(135deg,#b06a3f,#7d4422)}
-    .silver-card{background:linear-gradient(135deg,#e0e7ef,#a6b3c0);color:#283241}
-    .gold-card{background:linear-gradient(135deg,#ffd978,#d79a20);color:#4b3205}
-    .totw-card{background:linear-gradient(135deg,#2d3b57,#0f1728)}
-    .jb-card{background:linear-gradient(135deg,#ffe76d,#38bdf8);color:#172033}
-    .icon-card{background:linear-gradient(135deg,#fff0c5,#c9a256,#7e5d23)}
-    .futties-card{background:linear-gradient(135deg,#ef4c93,#c41f67,#3bc9df)}
-    .gg-card{background:linear-gradient(135deg,#fff2c7,#c89f43,#7a5d16);color:#2f2002}
-
-    .tracker-grid{
-      display:grid;
-      gap:10px;
-      grid-template-columns:repeat(2,1fr);
-    }
-    .set-box h3{font-size:.98rem;color:#7a4636;margin-bottom:6px}
-    .set-box .count{font-size:1.7rem;font-weight:900;color:#9b5a44}
-    .set-box .sub{margin-top:4px;font-size:.87rem;color:var(--muted);font-weight:700}
-
-    .pack-stage{
-      display:grid;
-      grid-template-columns:1fr .8fr;
-      gap:14px;
-      align-items:center;
-    }
-    .pack-wrap{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:360px;
-    }
-    .pack-card{
-      width:290px;
-      height:410px;
-      border-radius:22px;
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(180deg,#f4b48e,#e98359);
-      box-shadow:0 16px 36px rgba(140,89,59,.25), inset 0 0 0 2px rgba(255,255,255,.2);
-      border:4px solid rgba(255,255,255,.3);
-      transform:scale(.98);
-      opacity:.8;
-      transition:transform .3s ease, opacity .3s ease;
-    }
-    .pack-card.reveal{animation:revealPop .6s ease-out forwards}
-    @keyframes revealPop{
-      0%{transform:scale(.82);opacity:0}
-      45%{transform:scale(1.03);opacity:1}
-      100%{transform:scale(1);opacity:1}
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px 14px 0;
-      color:#fff;
-      font-weight:900;
-      position:relative;
-      z-index:2;
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.3px;
     }
-    .rating-bubble{
-      width:74px;height:74px;border-radius:50%;
-      background:rgba(255,255,255,.18);
-      border:2px solid rgba(255,255,255,.35);
-      display:flex;align-items:center;justify-content:center;
-      font-size:2rem;
-    }
-    .position-pill{
-      background:rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.3);
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:1rem;
-    }
-    .art{
-      margin:10px 14px;
-      height:210px;
-      border-radius:16px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.2);
-    }
-    .card-name{
-      margin:6px 12px 0;
-      font-size:1.55rem;
-      font-weight:900;
-      text-align:center;
-      color:#fff;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-      min-height:30px;
-    }
-    .small-meta{
-      margin:8px 12px 0;
-      display:flex;
-      justify-content:space-between;
-      color:rgba(255,255,255,.92);
-      font-weight:700;
-      font-size:.92rem;
-    }
-    .stats-grid{
-      margin:16px 12px 0;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-    }
-    .stat-cell{
-      background:rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.24);
-      border-radius:12px;
-      padding:8px 6px;
-      text-align:center;
-      color:#fff;
-    }
-    .label{font-size:.68rem;font-weight:800;letter-spacing:.06em}
-    .val{font-size:1.18rem;font-weight:900;margin-top:4px}
 
-    .controls{display:flex;flex-direction:column;gap:10px}
-    button{
-      border:none;border-radius:14px;padding:15px 16px;
-      font-weight:900;font-size:1.05rem;cursor:pointer;
-      box-shadow:var(--shadow);
-      text-transform:uppercase;
+    .brand-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
     }
-    .spin{background:linear-gradient(180deg,#ffb58f,#f28d60);color:#fff}
-    .reveal-btn{background:linear-gradient(180deg,#fff,#f0d9c9);color:#7a4636}
-    .reset{background:linear-gradient(180deg,#f5c7b0,#eba07e);color:#7a4636}
-    button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}
-    .status{min-height:22px;color:#9a6e5d;font-weight:700;margin-top:4px}
 
-    .hidden{display:none !important}
-
-    .collection-grid{
-      display:grid;
-      gap:10px;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
     }
-    .collection-item .head{
-      display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
-    }
-    .collection-item .title{font-weight:900;color:#7a4636}
-    .collection-item .completion{font-weight:900}
-    .collection-item .done{color:#2a8f4a}
-    .collection-item .missing{color:#b05a44}
-    .collection-item ul{list-style:none;padding:0;margin:0;display:grid;gap:6px;font-size:.92rem}
-    .collection-item li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    @media (max-width:900px){
-      .top-grid,.pack-stage{grid-template-columns:1fr}
-      .pack-wrap{min-height:unset}
-      .pack-card{width:min(100%,290px);height:400px}
+    .balance span {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-1px);
+    }
+
+    /* Store */
+    .store {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .pack-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pack-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(400px 150px at 50% -20%, rgba(0, 229, 255, 0.12), transparent 60%);
+      pointer-events: none;
+    }
+
+    .pack-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--glow);
+      border-color: rgba(0, 229, 255, 0.35);
+    }
+
+    .pack-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin: 10px 0 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .pack-price {
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+    }
+
+    .pack-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .pack-art {
+      width: 100%;
+      height: 140px;
+      background:
+        linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(123, 97, 255, 0.08)),
+        linear-gradient(180deg, #0f1622, #0a0f18);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: #cfe3ff;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pack-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(220px 100px at 50% -10%, rgba(255, 255, 255, 0.08), transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Open area */
+    .open-area {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .open-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    .pack-preview {
+      width: 200px;
+      height: 240px;
+      margin: 0 auto 18px;
+      background:
+        linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(123, 97, 255, 0.1)),
+        linear-gradient(180deg, #0f1622, #0a0f18);
+      border: 2px solid rgba(0, 229, 255, 0.25);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: #cfe3ff;
+      letter-spacing: 1.2px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), inset 0 0 40px rgba(0, 229, 255, 0.06);
+    }
+
+    .pack-preview::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(260px 120px at 50% -20%, rgba(0, 229, 255, 0.18), transparent 60%);
+      pointer-events: none;
+    }
+
+    .pack-preview.spin {
+      animation: spinPack 0.6s ease-in-out;
+    }
+
+    @keyframes spinPack {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.06); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .open-btn {
+      background: var(--accent-gradient);
+      color: #041018;
+      border: none;
+      padding: 11px 26px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.15s ease;
+      box-shadow: 0 8px 25px rgba(0, 229, 255, 0.25);
+    }
+
+    .open-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow: 0 12px 35px rgba(0, 229, 255, 0.35);
+    }
+
+    .open-btn:disabled {
+      filter: grayscale(0.7) brightness(0.7);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(220px 100px at 50% -10%, rgba(255, 255, 255, 0.06), transparent 60%);
+      pointer-events: none;
+    }
+
+    .card-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .card-rating {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card-rarity {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 8px;
+      display: inline-block;
+      align-self: center;
+      border: 1px solid;
+    }
+
+    .rarity-common {
+      background: rgba(160, 160, 160, 0.12);
+      color: var(--rare-common);
+      border-color: rgba(160, 160, 160, 0.35);
+    }
+
+    .rarity-rare {
+      background: rgba(77, 166, 255, 0.12);
+      color: var(--rare-rare);
+      border-color: rgba(77, 166, 255, 0.35);
+    }
+
+    .rarity-epic {
+      background: rgba(179, 102, 255, 0.12);
+      color: var(--rare-epic);
+      border-color: rgba(179, 102, 255, 0.35);
+    }
+
+    .rarity-legendary {
+      background: rgba(255, 204, 0, 0.12);
+      color: var(--rare-legendary);
+      border-color: rgba(255, 204, 0, 0.35);
+    }
+
+    .rarity-icon {
+      background: rgba(255, 102, 204, 0.12);
+      color: var(--rare-icon);
+      border-color: rgba(255, 102, 204, 0.35);
+    }
+
+    /* Inventory */
+    .inventory {
+      margin-top: 32px;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .inventory-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .balance {
+        width: 100%;
+        justify-content: space-between;
+      }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="hero">
-      <h1>JTC FIFA SPINS</h1>
-      <p>Open packs, collect cards, and complete every rarity set.</p>
-    </div>
-
-    <div class="top-grid">
-      <div class="panel">
-        <div class="section-title">Card Catalogue</div>
-        <div id="catalogGrid" class="grid"></div>
+    <header>
+      <div class="brand">
+        <div class="brand-title">FIFA Pack Spins</div>
+        <div class="brand-sub">Pro Editor Simulator</div>
       </div>
-
-      <div class="panel">
-        <div class="section-title">Completion Tracker</div>
-        <div id="trackerGrid" class="tracker-grid"></div>
+      <div class="balance">
+        <div>Coins: <span id="coinBalance">5000</span></div>
+        <button class="btn-ghost" id="addCoinsBtn">+ Add 5000</button>
       </div>
-    </div>
+    </header>
 
-    <div class="panel">
-      <div class="section-title">Pack Opening</div>
-      <div class="pack-stage">
-        <div class="pack-wrap">
-          <div id="packCard" class="pack-card">
-            <div class="top">
-              <div class="rating-bubble" id="packRating">--</div>
-              <div class="position-pill" id="packPos">??</div>
-            </div>
-            <div class="art"></div>
-            <div id="packName" class="card-name hidden">READY</div>
-            <div class="small-meta">
-              <span id="packRarity">Hidden</span>
-              <span id="packClub">Club</span>
-            </div>
-            <div class="stats-grid">
-              <div class="stat-cell"><div class="label">PAC</div><div class="val" id="s1">--</div></div>
-              <div class="stat-cell"><div class="label">SHO</div><div class="val" id="s2">--</div></div>
-              <div class="stat-cell"><div class="label">PAS</div><div class="val" id="s3">--</div></div>
-              <div class="stat-cell"><div class="label">DRI</div><div class="val" id="s4">--</div></div>
-              <div class="stat-cell"><div class="label">DEF</div><div class="val" id="s5">--</div></div>
-              <div class="stat-cell"><div class="label">PHY</div><div class="val" id="s6">--</div></div>
-            </div>
-          </div>
-        </div>
+    <section class="store" id="storeSection">
+      <!-- Packs injected by JS -->
+    </section>
 
-        <div class="controls">
-          <button id="openBtn" class="spin">Open Pack</button>
-          <button id="revealBtn" class="reveal-btn" disabled>Reveal</button>
-          <button id="resetBtn" class="reset">Reset Collection</button>
-          <div id="status" class="status">Pick a card type and open a pack.</div>
-        </div>
+    <section class="open-area">
+      <div class="open-title" id="openTitle">Select a pack to open</div>
+      <div class="pack-preview" id="packPreview">Pack</div>
+      <button class="open-btn" id="openBtn" disabled>Open Pack</button>
+      <div class="results" id="resultsArea"></div>
+    </section>
+
+    <section class="inventory">
+      <div class="section-title">Your Players</div>
+      <div class="inventory-list" id="inventoryList">
+        <div class="empty">No players yet. Open some packs!</div>
       </div>
-    </div>
-
-    <div class="panel">
-      <div class="section-title">Your Collection</div>
-      <div id="collectionGrid" class="collection-grid"></div>
-    </div>
+    </section>
   </div>
 
   <script>
-    const cards = [
-      { name:"Ethan", rating:80, position:"RB", rarity:"Bronze", club:"Pine", stats:[82,30,62,78,55,70] },
-      { name:"Reuben", rating:80, position:"LB", rarity:"Bronze", club:"Pine", stats:[81,28,60,77,57,68] },
-      { name:"Seb", rating:80, position:"CB", rarity:"Bronze", club:"Pine", stats:[62,20,50,58,84,76] },
-      { name:"Ari", rating:98, position:"LW", rarity:"FUTTIES", club:"JTC", stats:[99,96,94,99,38,71] },
-      { name:"James", rating:83, position:"ST", rarity:"Gold", club:"JTC", stats:[84,82,63,79,28,74] },
-      { name:"Ben", rating:83, position:"ST", rarity:"Gold", club:"JTC", stats:[83,81,61,78,30,73] },
-      { name:"Noah", rating:96, position:"CM", rarity:"JOGA BONITO", club:"JTC", stats:[97,85,96,98,44,75] },
-      { name:"Donny", rating:82, position:"CM", rarity:"Silver", club:"JTC", stats:[79,68,80,80,52,68] },
-      { name:"Charlie", rating:84, position:"ST", rarity:"Gold", club:"JTC", stats:[83,84,66,79,31,73] },
-      { name:"Flynn", rating:80, position:"LM", rarity:"Bronze", club:"Pine", stats:[80,31,64,77,44,66] },
-      { name:"Mason", rating:98, position:"CAM", rarity:"FUTTIES", club:"JTC", stats:[95,91,99,98,46,72] },
-      { name:"Louis", rating:82, position:"RW", rarity:"Silver", club:"JTC", stats:[83,70,78,81,35,66] },
-      { name:"Hugo", rating:81, position:"ST", rarity:"Silver", club:"JTC", stats:[82,77,65,77,26,68] },
-      { name:"Lachlan", rating:81, position:"CB", rarity:"Silver", club:"Pine", stats:[60,18,49,56,82,73] },
-      { name:"Harry L", rating:93, position:"CB", rarity:"TOTW", club:"JTC", stats:[65,34,64,68,92,88] },
-      { name:"Martin", rating:98, position:"CDM", rarity:"FUTTIES", club:"JTC", stats:[89,84,90,92,97,96] },
-      { name:"Luke", rating:96, position:"GK", rarity:"ICON GK", club:"JTC", stats:[18,12,28,24,96,88] },
-      { name:"Jack", rating:85, position:"GK", rarity:"Gold", club:"JTC", stats:[24,14,35,27,85,78] },
-      { name:"Archie", rating:82, position:"LB", rarity:"Silver", club:"Pine", stats:[81,29,67,79,53,69] },
-      { name:"CJ", rating:82, position:"RB", rarity:"Silver", club:"Pine", stats:[83,32,66,80,54,70] },
-      { name:"Harry R", rating:87, position:"CAM", rarity:"Gold", club:"JTC", stats:[84,78,88,87,42,72] },
-      { name:"George", rating:80, position:"ST", rarity:"Bronze", club:"Pine", stats:[79,74,61,72,22,65] },
-      { name:"Aidan", rating:85, position:"RM", rarity:"Gold", club:"JTC", stats:[86,78,82,83,40,70] },
-      { name:"Fred", rating:81, position:"CAM", rarity:"Silver", club:"JTC", stats:[79,66,75,78,33,66] },
-      { name:"Felix", rating:83, position:"CDM", rarity:"Gold", club:"JTC", stats:[72,58,78,76,80,77] },
-      { name:"Gus", rating:80, position:"LB", rarity:"Bronze", club:"Pine", stats:[80,25,63,75,44,66] },
-      { name:"Jack", rating:98, position:"GK", rarity:"GG", club:"JTC", stats:[25,18,30,24,98,86] },
-      { name:"Gio", rating:84, position:"CB", rarity:"Gold", club:"JTC", stats:[64,24,59,61,83,77] }
+    // ----- Configuration -----
+    const RARITIES = [
+      { name: 'Common',    weight: 60, class: 'rarity-common' },
+      { name: 'Rare',      weight: 25, class: 'rarity-rare' },
+      { name: 'Epic',      weight: 10, class: 'rarity-epic' },
+      { name: 'Legendary', weight: 4,  class: 'rarity-legendary' },
+      { name: 'Icon',      weight: 1,  class: 'rarity-icon' }
     ];
 
-    const rarityOrder = ["Bronze","Silver","Gold","TOTW","JOGA BONITO","ICON GK","FUTTIES","GG"];
-    const rarityClass = {
-      Bronze:"bronze-card", Silver:"silver-card", Gold:"gold-card", TOTW:"totw-card",
-      "JOGA BONITO":"jb-card", "ICON GK":"icon-card", FUTTIES:"futties-card", GG:"gg-card"
-    };
+    const NAMES = [
+      "Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez",
+      "Hernandez","Lopez","Gonzalez","Wilson","Anderson","Thomas","Taylor","Moore","Jackson","Martin",
+      "Lee","Perez","Thompson","White","Harris","Sanchez","Clark","Ramirez","Lewis","Robinson",
+      "Walker","Young","Allen","King","Wright","Scott","Torres","Nguyen","Hill","Flores"
+    ];
 
-    const catalogGrid = document.getElementById("catalogGrid");
-    const trackerGrid = document.getElementById("trackerGrid");
-    const collectionGrid = document.getElementById("collectionGrid");
-    const statusEl = document.getElementById("status");
+    const FIRST_NAMES = [
+      "James","John","Robert","Michael","William","David","Richard","Joseph","Thomas","Charles",
+      "Christopher","Daniel","Matthew","Anthony","Mark","Donald","Steven","Andrew","Paul","Joshua",
+      "Kenneth","Kevin","Brian","George","Timothy","Ronald","Edward","Jason","Jeffrey","Ryan",
+      "Jacob","Gary","Nicholas","Eric","Jonathan","Stephen","Larry","Justin","Scott","Brandon"
+    ];
 
-    const packCard = document.getElementById("packCard");
-    const packRating = document.getElementById("packRating");
-    const packPos = document.getElementById("packPos");
-    const packName = document.getElementById("packName");
-    const packRarity = document.getElementById("packRarity");
-    const packClub = document.getElementById("packClub");
-    const statEls = ["s1","s2","s3","s4","s5","s6"].map(id => document.getElementById(id));
+    const POSITIONS = ["GK","CB","RB","LB","CDM","CM","CAM","LW","RW","ST","CF"];
 
-    const openBtn = document.getElementById("openBtn");
-    const revealBtn = document.getElementById("revealBtn");
-    const resetBtn = document.getElementById("resetBtn");
+    const PACKS = [
+      {
+        id: 'bronze',
+        title: 'Bronze Pack',
+        price: 400,
+        desc: '5 players • Mostly Common',
+        cards: 5,
+        bias: { Common: 80, Rare: 15, Epic: 4, Legendary: 1, Icon: 0 }
+      },
+      {
+        id: 'silver',
+        title: 'Silver Pack',
+        price: 2500,
+        desc: '5 players • Better odds',
+        cards: 5,
+        bias: { Common: 50, Rare: 35, Epic: 10, Legendary: 4, Icon: 1 }
+      },
+      {
+        id: 'gold',
+        title: 'Gold Pack',
+        price: 7500,
+        desc: '5 players • High chance of Rare+',
+        cards: 5,
+        bias: { Common: 25, Rare: 45, Epic: 20, Legendary: 8, Icon: 2 }
+      }
+    ];
 
-    let collection = new Set();
-    let pendingCard = null;
+    // ----- State -----
+    let coins = 5000;
+    let selectedPack = null;
+    let inventory = [];
 
-    function key(c){ return `${c.name}|${c.position}|${c.rating}|${c.rarity}`; }
-
-    function renderCatalog(){
-      catalogGrid.innerHTML = "";
-      cards.forEach(c => {
-        const d = document.createElement("div");
-        d.className = `mini-card ${rarityClass[c.rarity] || "gold-card"}`;
-        d.innerHTML = `<div class="rarity">${c.rarity}</div><div class="name">${c.name}</div><div class="pos">${c.position}</div><div class="rating">${c.rating}</div>`;
-        catalogGrid.appendChild(d);
-      });
+    // ----- Helpers -----
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function renderTracker(){
-      trackerGrid.innerHTML = "";
-      rarityOrder.forEach(r => {
-        const items = cards.filter(c => c.rarity === r);
-        const have = items.filter(c => collection.has(key(c))).length;
-        const box = document.createElement("div");
-        box.className = "set-box";
-        box.innerHTML = `<h3>${r}</h3><div class="count">${have}/${items.length}</div><div class="sub">${have === items.length ? "Completed" : "Still missing cards"}</div>`;
-        trackerGrid.appendChild(box);
-      });
+    function pickRarity(bias) {
+      const total = Object.values(bias).reduce((a,b)=>a+b,0);
+      let r = randInt(1, total);
+      for (const [name, w] of Object.entries(bias)) {
+        if (r <= w) return name;
+        r -= w;
+      }
+      return 'Common';
     }
 
-    function renderCollection(){
-      collectionGrid.innerHTML = "";
-      rarityOrder.forEach(r => {
-        const items = cards.filter(c => c.rarity === r);
-        if (!items.length) return;
-        const have = items.filter(c => collection.has(key(c))).length;
-        const box = document.createElement("div");
-        box.className = "collection-item";
-        box.innerHTML = `
-          <div class="head">
-            <div class="title">${r}</div>
-            <div class="completion ${have===items.length ? "done" : "missing"}">${have}/${items.length}</div>
-          </div>
-          <ul>${items.map(c => `<li>${collection.has(key(c)) ? "✓" : "✕"} ${c.name} (${c.rating})</li>`).join("")}</ul>
+    function generatePlayer(bias) {
+      const rarityName = pickRarity(bias);
+      const ratingBase = {
+        Common: 65,
+        Rare: 75,
+        Epic: 82,
+        Legendary: 88,
+        Icon: 92
+      }[rarityName];
+
+      const rating = randInt(ratingBase, ratingBase + randInt(0, 6));
+      const position = POSITIONS[randInt(0, POSITIONS.length - 1)];
+      const name = FIRST_NAMES[randInt(0, FIRST_NAMES.length - 1)] + " " + NAMES[randInt(0, NAMES.length - 1)];
+
+      const rarityDef = RARITIES.find(r => r.name === rarityName);
+
+      return {
+        id: Date.now() + "_" + Math.random().toString(16).slice(2),
+        name,
+        rating,
+        position,
+        rarity: rarityName,
+        rarityClass: rarityDef.class
+      };
+    }
+
+    function renderStore() {
+      const store = document.getElementById('storeSection');
+      store.innerHTML = '';
+      PACKS.forEach(pack => {
+        const el = document.createElement('div');
+        el.className = 'pack-card';
+        el.innerHTML = `
+          <div class="pack-art">${pack.title.split(' ')[0]}</div>
+          <div class="pack-title">${pack.title}</div>
+          <div class="pack-price">${pack.price} coins</div>
+          <div class="pack-desc">${pack.desc}</div>
         `;
-        collectionGrid.appendChild(box);
+        el.addEventListener('click', () => selectPack(pack));
+        store.appendChild(el);
       });
     }
 
-    function resetPack(){
-      packCard.className = "pack-card";
-      packRating.textContent = "--";
-      packPos.textContent = "??";
-      packName.textContent = "READY";
-      packName.classList.add("hidden");
-      packRarity.textContent = "Hidden";
-      packClub.textContent = "Club";
-      statEls.forEach(el => el.textContent = "--");
+    function updateBalance() {
+      document.getElementById('coinBalance').textContent = coins;
     }
 
-    function openPack(){
-      pendingCard = cards[Math.floor(Math.random() * cards.length)];
-      openBtn.disabled = true;
-      revealBtn.disabled = false;
-      statusEl.textContent = "Pack ready. Press Reveal.";
-      resetPack();
+    function selectPack(pack) {
+      selectedPack = pack;
+      document.getElementById('openTitle').textContent = `Opening: ${pack.title}`;
+      document.getElementById('packPreview').textContent = pack.title.split(' ')[0];
+      const btn = document.getElementById('openBtn');
+      btn.disabled = coins < pack.price;
     }
 
-    function revealCard(){
-      if (!pendingCard) return;
-      const c = pendingCard;
-      packCard.className = `pack-card ${rarityClass[c.rarity] || "gold-card"} reveal`;
-      packRating.textContent = c.rating;
-      packPos.textContent = c.position;
-      packName.textContent = c.name.toUpperCase();
-      packName.classList.remove("hidden");
-      packRarity.textContent = c.rarity;
-      packClub.textContent = c.club;
-      statEls.forEach((el, i) => el.textContent = c.stats[i]);
-
-      collection.add(key(c));
-      renderTracker();
-      renderCollection();
-
-      statusEl.textContent = `Collected: ${c.name} (${c.rarity}).`;
-      pendingCard = null;
-      openBtn.disabled = false;
-      revealBtn.disabled = true;
+    function renderResults(players) {
+      const area = document.getElementById('resultsArea');
+      area.innerHTML = '';
+      players.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-rating">${p.rating} • ${p.position}</div>
+          </div>
+          <div class="card-rarity ${p.rarityClass}">${p.rarity}</div>
+        `;
+        area.appendChild(card);
+      });
     }
 
-    function resetCollection(){
-      collection = new Set();
-      renderTracker();
-      renderCollection();
-      resetPack();
-      statusEl.textContent = "Collection reset.";
+    function renderInventory() {
+      const list = document.getElementById('inventoryList');
+      list.innerHTML = '';
+      if (inventory.length === 0) {
+        list.innerHTML = '<div class="empty">No players yet. Open some packs!</div>';
+        return;
+      }
+      const shown = inventory.slice(-20);
+      shown.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-rating">${p.rating} • ${p.position}</div>
+          </div>
+          <div class="card-rarity ${p.rarityClass}">${p.rarity}</div>
+        `;
+        list.appendChild(card);
+      });
     }
 
-    openBtn.addEventListener("click", openPack);
-    revealBtn.addEventListener("click", revealCard);
-    resetBtn.addEventListener("click", resetCollection);
+    function openPack() {
+      if (!selectedPack || coins < selectedPack.price) return;
+      coins -= selectedPack.price;
+      updateBalance();
 
-    renderCatalog();
-    renderTracker();
-    renderCollection();
-    resetPack();
+      const preview = document.getElementById('packPreview');
+      const btn = document.getElementById('openBtn');
+      btn.disabled = true;
+
+      preview.classList.remove('spin');
+      void preview.offsetWidth;
+      preview.classList.add('spin');
+
+      const players = [];
+      for (let i = 0; i < selectedPack.cards; i++) {
+        players.push(generatePlayer(selectedPack.bias));
+      }
+
+      setTimeout(() => {
+        renderResults(players);
+        inventory.push(...players);
+        renderInventory();
+        btn.disabled = coins < selectedPack.price;
+      }, 650);
+    }
+
+    // ----- Events -----
+    document.getElementById('openBtn').addEventListener('click', openPack);
+    document.getElementById('addCoinsBtn').addEventListener('click', () => {
+      coins += 5000;
+      updateBalance();
+      if (selectedPack) {
+        const btn = document.getElementById('openBtn');
+        btn.disabled = coins < selectedPack.price;
+      }
+    });
+
+    // ----- Init -----
+    renderStore();
+    updateBalance();
+    renderInventory();
   </script>
 </body>
 </html>
